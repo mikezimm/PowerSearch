@@ -1,0 +1,16 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "plusBeta": false,
+    "isCreatingSolution": true,
+    "version": "1.15.2",
+    "libraryName": "alv-search",
+    "libraryId": "e7bc409c-0f8c-413c-ae3f-64fef4004940",
+    "environment": "spo",
+    "packageManager": "npm",
+    "solutionName": "ALV Search",
+    "solutionShortDescription": "ALV Search description",
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "componentType": "webpart"
+  }
+}

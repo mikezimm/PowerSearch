@@ -1,0 +1,86 @@
+@import '~office-ui-fabric-react/dist/sass/References.scss';
+
+
+// Copy this to every web part for standard theme support
+// VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+
+
+
+// define variables first
+//https://docs.microsoft.com/en-us/sharepoint/dev/spfx/use-theme-colors-in-your-customizations#available-theme-tokens-and-their-occurances
+$themePrimary: '[theme:themePrimary, default:#0078d7]';
+$themeWhite: '[theme:white, default:white]';
+
+.fpsMainErrBlock {
+  display: grid;
+  justify-items: center;
+  background: yellow;
+  padding: 20px 20px 50px 20px;
+
+  h2 {
+    font-size: xx-large;
+  }
+
+  li {
+    color: red;
+    font-size: 20px;
+    font-weight: 600;
+  }
+}
+
+//https://docs.microsoft.com/en-us/sharepoint/dev/spfx/use-theme-colors-in-your-customizations#available-theme-tokens-and-their-occurances
+$themePrimary: '[theme:themePrimary, default:#0078d7]';
+// $themeWhite: '[theme:white, default:white]';
+
+.fpsSiteThemeDark {
+  background-color: $ms-color-themeDark;
+  color: $ms-color-white;
+}
+
+.fpsSiteThemeLight {
+  background-color: $ms-color-themeLight;
+  color: $ms-color-themeDark;
+}
+
+.fpsSiteThemePrimary {
+  background-color: $ms-color-themePrimary;
+  color: $ms-color-white !important ;
+}
+
+// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+// Copy this to every web part for standard theme support
+
+
+
+.alvSearch {
+  overflow: hidden;
+  padding: 1em;
+  color: "[theme:bodyText, default: #323130]";
+  color: var(--bodyText);
+  &.teams {
+    font-family: $ms-font-family-fallbacks;
+  }
+}
+
+.welcome {
+  text-align: center;
+}
+
+.welcomeImage {
+  width: 100%;
+  max-width: 420px;
+}
+
+.links {
+  a {
+    text-decoration: none;
+    color: "[theme:link, default:#03787c]";
+    color: var(--link); // note: CSS Custom Properties support is limited to modern browsers only
+
+    &:hover {
+      text-decoration: underline;
+      color: "[theme:linkHovered, default: #014446]";
+      color: var(--linkHovered); // note: CSS Custom Properties support is limited to modern browsers only
+    }
+  }
+}
