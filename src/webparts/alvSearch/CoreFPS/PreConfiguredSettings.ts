@@ -43,8 +43,12 @@ export const WPPresetEverywhere : IPreConfigSettings = {
     source: 'WPPresetEverywhere',
     location: '*',
     props: {
-        bannerTitle: "FPS Core 1.15 Banner Default",
+        bannerTitle: "Power Search",
         defPinState: 'disabled',
+        showGoToHome: false,
+        showGoToParent: false,
+        enableExpandoramic: false,
+        homeParentGearAudience: 'Page Editors',
     }
 };
 
@@ -81,5 +85,5 @@ export const PreConfiguredProps : IAllPreConfigSettings = {
     forced: [ WPForceEverywhere, ForceSomeRandomSite,  ],
 
     //For Presets, Order should be:  PresetFPSBanner, WPPresetEverywhere, CUSTOM Sites,
-    preset: [ PresetFPSBanner, WPPresetEverywhere, PresetSomeRandomSite, ],
+    preset: [ PresetSomeRandomSite, WPPresetEverywhere, PresetFPSBanner, ],
 };

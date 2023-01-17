@@ -1,3 +1,6 @@
+# secrets stored locally
+storedSecrets
+
 # Logs
 logs
 *.log
