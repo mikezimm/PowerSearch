@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styles from './AlvSearch.module.scss';
-import { IAlvSearchProps, IAlvSearchState, ISearchPlace } from './IAlvSearchProps';
+import { IAlvSearchProps, IAlvSearchState, IInOrOut, IPowerSearch, IPowerSearchKeys, ISearchPlace } from './IAlvSearchProps';
 import { escape } from '@microsoft/sp-lodash-subset';
 import { SearchBox } from 'office-ui-fabric-react/lib/SearchBox';
 import { Icon } from 'office-ui-fabric-react/lib/Icon';
@@ -80,6 +80,14 @@ public constructor(props:IAlvSearchProps){
     iframeSrc: '',
     lastPlace: null,
     showBack: 0,
+
+    search: {
+      keywords: { In: '', Out: '' },
+      author: { In: '', Out: '' },
+      editor: { In: '', Out: '' },
+      filetype: { In: '', Out: '' },
+      filename: { In: '', Out: '' },
+    }
   };
 }
 
@@ -139,6 +147,8 @@ public constructor(props:IAlvSearchProps){
     const {
       showBack
     } = this.state;
+
+    console.log( '_search-State', this.state );
     /***
  *    d8888b.  .d8b.  d8b   db d8b   db d88888b d8888b.      d88888b db      d88888b .88b  d88. d88888b d8b   db d888888b 
  *    88  `8D d8' `8b 888o  88 888o  88 88'     88  `8D      88'     88      88'     88'YbdP`88 88'     888o  88 `~~88~~' 
@@ -171,7 +181,38 @@ public constructor(props:IAlvSearchProps){
     />;
 
     const BackDrop: JSX.Element = <div id='body-nav' className={ [ styles.bodyNav, this.state.showBack !== 0 ? styles.maxZindex : styles.minZindex , this._backStyle[ showBack ] ].join(' ') }>
-      <div onClick={ () => this._hideBack() } style={{ fontSize: '48px'}}>Test text</div>
+      <div onClick={ () => this._hideBack() } style={{ fontSize: '48px'}}>Welcome to PowerSearch</div>
+      <div className={ styles.links} onClick={ () => window.open(`https://learn.microsoft.com/en-us/sharepoint/dev/general-development/keyword-query-language-kql-syntax-reference`,`_blank` ) } style={{ fontSize: '48px'}}>Learn about KQL</div>
+      { this.powerSearchRow( `keywords` ) }
+      { this.powerSearchRow( `author` ) }
+      {/* { this.powerSearchRow( `editor` ) } */}
+      { this.powerSearchRow( `filetype` ) }
+      { this.powerSearchRow( `filename` ) }
+      
+      {/* <div className={ styles.powerSearch }>
+        <div className={ styles.searchRowLabel }>{`keywords ->`}</div>
+        <SearchBox
+              value={ this.state.textSearch }
+              styles={{ root: { maxWidth: '100%', height: '2.5em', fontSize: '18px' } }}
+              placeholder="Include in Search"
+              onSearch={ this._search.bind(this) }
+              onFocus={ null }
+              onBlur={ () => console.log('onBlur called') }
+              onChange={ this._search.bind(this, '+', 'words' ) }
+              onKeyDown={(ev)=> { this._enter( ev.key )}}
+            />
+        <SearchBox
+            value={ this.state.textSearch }
+            styles={{ root: { maxWidth: '100%', height: '2.5em', fontSize: '18px' } }}
+            placeholder="Exclude in Search"
+            onSearch={ this._search.bind(this) }
+            onFocus={ null }
+            onBlur={ () => console.log('onBlur called') }
+            onChange={ this._search.bind(this) }
+            onKeyDown={(ev)=> { this._enter(ev.key)}}
+          />
+      </div> */}
+
     </div>
 
     const SearchButtons : JSX.Element = <div>
@@ -271,8 +312,8 @@ public constructor(props:IAlvSearchProps){
 
   }
 
-  private _search(event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string ): void {
-    console.log( '_search:', event , newValue );
+  
+  private _search( event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue: string ): void {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if ( event === this.state.textSearch as any && newValue === undefined ) {
@@ -286,5 +327,93 @@ public constructor(props:IAlvSearchProps){
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private _enter(event: any, newValue?: string ): void {
     console.log( '_enter:', event , newValue );
+  }
+
+
+  /**
+   * 
+   * this onClick:  onChange={ this._search.bind(this, '+', 'words' ) }
+   * matches this:  _search( inOrOut: string, what: string, event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue: string ): void {
+   * @param inOrOut 
+   * @param what 
+   * @param event 
+   * @param newValue 
+   */
+
+  private _searchP( inOrOut: IInOrOut, what: string, event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue: string ): void {
+    console.log( '_search:', event , newValue, inOrOut, what );
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    if ( event === this.state.textSearch as any && newValue === undefined ) {
+      // This is likely an Enter key press... treat as such.
+      window.open(`https://${tenant}.sharepoint.com/sites/lifenet_it/_layouts/15/search.aspx?q=${event}`, "search_iframe");
+    } else {
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const search: IPowerSearch = this._getPowerSearch( inOrOut, what, newValue );
+      const textSearch: string = this.powerSearchString( search );
+      this.setState( { search: search, textSearch: textSearch } );
+    }
+  }
+
+
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private _enterP(event: any, newValue?: string ): void {
+    console.log( '_enter:', event , newValue );
+  }
+
+
+
+
+  private powerSearchString( search: IPowerSearch ) : string {
+    const { keywords, author } = search;
+    const keyIn = keywords.In.split(';').join( ' ' );
+    const keyOut = keywords.Out.split(';').join( ' -' );
+
+    const authorIn = !author ? '' : `author:${author.In.split(';').join( ' ' )}`;
+    const authorOut = !author ? '' : `-author:${author.Out.split(';').join( ' -' )}`;
+
+    return `${keyIn} -${keyOut} ${authorIn} -${authorOut}`;
+
+  }
+
+  private powerSearchRow( row: IPowerSearchKeys ) : JSX.Element {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const stateAny : any = this.state;
+    const eleRow = 
+    <div className={ styles.powerSearch }>
+      <div className={ styles.searchRowLabel }>{`${row} ->`}</div>
+      <SearchBox
+            value={ stateAny[ `searchIn${row}` ] }
+            styles={{ root: { maxWidth: '100%', height: '2.5em', fontSize: '16px' } }}
+            placeholder="Include in Search"
+            onSearch={ this._searchP.bind(this, 'In', row ) }
+            onFocus={ null }
+            onBlur={ () => console.log('onBlur called') }
+            onChange={ this._searchP.bind(this, 'In', row ) }
+            onKeyDown={(ev)=> { this._enterP( ev.key )}}
+          />
+      <SearchBox
+          value={ stateAny[ `searchOut${row}` ] }
+          styles={{ root: { maxWidth: '100%', height: '2.5em', fontSize: '16px' } }}
+          placeholder="Exclude in Search"
+          onSearch={ this._searchP.bind(this, 'Out', row ) }
+          onFocus={ null }
+          onBlur={ () => console.log('onBlur called') }
+          onChange={ this._searchP.bind(this, 'Out', row ) }
+          onKeyDown={(ev)=> { this._enterP(ev.key)}}
+        />
+    </div>;
+
+    return eleRow;
+
+  }
+
+  private _getPowerSearch( inOrOut: IInOrOut, what: string, newValue: string ) : IPowerSearch {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const newSearch: any = JSON.parse(JSON.stringify( this.state.search ));
+    newSearch[ what ][ inOrOut ] = newValue;
+    return newSearch;
   }
 }

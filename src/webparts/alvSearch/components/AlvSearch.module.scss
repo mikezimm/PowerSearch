@@ -59,7 +59,6 @@ $themePrimary: '[theme:themePrimary, default:#0078d7]';
   left: 0;
   bottom: 0;
   right: 0;
-  display: inline-block;
 
   overflow: hidden;
 
@@ -91,6 +90,28 @@ $themePrimary: '[theme:themePrimary, default:#0078d7]';
   opacity: 0;
 
   color: white;
+
+  display: grid;
+  grid-gap: 10px;
+  grid-auto-rows: 50px 50px;
+  justify-items: center;
+
+  .links {
+    font-size: 24px !important;
+  }
+}
+
+.powerSearch {
+  display: grid;
+  grid-gap: 30px;
+  grid-template-columns: 1fr 1fr;
+
+  .searchRowLabel {
+    position: fixed;
+    left: 25%;
+    font-size: 20px;
+  }
+
 }
 
 .bodyNav.minZindex {
@@ -136,9 +157,6 @@ $themePrimary: '[theme:themePrimary, default:#0078d7]';
   &.teams {
     font-family: $ms-font-family-fallbacks;
   }
-
-
-
 
   .searchGrid {
     display: grid;
@@ -212,15 +230,15 @@ $themePrimary: '[theme:themePrimary, default:#0078d7]';
 }
 
 .links {
-  a {
+  // a {
     text-decoration: none;
     color: "[theme:link, default:#03787c]";
     color: var(--link); // note: CSS Custom Properties support is limited to modern browsers only
-
+    cursor: pointer;
     &:hover {
       text-decoration: underline;
       color: "[theme:linkHovered, default: #014446]";
       color: var(--linkHovered); // note: CSS Custom Properties support is limited to modern browsers only
     }
-  }
+  // }
 }
