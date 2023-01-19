@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styles from './AlvSearch.module.scss';
-import { IAlvSearchProps, IAlvSearchState, IInOrOut, IPowerSearch, IPowerSearchKeys, ISearchPlace } from './IAlvSearchProps';
+import { ClearHints, IAlvSearchProps, IAlvSearchState, IInOrOut, IPowerSearch, IPowerSearchKeys, ISearchPlace } from './IAlvSearchProps';
 import { escape } from '@microsoft/sp-lodash-subset';
 import { SearchBox } from 'office-ui-fabric-react/lib/SearchBox';
 import { Icon } from 'office-ui-fabric-react/lib/Icon';
@@ -19,6 +19,9 @@ import { check4Gulp, IBannerPages, } from "../fpsMinIndex";
 import { ILoadPerformance, startPerformOp, updatePerformanceEnd } from "../fpsMinIndex";
 
 import { ISiteThemes } from "@mikezimm/fps-library-v2/lib/common/commandStyles/ISiteThemeChoices";
+import { getDocsHeadings, getRandomTipElement, KQLDocLinkInt, KQLDocsHeadings } from './SearchTips/tips';
+import { getTypesTable } from './SearchTips/filetype';
+import { TextField } from 'office-ui-fabric-react';
 const SiteThemes: ISiteThemes = { dark: styles.fpsSiteThemeDark, light: styles.fpsSiteThemeLight, primary: styles.fpsSiteThemePrimary };
 
 //Use this to add more console.logs for this component
@@ -76,18 +79,35 @@ public constructor(props:IAlvSearchProps){
     refreshId: this._newRefreshId(),
     debugMode: false,
     showSpinner: false,
-    textSearch: '',
+
+    showHistory: false,
+    history: [],
+    historyBuild: [],
     iframeSrc: '',
     lastPlace: null,
     showBack: 0,
 
     search: {
+      textSearch: '',
+
       keywords: { In: '', Out: '' },
       author: { In: '', Out: '' },
       editor: { In: '', Out: '' },
       filetype: { In: '', Out: '' },
       filename: { In: '', Out: '' },
-    }
+      title: { In: '', Out: '' },
+      time: { In: '', Out: '' },
+
+      cust1: { In: '', Out: '' },
+      cust2: { In: '', Out: '' },
+      cust3: { In: '', Out: '' },
+      cust4: { In: '', Out: '' },
+      date1: { In: '', Out: '' },
+    },
+    hints: ClearHints,
+    powerIframeUrl: '',
+    powerIndex: -1,
+    reclickCount: 0,
   };
 }
 
@@ -183,16 +203,52 @@ public constructor(props:IAlvSearchProps){
     const BackDrop: JSX.Element = <div id='body-nav' className={ [ styles.bodyNav, this.state.showBack !== 0 ? styles.maxZindex : styles.minZindex , this._backStyle[ showBack ] ].join(' ') }>
       <div onClick={ () => this._hideBack() } style={{ fontSize: '48px'}}>Welcome to PowerSearch</div>
       <div className={ styles.links} onClick={ () => window.open(`https://learn.microsoft.com/en-us/sharepoint/dev/general-development/keyword-query-language-kql-syntax-reference`,`_blank` ) } style={{ fontSize: '48px'}}>Learn about KQL</div>
+      { getRandomTipElement( '*' ) }
       { this.powerSearchRow( `keywords` ) }
       { this.powerSearchRow( `author` ) }
       {/* { this.powerSearchRow( `editor` ) } */}
       { this.powerSearchRow( `filetype` ) }
       { this.powerSearchRow( `filename` ) }
-      
+      <div style={{ fontSize: '14px', marginTop: '20px' }} onClick={ () => this._setPowerIframe( KQLDocsHeadings[0].heading, 0 ) }>Tweak your query below and then press enter...</div>
+      <div className={ styles.currentQuery }>
+        <Icon iconName={ this.state.history.length > 0 ? "History" : '' } onClick={ () => this.setState({ 
+            showHistory: !this.state.showHistory, hints: { ...this.state.hints, ...{ docs: false }},
+            powerIndex: -1,
+            powerIframeUrl: '',
+          }) }/>
+        <SearchBox
+          value={ this.state.search.textSearch }
+          styles={{ root: { height: '2.5em', fontSize: '16px', backgroundColor: `rgb(178 178 178)` } }}
+          placeholder="Type in boxes above"
+          onSearch={ this._search.bind(this) }
+          onFocus={ null }
+          // onBlur={ () => console.log('onBlur called') }
+          onChange={ this._search.bind(this) }
+          onKeyDown={(ev)=> { this._enter(ev.key)}}
+        />
+      </div>
+
+      <div style={{ fontSize: '18px', marginTop: '30px', marginBottom: '20px', fontWeight: 500 }} onClick={ () => this._hideBack() }>Click here to return to page.</div>
+      <div className={ this.state.showHistory === true ? styles.showTips : styles.hideTips }>
+        <div style={{ fontSize: 'larger' }}>Query history - Click one to</div>
+        { this.state.history.map( ( history, index ) => {
+          return <div className={ styles.queryHistoryRow } key={ history } ><Icon iconName={ "Upload" } onClick={ () => this._loadHistory( index ) } />{history}</div>;
+        })}
+
+      </div>
+      <div className={ this.state.powerIframeUrl && this.state.powerIndex > -1 ? styles.showTips : styles.hideTips } style={{ marginTop: '15px'}}>
+          <div className={ styles.closeHeadingsIcon } >
+            <Icon onClick={ () => this._setPowerIframe( ``, -1 ) } iconName='ChromeClose' title={ `Close docs window` }/>
+            <Icon onClick={ () => window.open( `${KQLDocLinkInt}${ KQLDocsHeadings[ this.state.powerIndex ].heading }`, '_blank' ) } iconName='OpenInNewWindow' title={ `Open docs in new tab` } />
+          </div>
+        <iframe src={ this.state.powerIframeUrl } width="800px" height={ `600px` } name="power_iframe"/>
+      </div>
+      { getTypesTable( this.state.hints.filetype === true ? styles.showTips : styles.hideTips ) }
+      { getDocsHeadings( this.state.hints.docs, this.state.hints.current, this._setPowerIframe.bind(this), this.state.powerIndex, this._blurP.bind( this ) ) }
       {/* <div className={ styles.powerSearch }>
         <div className={ styles.searchRowLabel }>{`keywords ->`}</div>
         <SearchBox
-              value={ this.state.textSearch }
+              value={ this.state.search.textSearch }
               styles={{ root: { maxWidth: '100%', height: '2.5em', fontSize: '18px' } }}
               placeholder="Include in Search"
               onSearch={ this._search.bind(this) }
@@ -202,7 +258,7 @@ public constructor(props:IAlvSearchProps){
               onKeyDown={(ev)=> { this._enter( ev.key )}}
             />
         <SearchBox
-            value={ this.state.textSearch }
+            value={ this.state.search.textSearch }
             styles={{ root: { maxWidth: '100%', height: '2.5em', fontSize: '18px' } }}
             placeholder="Exclude in Search"
             onSearch={ this._search.bind(this) }
@@ -222,7 +278,7 @@ public constructor(props:IAlvSearchProps){
           <div style={{ width: '100px', height: ''}} onClick={ () => { this._showBack() }}>{ <Icon iconName='Search'/> }</div>
          </div>
         <SearchBox
-            value={ this.state.textSearch }
+            value={ this.state.search.textSearch }
             styles={{ root: { maxWidth: '100%', height: '2.5em', fontSize: '18px' } }}
             placeholder="Search"
             onSearch={ this._search.bind(this) }
@@ -275,20 +331,21 @@ public constructor(props:IAlvSearchProps){
   }
 
   private _hideBack() : void {
-
+    const { textSearch } = this.state.search;
     this.setState({ showBack: 1 });
 
     // Delay creds to:  https://stackoverflow.com/a/42090488
     setTimeout(function(){
       this.setState({ showBack: 0 });
       console.log('newBack:',  0  );
+      window.open(`https://${tenant}.sharepoint.com/sites/lifenet_it/_layouts/15/search.aspx?q=${textSearch}`, "search_iframe");
     }.bind(this), 1000);
 
   }
 
   private _buttonClick( button: ISearchPlace ): void {
     console.log( `_buttonClick`, button );
-    const { textSearch } = this.state;
+    const { textSearch } = this.state.search;
 
     switch ( button ) {
       case 'SPO':
@@ -312,15 +369,24 @@ public constructor(props:IAlvSearchProps){
 
   }
 
-  
+
   private _search( event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue: string ): void {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    if ( event === this.state.textSearch as any && newValue === undefined ) {
+    if ( event === this.state.search.textSearch as any && newValue === undefined ) {
       // This is likely an Enter key press... treat as such.
+      if ( this.state.history.indexOf( this.state.search.textSearch ) < 0 ) {
+        const historyBuild: string[] = this.state.historyBuild;
+        historyBuild.push( JSON.stringify( this.state.search ) );
+        const history: string[] = this.state.history;
+        history.push( this.state.search.textSearch );
+        this.setState({ history: history, historyBuild: historyBuild });
+      }
       window.open(`https://${tenant}.sharepoint.com/sites/lifenet_it/_layouts/15/search.aspx?q=${event}`, "search_iframe");
     } else {
-      this.setState({ textSearch: newValue });
+      const search: IPowerSearch = JSON.parse(JSON.stringify( this.state.search ));
+      search.textSearch = newValue;
+      this.setState({ search: search });
     }
   }
 
@@ -329,7 +395,11 @@ public constructor(props:IAlvSearchProps){
     console.log( '_enter:', event , newValue );
   }
 
+  private _loadHistory( index: number ): void {
 
+    const search: IPowerSearch = JSON.parse( this.state.historyBuild[index] );
+    this.setState({ search: search });
+  }
   /**
    * 
    * this onClick:  onChange={ this._search.bind(this, '+', 'words' ) }
@@ -344,19 +414,53 @@ public constructor(props:IAlvSearchProps){
     console.log( '_search:', event , newValue, inOrOut, what );
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    if ( event === this.state.textSearch as any && newValue === undefined ) {
+    if ( newValue === undefined ) {
       // This is likely an Enter key press... treat as such.
-      window.open(`https://${tenant}.sharepoint.com/sites/lifenet_it/_layouts/15/search.aspx?q=${event}`, "search_iframe");
+      window.open(`https://${tenant}.sharepoint.com/sites/lifenet_it/_layouts/15/search.aspx?q=${this.state.search.textSearch}`, "search_iframe");
+      const historyBuild: string[] = this.state.historyBuild;
+      historyBuild.push( JSON.stringify( this.state.search ) );
+      const history: string[] = this.state.history;
+      history.push( this.state.search.textSearch );
+      this.setState({ history: history, historyBuild: historyBuild });
+
     } else {
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const search: IPowerSearch = this._getPowerSearch( inOrOut, what, newValue );
-      const textSearch: string = this.powerSearchString( search );
-      this.setState( { search: search, textSearch: textSearch } );
+      search.textSearch = this.powerSearchString( search );
+      this.setState( { search: search, } ); //textSearch: textSearch 
     }
   }
 
+  private _blurP( inOrOut: IInOrOut, what: string, event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue: string ): void {
+    console.log( '_blurP:', event , newValue, inOrOut, what );
+    this.setState({
+      hints: { ...ClearHints, ...{ docs: true }},
+    });
+  }
 
+  private _focusP( inOrOut: IInOrOut, what: IPowerSearchKeys, event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue: string ): void {
+    console.log( '_focusP:', event , newValue, inOrOut, what );
+    this.setState({
+      hints: {
+        docs: true,
+        author: what === `author` ? true : false,
+        editor: what === `editor` ? true : false,
+        filename: what === `filename` ? true : false,
+        filetype: what === `filetype` ? true : false,
+        keywords: what === `keywords` ? true : false,
+        title: what === `title` ? true : false,
+        time: what === `time` ? true : false,
+
+        cust1: what === `cust1` ? true : false,
+        cust2: what === `cust2` ? true : false,
+        cust3: what === `cust3` ? true : false,
+        cust4: what === `cust4` ? true : false,
+        date1: what === `date1` ? true : false,
+        current: what,
+      }
+    });
+  }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private _enterP(event: any, newValue?: string ): void {
@@ -367,14 +471,36 @@ public constructor(props:IAlvSearchProps){
 
 
   private powerSearchString( search: IPowerSearch ) : string {
-    const { keywords, author } = search;
-    const keyIn = keywords.In.split(';').join( ' ' );
-    const keyOut = keywords.Out.split(';').join( ' -' );
+    // const { keywords, author, filetype, filename } = search;
+    // const keyIn = !keywords ? '' : `${keywords.In.split(';').join( ' AND ' )}`;
+    // const keyOut = !keywords ? '' : `-${keywords.Out.split(';').join( ' AND -' )}`;
 
-    const authorIn = !author ? '' : `author:${author.In.split(';').join( ' ' )}`;
-    const authorOut = !author ? '' : `-author:${author.Out.split(';').join( ' -' )}`;
+    // const authorIn = !author ? '' : `author:${author.In.split(';').join( ' AND author:' )}`;
+    // const authorOut = !author ? '' : `-author:${author.Out.split(';').join( ' AND -author:' )}`;
 
-    return `${keyIn} -${keyOut} ${authorIn} -${authorOut}`;
+    // const filetypeIn = !filetype ? '' : `filetype:${filetype.In.split(';').join( ' AND filetype:' )}`;
+    // const filetypeOut = !filetype ? '' : `-filetype:${filetype.Out.split(';').join( ' AND -filetype:' )}`;
+
+    // const filenameIn = !filename ? '' : `filename:${filename.In.split(';').join( ' AND filename:' )}`;
+    // const filenameOut = !filename ? '' : `-filename:${filename.Out.split(';').join( ' AND -filename:' )}`;
+
+    // return `${keyIn} ${keyOut} ${authorIn} ${authorOut} ${filetypeIn} ${filetypeOut} ${filenameIn} ${filenameOut}`;
+
+    const { keywords, author, filetype, filename } = search;
+    const keyIn = !keywords.In ? '' : keywords.In.split(';');
+    const keyOut = !keywords.Out ? '' : `-${keywords.Out.split(';').join( ' -' )}`.split(' ');
+
+    const authorIn = !author.In ? '' : `author:${author.In.split(';').join( ' author:' )}`.split(' ');
+    const authorOut = !author.Out ? '' : `-author:${author.Out.split(';').join( ' -author:' )}`.split(' ');
+
+    const filetypeIn = !filetype.In ? '' : `filetype:${filetype.In.split(';').join( ' filetype:' )}`.split(' ');
+    const filetypeOut = !filetype.Out ? '' : `-filetype:${filetype.Out.split(';').join( ' -filetype:' )}`.split(' ');
+
+    const filenameIn = !filename.In ? '' : `filename:${filename.In.split(';').join( ' filename:' )}`.split(' ');
+    const filenameOut = !filename.Out ? '' : `-filename:${filename.Out.split(';').join( ' -filename:' )}`.split(' ');
+
+    const allChecks: string[] = [ ...keyIn, ...keyOut, ...authorIn, ...authorOut, ...filetypeIn, ...filetypeOut, ...filenameIn, ...filenameOut ];
+    return allChecks.join(' AND ');
 
   }
 
@@ -385,29 +511,44 @@ public constructor(props:IAlvSearchProps){
     <div className={ styles.powerSearch }>
       <div className={ styles.searchRowLabel }>{`${row} ->`}</div>
       <SearchBox
-            value={ stateAny[ `searchIn${row}` ] }
-            styles={{ root: { maxWidth: '100%', height: '2.5em', fontSize: '16px' } }}
-            placeholder="Include in Search"
-            onSearch={ this._searchP.bind(this, 'In', row ) }
-            onFocus={ null }
-            onBlur={ () => console.log('onBlur called') }
-            onChange={ this._searchP.bind(this, 'In', row ) }
-            onKeyDown={(ev)=> { this._enterP( ev.key )}}
-          />
+        value={ stateAny[ `searchIn${row}` ] }
+        styles={{ root: { maxWidth: '100%', height: '2.5em', fontSize: '16px' } }}
+        placeholder="Include in Search"
+        onSearch={ this._searchP.bind(this, 'In', row ) }
+        onFocus={ this._focusP.bind(this, 'In', row ) }
+        // onBlur={ this._blurP.bind(this, 'In', row ) }
+        onChange={ this._searchP.bind(this, 'In', row ) }
+        onKeyDown={(ev)=> { this._enterP( ev.key )}}
+      />
       <SearchBox
-          value={ stateAny[ `searchOut${row}` ] }
-          styles={{ root: { maxWidth: '100%', height: '2.5em', fontSize: '16px' } }}
-          placeholder="Exclude in Search"
-          onSearch={ this._searchP.bind(this, 'Out', row ) }
-          onFocus={ null }
-          onBlur={ () => console.log('onBlur called') }
-          onChange={ this._searchP.bind(this, 'Out', row ) }
-          onKeyDown={(ev)=> { this._enterP(ev.key)}}
-        />
+        value={ stateAny[ `searchOut${row}` ] }
+        styles={{ root: { maxWidth: '100%', height: '2.5em', fontSize: '16px' } }}
+        placeholder="Exclude in Search"
+        onSearch={ this._searchP.bind(this, 'Out', row ) }
+        onFocus={ this._focusP.bind(this, 'Out', row ) }
+        // onBlur={ this._blurP.bind(this, 'Out', row ) }
+        onChange={ this._searchP.bind(this, 'Out', row ) }
+        onKeyDown={(ev)=> { this._enterP(ev.key)}}
+      />
     </div>;
 
     return eleRow;
 
+  }
+
+  private _setPowerIframe( head: string, powerIndexNew: number ): void {
+    console.log('');
+    const { powerIndex, reclickCount } = this.state;
+    const isSame : boolean = powerIndex === powerIndexNew ? true : false;
+    // Sometimes you want to click twice when the docs are first loaded due to slow navigating to heading
+    const clickedCount = isSame === true ? reclickCount + 1 : 0;
+
+    const powerIframeUrl: string = head ? `${KQLDocLinkInt}${head}` : '';
+    // this.setState({ powerIframeUrl: powerIframeUrl});
+
+    this.setState({ powerIframeUrl: powerIframeUrl, powerIndex: isSame && clickedCount > 1 ? -1 : powerIndexNew, reclickCount: clickedCount, showHistory: false });
+    // window.open(powerIframeUrl, "power_iframe");
+    window.open(powerIframeUrl, "power_iframe");
   }
 
   private _getPowerSearch( inOrOut: IInOrOut, what: string, newValue: string ) : IPowerSearch {

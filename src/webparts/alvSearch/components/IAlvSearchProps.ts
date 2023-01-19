@@ -29,22 +29,58 @@ export interface IInAndOut {
   Out: string;
 }
 
-export type IPowerSearchKeys = 'keywords' |  'author' |  'editor' |  'filetype' |  'filename' ;
+export type IPowerSearchKeys = 'keywords' |  'author' |  'editor' |  'filetype' |  'filename' | 'title' | 'time'  | 'cust1' | 'cust2' | 'cust3' | 'cust4' | 'date1' ;
 export interface IPowerSearch {
+  textSearch: string;
   keywords: IInAndOut ;
   author: IInAndOut;
   editor: IInAndOut;
   filetype: IInAndOut;
   filename: IInAndOut;
+  title: IInAndOut;
+  time: any;
+  cust1: IInAndOut;
+  cust2: IInAndOut;
+  cust3: IInAndOut;
+  cust4: IInAndOut;
+  date1: any;
 }
+
+export interface IPowerHints {
+  current: IPowerSearchKeys;
+  docs: boolean;
+
+  keywords: boolean ;
+  author: boolean;
+  editor: boolean;
+  filetype: boolean;
+  filename: boolean;
+  title: boolean;
+  time: boolean;
+  cust1: boolean;
+  cust2: boolean;
+  cust3: boolean;
+  cust4: boolean;
+  date1: boolean;
+}
+
 export interface IAlvSearchState extends IFPSCorePinMeReactComponentState {
 
-  textSearch: string;
+  history: string[];
+  historyBuild: string[];
+  showHistory: boolean;
+  // textSearch: string;
   iframeSrc: string;
   lastPlace: ISearchPlace;
   showBack: 0 | 1 | 2;
 
   search: IPowerSearch;
+
+  powerIframeUrl: string;
+  powerIndex: number;
+  reclickCount: number;
+
+  hints: IPowerHints;
 
   // searchInWords: string;
   // searchOutWords: string;
@@ -56,4 +92,23 @@ export interface IAlvSearchState extends IFPSCorePinMeReactComponentState {
   // searchOutType: string;
   // searchInFileName: string;
   // searchOutFileName: string;
+}
+
+export const ClearHints : IPowerHints = {
+  current: null,
+  docs: false,
+
+  keywords: false,
+  author: false,
+  editor: false,
+  filetype: false,
+  filename: false,
+  title: false,
+  time: false,
+
+  cust1: false,
+  cust2: false,
+  cust3: false,
+  cust4: false,
+  date1: false,
 }
