@@ -15,7 +15,7 @@ export function getKeywordsTable( className: string, setIframe: any ) : JSX.Elem
 
   const result = 
   <div className={ `${styles.typesTips} ${className}` }>
-      <div className={ styles.typesTipsLabel }>wildcard: *</div>
+      <div className={ styles.typesTipsLabel } onClick={ () => setIframe( )}>wildcard: *</div>
       <ul style={{ listStyleType: 'none' }}>
         <li>{`"passenger air*"`} will find items with phrase: passenger airbag</li>
       </ul>
