@@ -1,7 +1,7 @@
 
 import { IFPSCoreReactComponentProps } from '@mikezimm/fps-library-v2/lib/banner/mainReact/ReactComponentProps';
 import { IFPSCorePinMeReactComponentState } from '@mikezimm/fps-library-v2/lib/banner/mainReact/ReactComponentState';
-
+import { ISelectionOptionsWithRequiredGetKey } from 'office-ui-fabric-react';
 
 import { ILoadPerformance } from '../fpsMinIndex';
 
@@ -29,8 +29,6 @@ export interface IInAndOut {
   Out: string;
 }
 
-export type IPowerTimeChoice = 'Today' | 'Yesterday' | 'ThisWeek' | 'LastWeek' | 'ThisMonth' | 'LastMonth' | 'ThisYear' | 'LastYear' | string;
-
 export type IPowerSearchKeys = 'keywords' |  'author' |  'editor' |  'filetype' |  'filename' | 'title' | 'time'  | 'cust1' | 'cust2' | 'cust3' | 'cust4' | 'date1' ;
 export interface IPowerSearch {
   textSearch: string;
@@ -40,12 +38,12 @@ export interface IPowerSearch {
   filetype: IInAndOut;
   filename: IInAndOut;
   title: IInAndOut;
-  time: IPowerTimeChoice;
+  time: any;
   cust1: IInAndOut;
   cust2: IInAndOut;
   cust3: IInAndOut;
   cust4: IInAndOut;
-  date1: IPowerTimeChoice;
+  date1: any;
 }
 
 export interface IPowerHints {
@@ -58,32 +56,42 @@ export interface IPowerHints {
   filetype: boolean;
   filename: boolean;
   title: boolean;
-  time: boolean;  // future use aka - LastModified in last week
-  cust1: boolean; // future use via property pane options
-  cust2: boolean; // future use via property pane options
-  cust3: boolean; // future use via property pane options
-  cust4: boolean; // future use via property pane options
-  date1: boolean; // future use via property pane options to do Time based search on fields other than LastModified
+  time: boolean;
+  cust1: boolean;
+  cust2: boolean;
+  cust3: boolean;
+  cust4: boolean;
+  date1: boolean;
 }
 
 export interface IAlvSearchState extends IFPSCorePinMeReactComponentState {
 
-  history: string[];  // Array of the actual search queries that have been executed (from power search page)
-  historyBuild: string[];  // Array of stringified versions of this.state.search.  This makes it easier to rebuild the search boxes when you click on a historical search
-  showHistory: boolean;  // History array of all searches in current section ( after you hit 'enter' in power search)
+  history: string[];
+  historyBuild: string[];
+  showHistory: boolean;
   // textSearch: string;
-  iframeSrc: string;  // Main page iframe url
-  lastSource: ISearchPlace;  // Most recent search source button selected.
+  iframeSrc: string;
+  lastPlace: ISearchPlace;
   showBack: 0 | 1 | 2;
 
-  search: IPowerSearch;  // All of the vaules of the search boxes and complete search string the user enters/generates
+  search: IPowerSearch;
 
-  powerIframeUrl: string;  // Url to show in the powerHint iframe below the search boxes
-  powerIndex: number;  // Index of currently selected powerHint heading.
-  reclickCount: number; // How many times the most recent PowerHint (right menu) was clicked in a row.  Used to allow double clicks to jump to heading section faster.
+  powerIframeUrl: string;
+  powerIndex: number;
+  reclickCount: number;
 
-  hints: IPowerHints;  // booleans of all the powerHints used to track which ones should be visible
+  hints: IPowerHints;
 
+  // searchInWords: string;
+  // searchOutWords: string;
+  // searchInAuth: string;
+  // searchOutAuth: string;
+  // searchInEdit: string;
+  // searchOutEdit: string;
+  // searchInType: string;
+  // searchOutType: string;
+  // searchInFileName: string;
+  // searchOutFileName: string;
 }
 
 export const ClearHints : IPowerHints = {
