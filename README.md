@@ -16,3 +16,5 @@ Let's create a new SharePoint solution.
 Add new Web part to solution alv-search.
 ? What is your Web part name? ALV Search
 ? Which template would you like to use? 
+
+xxxx
