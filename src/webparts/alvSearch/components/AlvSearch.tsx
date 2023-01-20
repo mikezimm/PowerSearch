@@ -21,7 +21,6 @@ import { ILoadPerformance, startPerformOp, updatePerformanceEnd } from "../fpsMi
 import { ISiteThemes } from "@mikezimm/fps-library-v2/lib/common/commandStyles/ISiteThemeChoices";
 import { getDocsHeadings, getRandomTipElement, KQLDocLinkInt, KQLDocsHeadings } from './SearchTips/tips';
 import { getTypesTable } from './SearchTips/filetype';
-import { TextField } from 'office-ui-fabric-react';
 const SiteThemes: ISiteThemes = { dark: styles.fpsSiteThemeDark, light: styles.fpsSiteThemeLight, primary: styles.fpsSiteThemePrimary };
 
 //Use this to add more console.logs for this component
@@ -84,7 +83,7 @@ public constructor(props:IAlvSearchProps){
     history: [],
     historyBuild: [],
     iframeSrc: '',
-    lastPlace: null,
+    lastSource: null,
     showBack: 0,
 
     search: {
@@ -96,13 +95,13 @@ public constructor(props:IAlvSearchProps){
       filetype: { In: '', Out: '' },
       filename: { In: '', Out: '' },
       title: { In: '', Out: '' },
-      time: { In: '', Out: '' },
+      time: '',
 
       cust1: { In: '', Out: '' },
       cust2: { In: '', Out: '' },
       cust3: { In: '', Out: '' },
       cust4: { In: '', Out: '' },
-      date1: { In: '', Out: '' },
+      date1: '',
     },
     hints: ClearHints,
     powerIframeUrl: '',
