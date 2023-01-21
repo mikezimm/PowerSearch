@@ -69,8 +69,11 @@ export function saveViewAnalytics( Title: string, Result: string, parentProps: I
 
       };
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const zzzRichText1Obj: any = null;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const zzzRichText2Obj: any = null;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const zzzRichText3Obj: any = null;
 
       // console.log( 'zzzRichText1Obj:', zzzRichText1Obj);

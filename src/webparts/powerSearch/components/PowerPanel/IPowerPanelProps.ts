@@ -1,9 +1,10 @@
 
 
 export interface IPowerPanelProps {
-
-  _search: any;
-  _enter: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  _search( arg0: any ): void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  _enter(event: any, newValue?: string ): void;
 }
 
 

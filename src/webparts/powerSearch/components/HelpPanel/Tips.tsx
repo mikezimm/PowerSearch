@@ -26,6 +26,7 @@
 
 // const tipCellStyle: React.CSSProperties = {paddingRight: '20px' };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const webParTips : any[] = [
 
 //Sample of basic tip

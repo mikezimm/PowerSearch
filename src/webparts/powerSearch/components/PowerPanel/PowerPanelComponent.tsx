@@ -4,7 +4,6 @@ import { Icon } from 'office-ui-fabric-react/lib/Icon';
 
 import styles from './PowerPanel.module.scss';
 import { ClearHints, IInOrOut, IPowerPanelProps, IPowerPanelState, IPowerSearch, IPowerSearchKeys } from './IPowerPanelProps';
-import { escape } from '@microsoft/sp-lodash-subset';
 import { check4Gulp } from '../../fpsMinIndex';
 import { getDocsHeadings, getRandomTipElement, KQLDocLinkInt, KQLDocsHeadings } from './SearchTips/tips';
 import { getTypesTable } from './SearchTips/filetype';
@@ -12,7 +11,7 @@ import { getTypesTable } from './SearchTips/filetype';
 //Use this to add more console.logs for this component
 const consolePrefix: string = 'fpsconsole: PowerPanelComponent';
 const tenant: string = window.location.hostname.toLowerCase().replace(`.sharepoint.com`, '' );
-const code: string = `vla`.split("").reverse().join("");
+// const code: string = `vla`.split("").reverse().join("");
 
 export default class PowerPanel extends React.Component<IPowerPanelProps, IPowerPanelState> {
 

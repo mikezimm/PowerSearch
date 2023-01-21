@@ -8,7 +8,7 @@ import { Icon } from 'office-ui-fabric-react/lib/Icon';
 require ('./FadePanel.css');
 
 //Use this to add more console.logs for this component
-const consolePrefix: string = 'fpsconsole: FadePanelComponent';
+// const consolePrefix: string = 'fpsconsole: FadePanelComponent';
 
 export interface IFadePanelWPProps {
   constainerStyles?: string; // {{ width: '650px', height: '450px' }}
