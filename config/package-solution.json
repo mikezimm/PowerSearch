@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "power-search-x-client-side-solution",
+    "id": "e237a55e-e475-46d4-a0ee-239fe90b6fe6",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.15.2"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "power-search-x description"
+      },
+      "longDescription": {
+        "default": "power-search-x description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "power-search-x Feature",
+        "description": "The feature that activates elements of the power-search-x solution.",
+        "id": "42f2cf83-549f-4c5c-bdb7-767f9c4dad3e",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/power-search-x.sppkg"
+  }
+}

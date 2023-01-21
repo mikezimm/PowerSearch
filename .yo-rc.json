@@ -1,0 +1,16 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "plusBeta": false,
+    "isCreatingSolution": true,
+    "version": "1.15.2",
+    "libraryName": "power-search-x",
+    "libraryId": "e237a55e-e475-46d4-a0ee-239fe90b6fe6",
+    "environment": "spo",
+    "packageManager": "npm",
+    "solutionName": "power-search-x",
+    "solutionShortDescription": "power-search-x description",
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "componentType": "webpart"
+  }
+}

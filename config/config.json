@@ -1,0 +1,18 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "power-search-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/powerSearch/PowerSearchWebPart.js",
+          "manifest": "./src/webparts/powerSearch/PowerSearchWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "PowerSearchWebPartStrings": "lib/webparts/powerSearch/loc/{locale}.js"
+  }
+}
