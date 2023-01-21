@@ -1,89 +1,70 @@
-@import '~office-ui-fabric-react/dist/sass/References.scss';
+// @import '~office-ui-fabric-react/dist/sass/References.scss';
 
-.bodyNav {
-  transition:all 0.4s ease;
-  position: fixed;
-  overflow-y: scroll;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-
-  overflow: hidden;
-  overflow-y: scroll;
-
-  background: transparent;
-  text-align: left;
-
-  -o-transform: translate3d(0,0,0);
-  -ms-transform: translate3d(0,0,0);
-  -moz-transform: translate3d(0,0,0);
-  -webkit-transform: translate3d(0,0,0);
-  transform: translate3d(0,0,0);
-  -webkit-transition: background 500ms ease;
-  -moz-transition: background 500ms ease;
-  transition: background 500ms ease;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  height: 100%;
-  width: 100%;
-  text-align: center;
-
-  -moz-box-shadow: none!important;
-  -webkit-box-shadow: none!important;
-  box-shadow: none!important;
-  z-index: 13;
-  opacity: 0;
-
-  color: white;
-
-  display: grid;
-  grid-gap: 10px;
-  grid-auto-rows: 50px 26px 60px 50px 50px;
-  justify-items: center;
-
-  .links {
-    font-size: 24px !important;
-  }
-
-}
-
-
-.bodyNav.minZindex {
-  // transition: z-index 0 ease-in-out !important;
-  pointer-events: none;
-  // z-index: 13;
-}
-
-.bodyNav.maxZindex {
-  // transition: z-index 0 ease-in-out !important;
-  pointer-events: visible;
-  // z-index: 13;
-}
-
-.bodyNav.showNav {
-  transition:all 0.4s ease;
-  background: rgb(3,1,29);
-
-  background: linear-gradient(180deg,#03011d,#1e1e1edb 70%,#4b4b4bad);
-
-  background: -moz-linear-gradient(180deg, #03011d,#1e1e1edb 70%,#4b4b4bad);
-  background: -webkit-linear-gradient(180deg, #03011d,#1e1e1edb 70%,#4b4b4bad);
-  background: linear-gradient(180deg, rgba(3,1,29,1) 0%,#03011d,#1e1e1edb 70%,#4b4b4bad);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#03011d",endColorstr="#777777",GradientType=1);
-  opacity: 1;
-}
-
-.bodyNav.hideNav {
-  transition:all 0.4s ease;
-  background: rgb(3,1,29);
-  background: -moz-linear-gradient(180deg, #03011d,#1e1e1edb 70%,#4b4b4bad );
-  background: -webkit-linear-gradient(180deg, #03011d,#1e1e1edb 70%,#4b4b4bad);
-  background: linear-gradient(180deg, rgba(3,1,29,1) 0%, #03011d,#1e1e1edb 70%,#4b4b4bad);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#03011d",endColorstr="#777777",GradientType=1);
-  opacity: 0;
-}
+// .bodyNav {
+//   transition: all 0.4s ease;
+//   position: fixed;
+//   overflow-y: scroll;
+//   top: 0;
+//   left: 0;
+//   bottom: 0;
+//   right: 0;
+//   overflow: hidden;
+//   overflow-y: scroll;
+//   background: transparent;
+//   text-align: left;
+//   -o-transform: translate3d(0, 0, 0);
+//   -ms-transform: translate3d(0, 0, 0);
+//   -moz-transform: translate3d(0, 0, 0);
+//   -webkit-transform: translate3d(0, 0, 0);
+//   transform: translate3d(0, 0, 0);
+//   -webkit-transition: background 500ms ease;
+//   -moz-transition: background 500ms ease;
+//   transition: background 500ms ease;
+//   -webkit-touch-callout: none;
+//   -webkit-user-select: none;
+//   -khtml-user-select: none;
+//   -moz-user-select: none;
+//   -ms-user-select: none;
+//   user-select: none;
+//   height: 100%;
+//   width: 100%;
+//   text-align: center;
+//   -moz-box-shadow: none !important;
+//   -webkit-box-shadow: none !important;
+//   box-shadow: none !important;
+//   z-index: 13;
+//   opacity: 0;
+//   color: white;
+//   display: grid;
+//   grid-gap: 10px;
+//   grid-auto-rows: 50px 26px 60px 50px 50px;
+//   justify-items: center;
+// }
+// .bodyNav .links {
+//   font-size: 24px !important;
+// }
+// .bodyNav.minZindex {
+//   pointer-events: none;
+// }
+// .bodyNav.maxZindex {
+//   pointer-events: visible;
+// }
+// .bodyNav.showNav {
+//   transition: all 0.4s ease;
+//   background: #03011d;
+//   background: linear-gradient(180deg, #03011d, #1e1e1edb 70%, #4b4b4bad);
+//   background: -moz-linear-gradient(180deg, #03011d, #1e1e1edb 70%, #4b4b4bad);
+//   background: -webkit-linear-gradient(180deg, #03011d, #1e1e1edb 70%, #4b4b4bad);
+//   background: linear-gradient(180deg, #03011d 0%, #03011d, #1e1e1edb 70%, #4b4b4bad);
+//   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#03011d",endColorstr="#777777",GradientType=1);
+//   opacity: 1;
+// }
+// .bodyNav.hideNav {
+//   transition: all 0.4s ease;
+//   background: #03011d;
+//   background: -moz-linear-gradient(180deg, #03011d, #1e1e1edb 70%, #4b4b4bad);
+//   background: -webkit-linear-gradient(180deg, #03011d, #1e1e1edb 70%, #4b4b4bad);
+//   background: linear-gradient(180deg, #03011d 0%, #03011d, #1e1e1edb 70%, #4b4b4bad);
+//   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#03011d",endColorstr="#777777",GradientType=1);
+//   opacity: 0;
+// }

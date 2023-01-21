@@ -134,7 +134,12 @@ export default class PowerSearchWebPart extends FPSBaseClass<IPowerSearchWebPart
         isDarkTheme: this._isDarkTheme,
         environmentMessage: this._environmentMessage,
         hasTeamsContext: !!this.context.sdks.microsoftTeams,
-        userDisplayName: this.context.pageContext.user.displayName
+        userDisplayName: this.context.pageContext.user.displayName,
+        
+        performance: this._performance, //Alternatively, use this if available (like ALVFM): _fetchInfo.performance,
+
+        errMessage: '',
+        bannerProps: bannerProps,
       }
     );
 
