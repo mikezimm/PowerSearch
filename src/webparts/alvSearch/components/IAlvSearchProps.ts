@@ -29,6 +29,8 @@ export interface IInAndOut {
   Out: string;
 }
 
+export type IPowerTimeChoice = 'Today' | 'Yesterday' | 'ThisWeek' | 'LastWeek' | 'ThisMonth' | 'LastMonth' | 'ThisYear' | 'LastYear' | string;
+
 export type IPowerSearchKeys = 'keywords' |  'author' |  'editor' |  'filetype' |  'filename' | 'title' | 'time'  | 'cust1' | 'cust2' | 'cust3' | 'cust4' | 'date1' ;
 export interface IPowerSearch {
   textSearch: string;
@@ -38,12 +40,12 @@ export interface IPowerSearch {
   filetype: IInAndOut;
   filename: IInAndOut;
   title: IInAndOut;
-  time: any;
+  time: IPowerTimeChoice;
   cust1: IInAndOut;
   cust2: IInAndOut;
   cust3: IInAndOut;
   cust4: IInAndOut;
-  date1: any;
+  date1: IPowerTimeChoice;
 }
 
 export interface IPowerHints {
