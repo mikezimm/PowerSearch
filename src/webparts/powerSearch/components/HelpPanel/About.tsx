@@ -4,7 +4,7 @@ import { IHelpTable, } from '@mikezimm/fps-library-v2/lib/banner/components/Sing
 import { createAboutRow } from '@mikezimm/fps-library-v2/lib/banner/components/Panel/createAboutRow';
 import { IWebpartBannerProps } from '@mikezimm/fps-library-v2/lib/banner/mainReact/IWebpartBannerProps';
 
-export const panelVersionNumber = '2023-01-19 -  1.0.0.02'; //Added to show in panel
+export const panelVersionNumber = '2023-01-22 -  1.0.0.04'; //Added to show in panel
 
 export function aboutTable( bannerProps: IWebpartBannerProps ) : { table: IHelpTable } {
 
@@ -27,7 +27,8 @@ export function aboutTable( bannerProps: IWebpartBannerProps ) : { table: IHelpT
      * WARNING:  DO NOT add any CDNs to Global Warn or Approve unless you want it to apply to JS as well.
      */
 
-    table.rows.push( createAboutRow('2023-01-19',"1.0.0.02","Initial Build", bannerProps.showRepoLinks === true ? bannerProps.gitHubRepo : null ) );
+    table.rows.push( createAboutRow('2023-01-22',"1.0.0.04","Rename to PowerSearch, Refactor components", bannerProps.showRepoLinks === true ? bannerProps.gitHubRepo : null ) );
+    table.rows.push( createAboutRow('2023-01-19',"1.0.0.02","Testing", bannerProps.showRepoLinks === true ? bannerProps.gitHubRepo : null ) );
     table.rows.push( createAboutRow('2023-01-16',"1.0.0.01","Initial Build", bannerProps.showRepoLinks === true ? bannerProps.gitHubRepo : null ) );
 
     return { table: table };

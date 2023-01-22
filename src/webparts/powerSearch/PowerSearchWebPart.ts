@@ -77,7 +77,7 @@ import { getAllDefaultFPSFeatureGroups } from '@mikezimm/fps-library-v2/lib/bann
 
 import { WebPartInfoGroup, } from '@mikezimm/fps-library-v2/lib/banner/propPane/WebPartInfoGroup';
 import { exportIgnorePropsWP, importBlockPropsWP, WebPartAnalyticsChanges, WebPartPanelChanges,  } from './IPowerSearchWebPartProps';
-import { gitRepoALVSearch } from '@mikezimm/fps-library-v2/lib/components/atoms/Links/LinksRepos';
+import { gitRepoPowerSearch } from '@mikezimm/fps-library-v2/lib/components/atoms/Links/LinksRepos';
 //  import { IFpsOldVsNewWebPartProps } from './IFpsOldVsNewWebPartProps';
 import { runFPSSuperOnInit } from '@mikezimm/fps-library-v2/lib/banner/FPSWebPartClass/runSuperOnInit';
 import { runFPSWebPartRender } from '@mikezimm/fps-library-v2/lib/banner/FPSWebPartClass/runWebPartRender';
@@ -94,7 +94,7 @@ export default class PowerSearchWebPart extends FPSBaseClass<IPowerSearchWebPart
   protected async onInit(): Promise<void> {
     this._environmentMessage = this._getEnvironmentMessage();
 
-    this._repoLink = gitRepoALVSearch; //Set as any but will get created in FPSSuperOnOnit
+    this._repoLink = gitRepoPowerSearch; //Set as any but will get created in FPSSuperOnOnit
     this._exportIgnorePropsWP = exportIgnorePropsWP;
     this._importBlockPropsWP = importBlockPropsWP;
     this._trickyApp = 'ALV Search';
