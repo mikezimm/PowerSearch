@@ -156,11 +156,13 @@ public constructor(props:IPowerSearchProps){
     const content = <PowerPanel
       _search={ this._search.bind(this) }
       _enter={ this._enter.bind(this) }
+      _hideBack={ this._hideBack.bind(this) }
     />;
 
     const BackDrop : JSX.Element = <FadePanel 
       content={ content }
-      showPanel={ this.state.showPanel }
+      show={ this.state.showPanel }
+      refreshId={ this.state.refreshId }
     />
 
     const SearchButtons : JSX.Element = <div>
@@ -203,7 +205,11 @@ public constructor(props:IPowerSearchProps){
   }
 
   private _showBack() : void {
-    this.setState({ showPanel: true });
+    this.setState({ showPanel: true, refreshId: makeid(10) });
+  }
+
+  private _hideBack() : void {
+    this.setState({ showPanel: false, refreshId: makeid(10) });
   }
 
   private _buttonClick( button: ISearchPlace ): void {

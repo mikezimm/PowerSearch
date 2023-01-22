@@ -54,7 +54,7 @@ $themePrimary: '[theme:themePrimary, default:#0078d7]';
 
 .powerSearch {
   overflow: hidden;
-  padding: 1em;
+  // padding: 1em;  // Removed so easyPages article width is correct
   color: "[theme:bodyText, default: #323130]";
   color: var(--bodyText);
   &.teams {

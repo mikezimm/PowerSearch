@@ -91,7 +91,7 @@ public constructor(props:IPowerPanelProps){
     // const { } = this.props;
 
     const PowerPanel = <div className={ styles.powerPanel }>
-      <div onClick={ () => this._hideBack() } style={{ fontSize: '48px'}}>Welcome to PowerSearch</div>
+      <div onClick={ () => this.props._hideBack() } style={{ fontSize: '48px'}}>Welcome to PowerSearch</div>
       <div className={ styles.links} onClick={ () => window.open(`https://learn.microsoft.com/en-us/sharepoint/dev/general-development/keyword-query-language-kql-syntax-reference`,`_blank` ) } style={{ fontSize: '48px'}}>Learn about KQL</div>
       { getRandomTipElement( '*' ) }
       { this.powerSearchRow( `keywords` ) }
@@ -118,7 +118,7 @@ public constructor(props:IPowerPanelProps){
         />
       </div>
 
-      <div style={{ fontSize: '18px', marginTop: '30px', marginBottom: '20px', fontWeight: 500 }} onClick={ () => this._hideBack() }>Click here to return to page.</div>
+      <div style={{ fontSize: '18px', marginTop: '30px', marginBottom: '20px', fontWeight: 500 }} onClick={ () => this.props._hideBack() }>Click here to return to page.</div>
       <div className={ this.state.showHistory === true ? styles.showTips : styles.hideTips }>
         <div style={{ fontSize: 'larger' }}>Query history - Click one to</div>
         { this.state.history.map( ( history, index ) => {
@@ -142,18 +142,18 @@ public constructor(props:IPowerPanelProps){
     return ( PowerPanel );
   }
 
-  private _hideBack() : void {
-    const { textSearch } = this.state.search;
-    this.setState({ showBack: 1 });
+  // private _hideBack() : void {
+  //   const { textSearch } = this.state.search;
+  //   this.setState({ showBack: 1 });
 
-    // Delay creds to:  https://stackoverflow.com/a/42090488
-    setTimeout(function(){
-      this.setState({ showBack: 0 });
-      console.log('newBack:',  0  );
-      window.open(`https://${tenant}.sharepoint.com/sites/lifenet_it/_layouts/15/search.aspx?q=${textSearch}`, "search_iframe");
-    }.bind(this), 1000);
+  //   // Delay creds to:  https://stackoverflow.com/a/42090488
+  //   setTimeout(function(){
+  //     this.setState({ showBack: 0 });
+  //     console.log('newBack:',  0  );
+  //     window.open(`https://${tenant}.sharepoint.com/sites/lifenet_it/_layouts/15/search.aspx?q=${textSearch}`, "search_iframe");
+  //   }.bind(this), 1000);
 
-  }
+  // }
 
   private _loadHistory( index: number ): void {
 

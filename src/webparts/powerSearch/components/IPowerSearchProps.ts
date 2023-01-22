@@ -69,7 +69,7 @@ export interface IPowerSearchState extends IFPSCorePinMeReactComponentState {
   lastPlace: ISearchPlace;
   textSearch: string;
   showPanel: boolean;
-  
+
   // history: string[];
   // historyBuild: string[];
   // showHistory: boolean;
