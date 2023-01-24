@@ -84,6 +84,15 @@ import { runFPSWebPartRender } from '@mikezimm/fps-library-v2/lib/banner/FPSWebP
 import { onFPSPropPaneCHanged } from '@mikezimm/fps-library-v2/lib/banner/FPSWebPartClass/runOnPropChange';
 import { FPSBaseClass } from '@mikezimm/fps-library-v2/lib/banner/FPSWebPartClass/FPSBaseClass';
 import { IThisFPSWebPartClass } from '@mikezimm/fps-library-v2/lib/banner/FPSWebPartClass/IThisFPSWebPartClass';
+import { WPSourcesGroup } from './PropPaneGroups/Sources';
+import { WPSPOGroup } from './PropPaneGroups/SPO';
+import { WPOnPremGroup } from './PropPaneGroups/OnPrem';
+import { WPPartsGroup } from './PropPaneGroups/Parts';
+import { WProjectsGroup } from './PropPaneGroups/Projects';
+import { WPStandardsGroup } from './PropPaneGroups/Standards';
+import { WPTestsGroup } from './PropPaneGroups/Tests';
+import { WPChangesGroup } from './PropPaneGroups/Changes';
+import { WPSourceXGroup } from './PropPaneGroups/Source1';
 
 
 export default class PowerSearchWebPart extends FPSBaseClass<IPowerSearchWebPartProps> {
@@ -97,7 +106,7 @@ export default class PowerSearchWebPart extends FPSBaseClass<IPowerSearchWebPart
     this._repoLink = gitRepoPowerSearch; //Set as any but will get created in FPSSuperOnOnit
     this._exportIgnorePropsWP = exportIgnorePropsWP;
     this._importBlockPropsWP = importBlockPropsWP;
-    this._trickyApp = 'ALV Search';
+    this._trickyApp = 'Power Search';
     this._trickyEmailsWP = []; // These are emails that get tricky functionality for this specific web part
     this._allowShowSearch = false;  //Set to true if you want 'Toggle Search option' in property pane
     this._allowSiteThemeChoice = true;  // Should be set true by default in fps-library-v2 1.0.78
@@ -138,6 +147,56 @@ export default class PowerSearchWebPart extends FPSBaseClass<IPowerSearchWebPart
 
         errMessage: '',
         bannerProps: bannerProps,
+        
+        mainButtons: {
+          spo: {
+            enable: this.properties.spoEnable,
+            advanced: this.properties.spoAdvanced,
+          },
+          onPrem: {
+            enable: this.properties.onPremEnable,
+            advanced: this.properties.onPremAdvanced,
+          },
+          parts: {
+            enable: this.properties.partsEnable,
+            detect: this.properties.partsDetect,
+          },
+          projects: {
+            enable: this.properties.projectsEnable,
+            detect: this.properties.projectsDetect,
+          },
+          standards: {
+            enable: this.properties.standardsEnable,
+            detect: this.properties.standardsDetect,
+          },
+          alc: {
+            enable: this.properties.alcEnable,
+          },
+          tests: {
+            enable: this.properties.testsEnable,
+            detect: this.properties.testsDetect,
+          },
+          changes: {
+            enable: this.properties.changesEnable,
+            detect: this.properties.changesDetect,
+          },
+          source1: {
+            enable: this.properties.source1Enable,
+            url: this.properties.source1Url,     // Source Url for iframe
+            detect: this.properties.source1Detect,  // Possibly regex string for auto-detect
+            advanced: this.properties.source1Advanced, // Enable Advanced wizard
+            powerRows: this.properties.source1PowerRows, // Possibly to define what PowerSearch rows would be visible
+            KQLDocs: this.properties.source1KQLDocs, // Possibly enable/disable KQL Docs if it is usable
+          },
+          source2: {
+            enable: this.properties.source2Enable,
+            url: this.properties.source2Url,     // Source Url for iframe
+            detect: this.properties.source2Detect,  // Possibly regex string for auto-detect
+            advanced: this.properties.source2Advanced, // Enable Advanced wizard
+            powerRows: this.properties.source2PowerRows, // Possibly to define what PowerSearch rows would be visible
+            KQLDocs: this.properties.source2KQLDocs, // Possibly ena
+          },
+        }
       }
     );
 
@@ -207,20 +266,34 @@ export default class PowerSearchWebPart extends FPSBaseClass<IPowerSearchWebPart
     // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-this-alias
     const thisAsAny: IThisFPSWebPartClass = this as any;
 
-    let groups: IPropertyPaneGroup[] = [ WebPartInfoGroup( this._repoLink, 'ALV Search Webpart', PropertyPaneWebPartInformation ) ];
+    let groups: IPropertyPaneGroup[] = [ WebPartInfoGroup( this._repoLink, 'Power Search Webpart', PropertyPaneWebPartInformation ) ];
     const FPSGroups: IPropertyPaneGroup[] = getAllDefaultFPSFeatureGroups ( thisAsAny );
-
-    groups = [ ...groups, ...FPSGroups ];
-
+    const PowerSearchGroups = [
+      WPSourcesGroup( this.properties, thisAsAny, ),
+      WPSPOGroup( this.properties, thisAsAny, ),
+      WPOnPremGroup( this.properties, thisAsAny, ),
+      WPPartsGroup( this.properties, thisAsAny, ),
+      WProjectsGroup( this.properties, thisAsAny, ),
+      WPStandardsGroup( this.properties, thisAsAny, ),
+      WPTestsGroup( this.properties, thisAsAny, ),
+      WPChangesGroup( this.properties, thisAsAny, ),
+      WPSourceXGroup( this.properties, 1, thisAsAny, ),
+      WPSourceXGroup( this.properties, 2, thisAsAny, ),
+    ]
+    groups = [ ...groups, ...PowerSearchGroups ];
 
     return {
       pages: [
         {
-          header: {
-            description: strings.PropertyPaneDescription
-          },
           displayGroupsAsAccordion: true, //DONT FORGET THIS IF PROP PANE GROUPS DO NOT EXPAND
           groups: groups,
+        },
+        {
+          header: {
+            description: `Other web part properties`
+          },
+          displayGroupsAsAccordion: true, //DONT FORGET THIS IF PROP PANE GROUPS DO NOT EXPAND
+          groups: FPSGroups,
         }
       ]
     };

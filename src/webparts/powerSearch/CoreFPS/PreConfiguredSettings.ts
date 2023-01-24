@@ -49,16 +49,59 @@ export const WPPresetEverywhere : IPreConfigSettings = {
         showGoToParent: false,
         enableExpandoramic: false,
         homeParentGearAudience: 'Page Editors',
+
+        requireDocumentation: true,
+        requireContacts: true,
+
+
+        // Source specific presets
+        spoEnable: true,
+        spoAdvanced: true,
+
+        onPremEnable: true,
+        onPremAdvanced: true,
+
+        partsEnable: true,
+        partsDetect: true,
+
+        projectsEnable: true,
+        projectsDetect: true,
+
+        standardsEnable: true,
+        standardsDetect: true,
+
+        alcEnable: false,
+
+        testsEnable: false,
+        testsDetect: true,
+
+        changesEnable: false,
+        changesDetect: true,
+
+        source1Enable: false,
+        source1Url: '',     // Source Url for iframe
+        source1Detect: '',  // Possibly regex string for auto-detect
+        source1Advanced: false, // Enable Advanced wizard
+        source1PowerRows: '', // Possibly to define what PowerSearch rows would be visible
+        source1KQLDocs: false, // Possibly enable/disable KQL Docs if it is usable
+
+        source2Enable: false,
+        source2Url: '',    // Source Url for iframe
+        source2Detect: '',  // Possibly regex string for auto-detect
+        source2Advanced: false, // Enable Advanced wizard
+        source2PowerRows: '', // Possibly to define what PowerSearch rows would be visible
+        source2KQLDocs: false, // Possibly enable/disable KQL Docs if it is usable
+
     }
 };
 
 export const PresetSomeRandomSite : IPreConfigSettings = {
     source: 'PresetSomeRandomSite',
-    location: '/sites/FPS/'.toLowerCase(),
+    location: '/sites/lifenet'.toLowerCase(),
     props: {
         // homeParentGearAudience: 'Some Test Value',
         // requireDocumentation: false,
-        requireDocumentation: 'redDark',
+        requireDocumentation: 'true',
     }
 };
 
