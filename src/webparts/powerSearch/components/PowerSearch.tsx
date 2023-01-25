@@ -122,8 +122,13 @@ export default class PowerSearch extends React.Component<IPowerSearchProps, IPow
     }
 
     if ( this.props.bannerProps.refreshId !== prevProps.bannerProps.refreshId ) {
-      const newButtons = defineMainButtons( this.props );
-      this.setState({ mainButtons: newButtons });
+      const mainButtons = defineMainButtons( this.props );
+      this.setState({ 
+        mainButtons: mainButtons,
+        mainSelectedButton: mainButtons[0].click,
+        mainSelectedButtonIndex: 0,
+        autoDetectButtonIndex: 0,
+       });
     }
     if ( check4Gulp() === true )  console.log('React componentDidUpdate - this._performance:', JSON.parse(JSON.stringify(this._performance)) );
 
@@ -183,7 +188,10 @@ export default class PowerSearch extends React.Component<IPowerSearchProps, IPow
     />
 
     const MainButtons: JSX.Element[] = mainButtons.map(( button : IMainButtonObject, index: number ) => {
-      return <button key = {button.label} title={button.title} onClick={ () => { this._mainButtonClick( index ) }} >{button.label}</button>;
+      let selectClass = styles.bNormal;
+      if ( index === this.state.mainSelectedButtonIndex ) { selectClass = styles.bSelected }
+      else if ( index === this.state.autoDetectButtonIndex ) { selectClass = styles.bDetected }
+      return <button className={ selectClass } key = {button.label} title={button.title} onClick={ () => { this._mainButtonClick( index ) }} >{button.label}</button>;
     });
 
     const SearchButtons : JSX.Element = <div>
@@ -282,7 +290,10 @@ export default class PowerSearch extends React.Component<IPowerSearchProps, IPow
       const ClickedButton: IMainButtonObject = this.state.mainButtons [ buttonIdx ];
       const openUrl = ClickedButton.iframeUrl.replace(`{{textSearch}}`, this.state.textSearch );
       window.open( openUrl, ClickedButton.target );
-
+      this.setState({ 
+        mainSelectedButton: ClickedButton.click,
+        mainSelectedButtonIndex: buttonIdx,
+      });
     } else {
       const newIndex: number = this._detectRegex( newValue, '_search ~ 2', false );
       const mainSelectedButton: IMainButtonObject = this.state.mainButtons[ newIndex ];

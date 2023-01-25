@@ -7,6 +7,7 @@
  */
 import { IMinWPBannerProps } from '@mikezimm/fps-library-v2/lib/banner/interfaces/MinWP/IMinWPBannerProps';
 
+export const changeGeneral : string[] = [ 'highlightDetect' ];
 
 export const changeSources : string[] = [ 'spoEnable', 'onPremEnable' , 'partsEnable' , 'projectsEnable' , 'standardsEnable', 'alcEnable', 'testsEnable', 'changesEnable', 'source1Enable', 'source2Enable' ];
 
@@ -26,6 +27,7 @@ export const changeSource2 : string[] = [ 'source2Enable', 'source2Url' , 'sourc
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const WebPartAnalyticsChanges : any = {
+  General: changeGeneral,
   SPO: changeSPO,
   OnPrem: changeOnPrem,
   Parts: changeParts,
@@ -70,6 +72,8 @@ export interface IPowerSearchWebPartProps extends IMinWPBannerProps {
   description: string;
 
   // spoEnable onPremEnable partsEnable projectsEnable standardsEnable testsEnable changesEnable source1Enable source2Enable
+
+  highlightDetect: boolean;
 
   spoEnable: boolean;
   spoAdvanced: boolean;

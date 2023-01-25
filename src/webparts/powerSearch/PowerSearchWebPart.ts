@@ -142,12 +142,12 @@ export default class PowerSearchWebPart extends FPSBaseClass<IPowerSearchWebPart
         environmentMessage: this._environmentMessage,
         hasTeamsContext: !!this.context.sdks.microsoftTeams,
         userDisplayName: this.context.pageContext.user.displayName,
-        
+
         performance: this._performance, //Alternatively, use this if available (like ALVFM): _fetchInfo.performance,
 
         errMessage: '',
         bannerProps: bannerProps,
-        
+        highlightDetect: this.properties.highlightDetect,
         mainButtons: {
           spo: {
             enable: this.properties.spoEnable,
