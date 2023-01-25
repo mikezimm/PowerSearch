@@ -3,6 +3,12 @@ import { IFPSCoreReactComponentProps } from '@mikezimm/fps-library-v2/lib/banner
 import { IFPSCorePinMeReactComponentState } from '@mikezimm/fps-library-v2/lib/banner/mainReact/ReactComponentState';
 
 import { ILoadPerformance } from '../fpsMinIndex';
+import { IMainButtonObject } from './MainButtons/Available';
+
+export const tenant: string = window.location.hostname.toLowerCase().replace(`.sharepoint.com`, '' );
+export const code: string = `vla`.split("").reverse().join("");
+
+export type ISearchPlace = 'spo' | 'onPrem' | 'parts' | 'projects' | 'standards' | 'alc' | 'tests' | 'changes' | 'source1' | 'source2';
 
 export interface IPowerSearchProps extends IFPSCoreReactComponentProps {
   description: string;
@@ -13,106 +19,96 @@ export interface IPowerSearchProps extends IFPSCoreReactComponentProps {
 
   performance: ILoadPerformance;
 
+  highlightDetect: boolean;
+  powerEnable: boolean;
+  
+  mainButtons: {
+    spo: ISPOWPProps;
+    onPrem: IOnPremWPProps;
+    parts: IPartsWPProps;
+    projects: IProjectsWPProps;
+    standards: IStandardsWPProps;
+    alc: IAlcWPProps;
+    tests: ITestsWPProps;
+    changes: IChangesWPProps;
+    source1: ISourceXWPProps;
+    source2: ISourceXWPProps;
+  }
 }
 
+export interface ISPOWPProps {
+  // spoEnable: boolean;
+  // spoAdvanced: boolean;
+  enable: boolean;
+  advanced: boolean;
+}
 
-export type ISearchPlace = 'SPO' | 'onPrem' | 'projects' | 'parts' | 'standards';
+export interface IOnPremWPProps {
+  // onPremEnable: boolean;
+  // onPremAdvanced: boolean;
+  enable: boolean;
+  advanced: boolean;
+}
 
-// /**
-//  * Extends IFPSCorePinMeReactComponentState with all basics required for FPS Banner
-//  */
-// export type IInOrOut = 'In' | 'Out';
+export interface IPartsWPProps {
+  // partsEnable: boolean;
+  // partsDetect: boolean;
+  enable: boolean;
+  detect: boolean;
+}
 
-// export interface IInAndOut {
-//   In: string;
-//   Out: string;
-// }
+export interface IProjectsWPProps {
+  // projectsEnable: boolean;
+  // projectsDetect: boolean;
+  enable: boolean;
+  detect: boolean;
+}
 
-// export type IPowerSearchKeys = 'keywords' |  'author' |  'editor' |  'filetype' |  'filename' | 'title' | 'time'  | 'cust1' | 'cust2' | 'cust3' | 'cust4' | 'date1' ;
-// export interface IPowerSearch {
-//   textSearch: string;
-//   keywords: IInAndOut ;
-//   author: IInAndOut;
-//   editor: IInAndOut;
-//   filetype: IInAndOut;
-//   filename: IInAndOut;
-//   title: IInAndOut;
-//   time: any;
-//   cust1: IInAndOut;
-//   cust2: IInAndOut;
-//   cust3: IInAndOut;
-//   cust4: IInAndOut;
-//   date1: any;
-// }
+export interface IStandardsWPProps {
+  // standardsEnable: boolean;
+  // standardsDetect: boolean;
+  enable: boolean;
+  detect: boolean;
+}
 
-// export interface IPowerHints {
-//   current: IPowerSearchKeys;
-//   docs: boolean;
+export interface IAlcWPProps {
+  // alcEnable: boolean;
+  enable: boolean;
+}
 
-//   keywords: boolean ;
-//   author: boolean;
-//   editor: boolean;
-//   filetype: boolean;
-//   filename: boolean;
-//   title: boolean;
-//   time: boolean;
-//   cust1: boolean;
-//   cust2: boolean;
-//   cust3: boolean;
-//   cust4: boolean;
-//   date1: boolean;
-// }
+export interface ITestsWPProps {
+  // testsEnable: boolean;
+  // testsDetect: boolean;
+  enable: boolean;
+  detect: boolean;
+}
+
+export interface IChangesWPProps {
+  // changesEnable: boolean;
+  // changesDetect: boolean;
+  enable: boolean;
+  detect: boolean;
+}
+
+export interface ISourceXWPProps {
+  enable: boolean;
+  url: string;     // Source Url for iframe
+  detect: string;  // Possibly regex string for auto-detect
+  advanced: boolean; // Enable Advanced wizard
+  powerRows: string; // Possibly to define what PowerSearch rows would be visible
+  KQLDocs: boolean; // Possibly enable/disable KQL Docs if it is usable
+}
+
 
 export interface IPowerSearchState extends IFPSCorePinMeReactComponentState {
 
   analyticsWasExecuted: boolean;
-  lastPlace: ISearchPlace;
+  mainSelectedButton: ISearchPlace;
+  mainSelectedButtonIndex: number; // Index of Main Button last clicked
+  autoDetectButtonIndex: number;
   textSearch: string;
   showPanel: boolean;
-  
-  // history: string[];
-  // historyBuild: string[];
-  // showHistory: boolean;
-  // // textSearch: string;
-  // iframeSrc: string;
 
-  // showBack: 0 | 1 | 2;
-
-  // search: IPowerSearch;
-
-  // powerIframeUrl: string;
-  // powerIndex: number;
-  // reclickCount: number;
-
-  // hints: IPowerHints;
-
-  // searchInWords: string;
-  // searchOutWords: string;
-  // searchInAuth: string;
-  // searchOutAuth: string;
-  // searchInEdit: string;
-  // searchOutEdit: string;
-  // searchInType: string;
-  // searchOutType: string;
-  // searchInFileName: string;
-  // searchOutFileName: string;
+  mainButtons: IMainButtonObject[];
+  canAutoDetect: boolean;
 }
-
-// export const ClearHints : IPowerHints = {
-//   current: null,
-//   docs: false,
-
-//   keywords: false,
-//   author: false,
-//   editor: false,
-//   filetype: false,
-//   filename: false,
-//   title: false,
-//   time: false,
-
-//   cust1: false,
-//   cust2: false,
-//   cust3: false,
-//   cust4: false,
-//   date1: false,
-// }

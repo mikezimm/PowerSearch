@@ -51,10 +51,9 @@ $themePrimary: '[theme:themePrimary, default:#0078d7]';
 // Copy this to every web part for standard theme support
 
 
-
 .powerSearch {
   overflow: hidden;
-  padding: 1em;
+  // padding: 1em;  // Removed so easyPages article width is correct
   color: "[theme:bodyText, default: #323130]";
   color: var(--bodyText);
   &.teams {
@@ -128,6 +127,63 @@ $themePrimary: '[theme:themePrimary, default:#0078d7]';
         height: 3em;
         margin: 0px 5px;
       }
+
+      button.bSelected {
+        transition:all 0.3s ease;
+        background-color: rgb(0, 84, 149);
+        color: rgb(255, 255, 255);
+      }
+
+      button.bNormal {
+        transition:all 0.3s ease;
+        background-color: lightgray;
+        border: 1px solid lightgray;
+        color: black;
+      }
+      button.bNormal:hover {
+        transition:all 0.4s ease;
+        background-color: rgb(0, 84, 149);
+        color: rgb(255, 255, 255);
+      }
+      button.bDetected {
+        transition:all 0.3s ease;
+        background-color: rgb(157, 241, 115);
+        border: 1px solid rgb(157, 241, 115);
+        color: black;
+      }
+      button.bDetected:hover {
+        transition:all 0.4s ease;
+        background-color: rgb(0, 84, 149);
+        color: rgb(255, 255, 255);
+      }
+    }
+  }
+
+  .powerShow {
+    transition:all 0.3s ease;
+    opacity: 1;
+    cursor: pointer;
+  }
+
+
+  .powerHide {
+    transition:all 0.3s ease;
+    opacity: 0;
+    cursor: none;
+    z-index: -10;
+  }
+  .powerHide:hover {
+    transition:all 0.3s ease;
+    opacity: 0;
+    cursor: none;
+    z-index: -10;
+  }
+  .heading:hover {
+    .powerHide {
+      transition:all 0.3s ease;
+      opacity: 0;
+      cursor: none;
+      z-index: -10;
     }
   }
 }

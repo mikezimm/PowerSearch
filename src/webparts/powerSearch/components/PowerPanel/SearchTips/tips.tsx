@@ -1,6 +1,5 @@
 import * as React from 'react';
 import styles from '../PowerPanel.module.scss';
-// import { IAlvSearchProps, IAlvSearchState, IInOrOut, IPowerSearch, IPowerSearchKeys, ISearchPlace } from '../IAlvSearchProps';
 import { Icon } from 'office-ui-fabric-react/lib/Icon';
 import { ISearchTip, ISearchTipKey } from './ISearchTip';
 
@@ -194,8 +193,8 @@ export function getDocsHeadings( docs: boolean, key: ISearchTipKey, setIframe: a
     }
   });
 
-  const keyText = key ? <span>Filtering for <span className={ styles.keyText }>{key}</span></span> : 'All topics';
-  const clearIcon = key ? <Icon iconName="ClearFilter" onClick={ () => resetKey() } /> : undefined;
+  const keyText = key ? <span>Filtering for <span className={ styles.keyText }>{key}</span></span> : 'Click for help';
+  const clearIcon = <Icon iconName={ key ? 'ClearFilter' : 'Search' } onClick={ () => resetKey() } />;
   const result = <div className={ styles.headingTips } >
     <div className={ styles.headingsHeading }>{ keyText} { clearIcon }</div>
     { rows }

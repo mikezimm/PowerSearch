@@ -8,7 +8,7 @@ import { Icon } from 'office-ui-fabric-react/lib/Icon';
 require ('./FadePanel.css');
 
 //Use this to add more console.logs for this component
-const consolePrefix: string = 'fpsconsole: FadePanelComponent';
+// const consolePrefix: string = 'fpsconsole: FadePanelComponent';
 
 export interface IFadePanelWPProps {
   constainerStyles?: string; // {{ width: '650px', height: '450px' }}
@@ -23,7 +23,8 @@ export interface IFadePanelStyleProps {
 export type  IFadeSliderPos = 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight' | 'none';
 
 export interface IFadePanelProps {
-  showPanel: boolean;
+  show: boolean;
+  refreshId: string;
   content: string | JSX.Element;
   styleProps?: IFadePanelStyleProps;
   fadeSlider?: boolean; // Could be used to be able to raise and lower fade
@@ -41,9 +42,9 @@ const _backStyle = [
 
 const FadePanel: React.FC<IFadePanelProps> = ( props ) => {
 
-  const { content, showPanel } = props;
-  // const [ showPane, setShowPane ] = useState<boolean>( props.showPanel );
-  const [ showBack, setShowBack ] = useState<IShowBack>( showPanel === true ? 2 : 0 );
+  const { content, show, refreshId } = props;
+  // const [ showPane, setShowPane ] = useState<boolean>( props.show );
+  const [ showBack, setShowBack ] = useState<IShowBack>( show === true ? 2 : 0 );
 
   const hidePanel = ( ) : void => {
 
@@ -56,7 +57,24 @@ const FadePanel: React.FC<IFadePanelProps> = ( props ) => {
     }.bind(this), 1000);
   }
 
-  const showClass: string = showPanel === true && showBack === 2 ? 'showPane' : 'hidePane';
+  useEffect(() => {
+    //  https://ultimatecourses.com/blog/using-async-await-inside-react-use-effect-hook
+
+    if ( show === false && showBack === 2 ) {
+      hidePanel();
+      return () => {
+        // this now gets called when the component unmounts
+      };
+    } else if ( show === true && showBack !== 2 ) {
+      setShowBack( 2 );
+      return () => {
+        // this now gets called when the component unmounts
+      };
+    }
+
+  }, [ show, refreshId ] );
+
+  const showClass: string = show === true && showBack === 2 ? 'showPane' : 'hidePane';
   const indexClass: string = showBack !==0 ? 'maxZindex' : 'minZindex';
 
   const constainerClass = props.styleProps ? props.styleProps.constainerClass : '';

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import styles from './PowerSearch.module.scss';
-import { IPowerSearchProps, IPowerSearchState, ISearchPlace } from './IPowerSearchProps';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { IPowerSearchProps, IPowerSearchState, ISearchPlace, tenant } from './IPowerSearchProps';
 import { escape } from '@microsoft/sp-lodash-subset';
 import { SearchBox } from 'office-ui-fabric-react/lib/SearchBox';
 import { Icon } from 'office-ui-fabric-react/lib/Icon';
@@ -11,61 +12,71 @@ import FadePanel from './FadePanel/component';
 import FetchBannerX from '@mikezimm/fps-library-v2/lib/banner/bannerX/FetchBannerX';
 
 import { check4Gulp, IBannerPages, ILoadPerformance, makeid, startPerformOp, updatePerformanceEnd } from '../fpsMinIndex';
-import { getWebPartHelpElementBoxTiles } from '../PropPaneHelp/PropPaneHelp';
+import { getWebPartHelpElementGeneral } from '../PropPaneHelp/General';
+import { getWebPartHelpElementSources } from '../PropPaneHelp/Sources';
+// import { getWebPartHelpElementCustom } from '../PropPaneHelp/Custom';
 import { getBannerPages } from './HelpPanel/AllContent';
 import { saveViewAnalytics } from '../CoreFPS/Analytics';
 import { ISiteThemes } from "@mikezimm/fps-library-v2/lib/common/commandStyles/ISiteThemeChoices";
+import { IMainButtonObject } from './MainButtons/Available';
+import { defineMainButtons } from './MainButtons/DefineMainButtons';
 
 const SiteThemes: ISiteThemes = { dark: styles.fpsSiteThemeDark, light: styles.fpsSiteThemeLight, primary: styles.fpsSiteThemePrimary };
 
 
 //Use this to add more console.logs for this component
 const consolePrefix: string = 'fpsconsole: PowerSearch';
-const tenant: string = window.location.hostname.toLowerCase().replace(`.sharepoint.com`, '' );
-const code: string = `vla`.split("").reverse().join("");
 
 export default class PowerSearch extends React.Component<IPowerSearchProps, IPowerSearchState> {
 
   private _performance: ILoadPerformance = null;
 
   private _webPartHelpElement = [
-    getWebPartHelpElementBoxTiles( ),
+    getWebPartHelpElementGeneral( ),
+    getWebPartHelpElementSources( ),
+    // getWebPartHelpElementCustom( ),
   ];
 
   private _contentPages : IBannerPages = getBannerPages( this.props.bannerProps );
 
- /***
-*     .o88b.  .d88b.  d8b   db .d8888. d888888b d8888b. db    db  .o88b. d888888b  .d88b.  d8888b. 
-*    d8P  Y8 .8P  Y8. 888o  88 88'  YP `~~88~~' 88  `8D 88    88 d8P  Y8 `~~88~~' .8P  Y8. 88  `8D 
-*    8P      88    88 88V8o 88 `8bo.      88    88oobY' 88    88 8P         88    88    88 88oobY' 
-*    8b      88    88 88 V8o88   `Y8b.    88    88`8b   88    88 8b         88    88    88 88`8b   
-*    Y8b  d8 `8b  d8' 88  V888 db   8D    88    88 `88. 88b  d88 Y8b  d8    88    `8b  d8' 88 `88. 
-*     `Y88P'  `Y88P'  VP   V8P `8888Y'    YP    88   YD ~Y8888P'  `Y88P'    YP     `Y88P'  88   YD 
-*                                                                                                  
-*                                                                                                  
-*/
+  /***
+  *     .o88b.  .d88b.  d8b   db .d8888. d888888b d8888b. db    db  .o88b. d888888b  .d88b.  d8888b. 
+  *    d8P  Y8 .8P  Y8. 888o  88 88'  YP `~~88~~' 88  `8D 88    88 d8P  Y8 `~~88~~' .8P  Y8. 88  `8D 
+  *    8P      88    88 88V8o 88 `8bo.      88    88oobY' 88    88 8P         88    88    88 88oobY' 
+  *    8b      88    88 88 V8o88   `Y8b.    88    88`8b   88    88 8b         88    88    88 88`8b   
+  *    Y8b  d8 `8b  d8' 88  V888 db   8D    88    88 `88. 88b  d88 Y8b  d8    88    `8b  d8' 88 `88. 
+  *     `Y88P'  `Y88P'  VP   V8P `8888Y'    YP    88   YD ~Y8888P'  `Y88P'    YP     `Y88P'  88   YD 
+  *                                                                                                  
+  *                                                                                                  
+  */
 
 
-public constructor(props:IPowerSearchProps){
-  super(props);
+  public constructor(props:IPowerSearchProps){
+    super(props);
 
-  if ( this._performance === null ) { this._performance = this.props.performance;  }
+    if ( this._performance === null ) { this._performance = this.props.performance;  }
+    const mainButtons: IMainButtonObject[] = defineMainButtons( this.props );
 
-  this.state = {
-    pinState: this.props.bannerProps.fpsPinMenu.defPinState ? this.props.bannerProps.fpsPinMenu.defPinState : 'normal',
-    showDevHeader: false,
-    lastStateChange: '',
-    analyticsWasExecuted: false,
-    refreshId: makeid(10),
-    debugMode: false,
-    showSpinner: false,
-    showPanel: false,
-    lastPlace: null,
+    this.state = {
+      pinState: this.props.bannerProps.fpsPinMenu.defPinState ? this.props.bannerProps.fpsPinMenu.defPinState : 'normal',
+      showDevHeader: false,
+      lastStateChange: '',
+      analyticsWasExecuted: false,
+      refreshId: makeid(10),
+      debugMode: false,
+      showSpinner: false,
+      showPanel: false,
+      mainSelectedButton: mainButtons[0].click,
+      mainSelectedButtonIndex: 0,
+      autoDetectButtonIndex: 0,
 
-    textSearch: '',
+      textSearch: '',
 
-  };
-}
+      mainButtons: mainButtons,
+      canAutoDetect: true,
+
+    };
+  }
 
   public componentDidMount(): void {
     if ( check4Gulp() === true )  console.log( `${consolePrefix} ~ componentDidMount` );
@@ -77,10 +88,14 @@ public constructor(props:IPowerSearchProps){
     //End tracking performance
     this._performance.ops.fetch1 = updatePerformanceEnd( this._performance.ops.fetch1, true, 777 );
 
-    const analyticsWasExecuted = saveViewAnalytics( 'ALV Search View', 'didMount' , this.props, this.state.analyticsWasExecuted, this._performance );
+    const analyticsWasExecuted = saveViewAnalytics( 'Power Search View', 'didMount' , this.props, this.state.analyticsWasExecuted, this._performance );
 
+    // const buttons: IMainButtonObject[] = defineMainButtons( this.props );
     if ( this.state.analyticsWasExecuted !==  analyticsWasExecuted ) {
-      this.setState({ analyticsWasExecuted: analyticsWasExecuted });
+      this.setState({ 
+        analyticsWasExecuted: analyticsWasExecuted,
+        // mainButtons: buttons,
+      });
     }
 
   }
@@ -110,6 +125,15 @@ public constructor(props:IPowerSearchProps){
       this._contentPages = getBannerPages( this.props.bannerProps );
     }
 
+    if ( this.props.bannerProps.refreshId !== prevProps.bannerProps.refreshId ) {
+      const mainButtons = defineMainButtons( this.props );
+      this.setState({
+        mainButtons: mainButtons,
+        mainSelectedButton: mainButtons[0].click,
+        mainSelectedButtonIndex: 0,
+        autoDetectButtonIndex: 0,
+       });
+    }
     if ( check4Gulp() === true )  console.log('React componentDidUpdate - this._performance:', JSON.parse(JSON.stringify(this._performance)) );
 
   }
@@ -119,8 +143,12 @@ public constructor(props:IPowerSearchProps){
   public render(): React.ReactElement<IPowerSearchProps> {
     const {
       hasTeamsContext,
-      userDisplayName
+      userDisplayName,
+      highlightDetect,
+      powerEnable,
     } = this.props;
+
+    const { mainButtons, mainSelectedButtonIndex, autoDetectButtonIndex, textSearch } = this.state;
 
         /***
  *    d8888b.  .d8b.  d8b   db d8b   db d88888b d8888b.      d88888b db      d88888b .88b  d88. d88888b d8b   db d888888b 
@@ -156,18 +184,28 @@ public constructor(props:IPowerSearchProps){
     const content = <PowerPanel
       _search={ this._search.bind(this) }
       _enter={ this._enter.bind(this) }
+      _hideBack={ this._hideBack.bind(this) }
     />;
 
     const BackDrop : JSX.Element = <FadePanel 
       content={ content }
-      showPanel={ this.state.showPanel }
+      show={ this.state.showPanel }
+      refreshId={ this.state.refreshId }
     />
 
+    const MainButtons: JSX.Element[] = mainButtons.map(( button : IMainButtonObject, index: number ) => {
+      let selectClass = styles.bNormal;
+      if ( index === mainSelectedButtonIndex ) { selectClass = styles.bSelected }
+      else if ( highlightDetect === true && textSearch && index === autoDetectButtonIndex ) { selectClass = styles.bDetected }
+      return <button className={ selectClass } key = {button.label} title={button.title} onClick={ () => { this._mainButtonClick( index ) }} >{button.label}</button>;
+    });
+
+    const powerIconClass = powerEnable === true && mainButtons[ mainSelectedButtonIndex ].power === true ? styles.powerShow : styles.powerHide;
     const SearchButtons : JSX.Element = <div>
       <div className={ styles.searchGrid }>
         <div className={ styles.heading }>
           <div className={ styles.headingText }>Welcome to Search - Re-thought, {escape(userDisplayName)}!</div>
-          <div style={{ width: '100px', height: ''}} onClick={ () => { this._showBack() }}>{ <Icon iconName='Search'/> }</div>
+          <div className={ powerIconClass } style={{ width: '100px', height: ''}} onClick={ () => { this._showBack() }}>{ <Icon iconName='Search'/> }</div>
         </div>
         <SearchBox
             value={ this.state.textSearch }
@@ -180,11 +218,12 @@ public constructor(props:IPowerSearchProps){
             onKeyDown={(ev)=> { this._enter(ev.key)}}
           />
         <div className={ styles.buttonGrid }>
-          <abbr title="Search (New) SharePoint Online"><button onClick={ () => { this._buttonClick( `SPO` ) }} >Updated Search</button></abbr>
-          <abbr title="Search (Old) SharePoint On-Premise"><button onClick={ () => { this._buttonClick( `onPrem` ) }} >Legacy Search </button></abbr>
-          <abbr title="Search for Engineering Parts"><button onClick={ () => { this._buttonClick( `parts` ) }} >Search Part Numbers</button></abbr>
-          <abbr title="Search the AS100 Project Dashboard"><button onClick={ () => { this._buttonClick( `projects` ) }} >Search Projects</button></abbr>
-          <abbr title="Search Standards"><button onClick={ () => { this._buttonClick( `standards` ) }} >Search Standards</button></abbr><br/><br/>
+          { MainButtons }
+          {/* <abbr title="Search (New) SharePoint Online"><button onClick={ () => { this._mainButtonClick( `spo` ) }} >Updated Search</button></abbr>
+          <abbr title="Search (Old) SharePoint On-Premise"><button onClick={ () => { this._mainButtonClick( `onPrem` ) }} >Legacy Search </button></abbr>
+          <abbr title="Search for Engineering Parts"><button onClick={ () => { this._mainButtonClick( `parts` ) }} >Search Part Numbers</button></abbr>
+          <abbr title="Search the AS100 Project Dashboard"><button onClick={ () => { this._mainButtonClick( `projects` ) }} >Search Projects</button></abbr>
+          <abbr title="Search Standards"><button onClick={ () => { this._mainButtonClick( `standards` ) }} >Search Standards</button></abbr><br/><br/> */}
         </div>
 
         <iframe src="" width="100%" height="999px" name="search_iframe"/>
@@ -203,48 +242,113 @@ public constructor(props:IPowerSearchProps){
   }
 
   private _showBack() : void {
-    this.setState({ showPanel: true });
+    this.setState({ showPanel: true, refreshId: makeid(10) });
   }
 
-  private _buttonClick( button: ISearchPlace ): void {
-    console.log( `_buttonClick`, button );
-    const { textSearch } = this.state;
+  private _hideBack() : void {
+    this.setState({ showPanel: false, refreshId: makeid(10) });
+  }
 
-    switch ( button ) {
-      case 'SPO':
-        window.open(`https://${tenant}.sharepoint.com/sites/lifenet_it/_layouts/15/search.aspx?q=${textSearch}`, "search_iframe");
-        break;
-      case 'onPrem':
-        window.open(`https://${code}apps.${code}.${tenant}.int/sites/search/Pages/results.aspx?k=${textSearch}`, "_blank");
-        break;
-      case 'parts':
-        window.open(`https://parts.${code}.${tenant}.int/eparts?q=${textSearch}`, "search_iframe");
-        break;
-      case 'projects':
-        window.open(`https://projects.${code}.${tenant}.int/dashboard?q=${textSearch}`, "search_iframe");
-        break;
-      case 'standards':
-        window.open(`https://${code}apps.${code}.${tenant}.int/sites/${code}acs/SitePages/Search%20All%20Standards.aspx?u=https%3A%2F%2F${code}apps%2E${code}%2E${tenant}%2Eint%2Fsites%2F${code}acs&k=#k=${textSearch}`, "_blank");
-        break;
-      default:
-        window.open(`https://${tenant}.sharepoint.com/sites/lifenet_it/_layouts/15/search.aspx?q=${textSearch}`, "search_iframe");
-    }
+  private _mainButtonClick( index: number ): void {
+
+    const { textSearch } = this.state;
+    const ClickedButton: IMainButtonObject = this.state.mainButtons[ index ];
+    const openUrl = ClickedButton.iframeUrl.replace(`{{textSearch}}`, textSearch );
+
+    window.open( openUrl, ClickedButton.target );
+
+    this.setState({
+      mainSelectedButton: ClickedButton.click,
+      mainSelectedButtonIndex: index,
+      canAutoDetect: false, // Once you actually click a button, then turn off auto-detect
+    });
+
+    // const MainButton: 
+    // switch ( button ) {
+    //   case 'spo':
+    //     window.open(`https://${tenant}.sharepoint.com/sites/lifenet_it/_layouts/15/search.aspx?q=${textSearch}`, "search_iframe");
+    //     break;
+    //   case 'onPrem':
+    //     window.open(`https://${code}apps.${code}.${tenant}.int/sites/search/Pages/results.aspx?k=${textSearch}`, "_blank");
+    //     break;
+    //   case 'parts':
+    //     window.open(`https://parts.${code}.${tenant}.int/eparts?q=${textSearch}`, "search_iframe");
+    //     break;
+    //   case 'projects':
+    //     window.open(`https://projects.${code}.${tenant}.int/dashboard?q=${textSearch}`, "search_iframe");
+    //     break;
+    //   case 'standards':
+    //     window.open(`https://${code}apps.${code}.${tenant}.int/sites/${code}acs/SitePages/Search%20All%20Standards.aspx?u=https%3A%2F%2F${code}apps%2E${code}%2E${tenant}%2Eint%2Fsites%2F${code}acs&k=#k=${textSearch}`, "_blank");
+    //     break;
+    //   default:
+    //     window.open(`https://${tenant}.sharepoint.com/sites/lifenet_it/_layouts/15/search.aspx?q=${textSearch}`, "search_iframe");
+    // }
 
   }
 
 
   private _search( event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue: string ): void {
+    const { textSearch, autoDetectButtonIndex, canAutoDetect, mainButtons, mainSelectedButtonIndex } = this.state;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    if ( event === this.state.textSearch as any && newValue === undefined ) {
+    if ( event === textSearch as any && newValue === undefined ) {
       // This is likely an Enter key press... treat as such.
-      window.open(`https://${tenant}.sharepoint.com/sites/lifenet_it/_layouts/15/search.aspx?q=${event}`, "search_iframe");
+      // this._detectRegex( this.state.textSearch, '_search ~ 1', true );
+      const buttonIdx: number = canAutoDetect === true ? autoDetectButtonIndex : mainSelectedButtonIndex;
+      const ClickedButton: IMainButtonObject = mainButtons [ buttonIdx ];
+      const openUrl = ClickedButton.iframeUrl.replace(`{{textSearch}}`, textSearch );
+      window.open( openUrl, ClickedButton.target );
+      this.setState({ 
+        mainSelectedButton: ClickedButton.click,
+        mainSelectedButtonIndex: buttonIdx,
+      });
     } else {
-      this.setState({ textSearch: newValue });
+      const newIndex: number = this._detectRegex( newValue, '_search ~ 2', false );
+      const mainSelectedButton: IMainButtonObject = mainButtons[ newIndex ];
+      this.setState({ 
+        textSearch: newValue,
+        mainSelectedButton: mainSelectedButton.click,
+        autoDetectButtonIndex: newIndex,
+      });
     }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private _enter(event: any, newValue?: string ): void {
     console.log( '_enter:', event , newValue );
+    // this._detectRegex( this.state.textSearch, '_enter', false );
+  }
+  
+  private _detectRegex( currentTextSearch: string, caller: string, open: boolean ): number {
+    const currentIndex: number = this.state.mainSelectedButtonIndex;
+    // const currentMain: ISearchPlace = this.state.mainSelectedButton;
+    const mainButtons: IMainButtonObject[] = this.state.mainButtons;
+    // const SelectedButton: IMainButtonObject = mainButtons[ currentIndex ];
+    let newIndex: number = currentIndex + 0;
+    let found = false;
+    if ( this.state.canAutoDetect === true ) {
+      mainButtons.map( (button: IMainButtonObject, index: number ) => {
+        if ( found === false ) { // Only continue if a match has not been found yet
+          if ( button.detect === true && button.regExp && button.regExp.length > 0 ) {
+            button.regExp.map( ( thisRegex: RegExp ) => {
+              if ( thisRegex.test( currentTextSearch ) === true ) { 
+                newIndex = index;
+                found = true;
+                console.log( `_detectRegex MATCH:`, currentTextSearch, thisRegex.source, true, newIndex );
+              } else {
+                // console.log( `_detectRegex NO Match`, currentTextSearch, thisRegex.source, false, newIndex );
+              }
+            });
+          }
+        }
+      });
+    }
+    // console.log( `_detectRegex text, current, new:`, caller, open, currentTextSearch, currentIndex, newIndex, mainButtons[ newIndex ].click );
+    if ( open === true ) {
+      const ClickedButton: IMainButtonObject = this.state.mainButtons [ this.state.mainSelectedButtonIndex ];
+      const openUrl = ClickedButton.iframeUrl.replace(`{{textSearch}}`, currentTextSearch );
+      window.open( openUrl, ClickedButton.target );
+    }
+
+    return newIndex;
   }
 }

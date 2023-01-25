@@ -7,16 +7,36 @@
  */
 import { IMinWPBannerProps } from '@mikezimm/fps-library-v2/lib/banner/interfaces/MinWP/IMinWPBannerProps';
 
+export const changeGeneral : string[] = [ 'highlightDetect', 'powerEnable' ];
 
-export const changePropertyGroupX : string[] = [ 'showSomeProps', 'showCustomProps' , 'showOOTBProps' , 'showApprovalProps' , 'propsTitleField', 'propsExpanded', 'selectedProperties' ];
+export const changeSources : string[] = [ 'spoEnable', 'onPremEnable' , 'partsEnable' , 'projectsEnable' , 'standardsEnable', 'alcEnable', 'testsEnable', 'changesEnable', 'source1Enable', 'source2Enable' ];
 
+export const changeSPO : string[] = [ 'spoEnable', 'spoAdvanced' ];
+export const changeOnPrem : string[] = [ 'onPremEnable', 'onPremAdvanced' ];
+export const changeParts : string[] = [ 'partsEnable', 'partsDetect' ];
+export const changeProjects : string[] = [ 'projectsEnable', 'projectsDetect' ];
+export const changeStandards : string[] = [ 'standardsEnable', 'standardsDetect' ];
+export const changeTests : string[] = [ 'testsEnable', 'testsDetect' ];
+export const changeChanges : string[] = [ 'changesEnable', 'changesDetect' ];
+
+export const changeSource1 : string[] = [ 'source1Enable', 'source1Url' , 'source1Detect' , 'source1Advanced' , 'source1PowerRows', 'source1KQLDocs', ];
+export const changeSource2 : string[] = [ 'source2Enable', 'source2Url' , 'source2Detect' , 'source2Advanced' , 'source2PowerRows', 'source2KQLDocs', ];
 
  /**
   For props to export to panel but NOT save in analytics
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const WebPartAnalyticsChanges : any = {
-  groupX: changePropertyGroupX,
+  General: changeGeneral,
+  SPO: changeSPO,
+  OnPrem: changeOnPrem,
+  Parts: changeParts,
+  Projects: changeProjects,
+  Standards: changeStandards,
+  Tests: changeTests,
+  Changes: changeChanges,
+  Source1: changeSource1,
+  Source2: changeSource2,
 }
 
 
@@ -45,8 +65,52 @@ export const importBlockPropsWP : string[] = [ 'showSomeProps' ];
    * Extend with portions of FPS Props that are needed
    * 
    */
+
+
 export interface IPowerSearchWebPartProps extends IMinWPBannerProps {
 
   description: string;
+
+  // spoEnable onPremEnable partsEnable projectsEnable standardsEnable testsEnable changesEnable source1Enable source2Enable
+
+  highlightDetect: boolean;
+  powerEnable: boolean;
+
+  spoEnable: boolean;
+  spoAdvanced: boolean;
+
+  onPremEnable: boolean;
+  onPremAdvanced: boolean;
+
+  partsEnable: boolean;
+  partsDetect: boolean;
+
+  projectsEnable: boolean;
+  projectsDetect: boolean;
+
+  standardsEnable: boolean;
+  standardsDetect: boolean;
+
+  alcEnable: boolean;
+
+  testsEnable: boolean;
+  testsDetect: boolean;
+
+  changesEnable: boolean;
+  changesDetect: boolean;
+
+  source1Enable: boolean;
+  source1Url: string;     // Source Url for iframe
+  source1Detect: string;  // Possibly regex string for auto-detect
+  source1Advanced: boolean; // Enable Advanced wizard
+  source1PowerRows: string; // Possibly to define what PowerSearch rows would be visible
+  source1KQLDocs: boolean; // Possibly enable/disable KQL Docs if it is usable
+
+  source2Enable: boolean;
+  source2Url: string;     // Source Url for iframe
+  source2Detect: string;  // Possibly regex string for auto-detect
+  source2Advanced: boolean; // Enable Advanced wizard
+  source2PowerRows: string; // Possibly to define what PowerSearch rows would be visible
+  source2KQLDocs: boolean; // Possibly enable/disable KQL Docs if it is usable
 
 }
