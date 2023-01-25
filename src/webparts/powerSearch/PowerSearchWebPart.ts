@@ -93,6 +93,7 @@ import { WPStandardsGroup } from './PropPaneGroups/Standards';
 import { WPTestsGroup } from './PropPaneGroups/Tests';
 import { WPChangesGroup } from './PropPaneGroups/Changes';
 import { WPSourceXGroup } from './PropPaneGroups/Source1';
+import { WPGeneralGroup } from './PropPaneGroups/General';
 
 
 export default class PowerSearchWebPart extends FPSBaseClass<IPowerSearchWebPartProps> {
@@ -147,7 +148,10 @@ export default class PowerSearchWebPart extends FPSBaseClass<IPowerSearchWebPart
 
         errMessage: '',
         bannerProps: bannerProps,
+
         highlightDetect: this.properties.highlightDetect,
+        powerEnable: this.properties.powerEnable,
+
         mainButtons: {
           spo: {
             enable: this.properties.spoEnable,
@@ -269,6 +273,7 @@ export default class PowerSearchWebPart extends FPSBaseClass<IPowerSearchWebPart
     let groups: IPropertyPaneGroup[] = [ WebPartInfoGroup( this._repoLink, 'Power Search Webpart', PropertyPaneWebPartInformation ) ];
     const FPSGroups: IPropertyPaneGroup[] = getAllDefaultFPSFeatureGroups ( thisAsAny );
     const PowerSearchGroups = [
+      WPGeneralGroup( this.properties, thisAsAny, ),
       WPSourcesGroup( this.properties, thisAsAny, ),
       WPSPOGroup( this.properties, thisAsAny, ),
       WPOnPremGroup( this.properties, thisAsAny, ),

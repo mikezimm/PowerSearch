@@ -20,7 +20,8 @@ export interface IPowerSearchProps extends IFPSCoreReactComponentProps {
   performance: ILoadPerformance;
 
   highlightDetect: boolean;
-
+  powerEnable: boolean;
+  
   mainButtons: {
     spo: ISPOWPProps;
     onPrem: IOnPremWPProps;

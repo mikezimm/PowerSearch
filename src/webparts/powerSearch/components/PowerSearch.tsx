@@ -12,7 +12,9 @@ import FadePanel from './FadePanel/component';
 import FetchBannerX from '@mikezimm/fps-library-v2/lib/banner/bannerX/FetchBannerX';
 
 import { check4Gulp, IBannerPages, ILoadPerformance, makeid, startPerformOp, updatePerformanceEnd } from '../fpsMinIndex';
-import { getWebPartHelpElementBoxTiles } from '../PropPaneHelp/PropPaneHelp';
+import { getWebPartHelpElementGeneral } from '../PropPaneHelp/General';
+import { getWebPartHelpElementSources } from '../PropPaneHelp/Sources';
+// import { getWebPartHelpElementCustom } from '../PropPaneHelp/Custom';
 import { getBannerPages } from './HelpPanel/AllContent';
 import { saveViewAnalytics } from '../CoreFPS/Analytics';
 import { ISiteThemes } from "@mikezimm/fps-library-v2/lib/common/commandStyles/ISiteThemeChoices";
@@ -30,7 +32,9 @@ export default class PowerSearch extends React.Component<IPowerSearchProps, IPow
   private _performance: ILoadPerformance = null;
 
   private _webPartHelpElement = [
-    getWebPartHelpElementBoxTiles( ),
+    getWebPartHelpElementGeneral( ),
+    getWebPartHelpElementSources( ),
+    // getWebPartHelpElementCustom( ),
   ];
 
   private _contentPages : IBannerPages = getBannerPages( this.props.bannerProps );
@@ -123,7 +127,7 @@ export default class PowerSearch extends React.Component<IPowerSearchProps, IPow
 
     if ( this.props.bannerProps.refreshId !== prevProps.bannerProps.refreshId ) {
       const mainButtons = defineMainButtons( this.props );
-      this.setState({ 
+      this.setState({
         mainButtons: mainButtons,
         mainSelectedButton: mainButtons[0].click,
         mainSelectedButtonIndex: 0,
@@ -140,9 +144,11 @@ export default class PowerSearch extends React.Component<IPowerSearchProps, IPow
     const {
       hasTeamsContext,
       userDisplayName,
+      highlightDetect,
+      powerEnable,
     } = this.props;
 
-    const { mainButtons } = this.state;
+    const { mainButtons, mainSelectedButtonIndex, autoDetectButtonIndex, textSearch } = this.state;
 
         /***
  *    d8888b.  .d8b.  d8b   db d8b   db d88888b d8888b.      d88888b db      d88888b .88b  d88. d88888b d8b   db d888888b 
@@ -189,16 +195,17 @@ export default class PowerSearch extends React.Component<IPowerSearchProps, IPow
 
     const MainButtons: JSX.Element[] = mainButtons.map(( button : IMainButtonObject, index: number ) => {
       let selectClass = styles.bNormal;
-      if ( index === this.state.mainSelectedButtonIndex ) { selectClass = styles.bSelected }
-      else if ( index === this.state.autoDetectButtonIndex ) { selectClass = styles.bDetected }
+      if ( index === mainSelectedButtonIndex ) { selectClass = styles.bSelected }
+      else if ( highlightDetect === true && textSearch && index === autoDetectButtonIndex ) { selectClass = styles.bDetected }
       return <button className={ selectClass } key = {button.label} title={button.title} onClick={ () => { this._mainButtonClick( index ) }} >{button.label}</button>;
     });
 
+    const powerIconClass = powerEnable === true && mainButtons[ mainSelectedButtonIndex ].power === true ? styles.powerShow : styles.powerHide;
     const SearchButtons : JSX.Element = <div>
       <div className={ styles.searchGrid }>
         <div className={ styles.heading }>
           <div className={ styles.headingText }>Welcome to Search - Re-thought, {escape(userDisplayName)}!</div>
-          <div style={{ width: '100px', height: ''}} onClick={ () => { this._showBack() }}>{ <Icon iconName='Search'/> }</div>
+          <div className={ powerIconClass } style={{ width: '100px', height: ''}} onClick={ () => { this._showBack() }}>{ <Icon iconName='Search'/> }</div>
         </div>
         <SearchBox
             value={ this.state.textSearch }
@@ -281,14 +288,14 @@ export default class PowerSearch extends React.Component<IPowerSearchProps, IPow
 
 
   private _search( event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue: string ): void {
-
+    const { textSearch, autoDetectButtonIndex, canAutoDetect, mainButtons, mainSelectedButtonIndex } = this.state;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    if ( event === this.state.textSearch as any && newValue === undefined ) {
+    if ( event === textSearch as any && newValue === undefined ) {
       // This is likely an Enter key press... treat as such.
       // this._detectRegex( this.state.textSearch, '_search ~ 1', true );
-      const buttonIdx: number = this.state.canAutoDetect === true ? this.state.autoDetectButtonIndex : this.state.mainSelectedButtonIndex;
-      const ClickedButton: IMainButtonObject = this.state.mainButtons [ buttonIdx ];
-      const openUrl = ClickedButton.iframeUrl.replace(`{{textSearch}}`, this.state.textSearch );
+      const buttonIdx: number = canAutoDetect === true ? autoDetectButtonIndex : mainSelectedButtonIndex;
+      const ClickedButton: IMainButtonObject = mainButtons [ buttonIdx ];
+      const openUrl = ClickedButton.iframeUrl.replace(`{{textSearch}}`, textSearch );
       window.open( openUrl, ClickedButton.target );
       this.setState({ 
         mainSelectedButton: ClickedButton.click,
@@ -296,7 +303,7 @@ export default class PowerSearch extends React.Component<IPowerSearchProps, IPow
       });
     } else {
       const newIndex: number = this._detectRegex( newValue, '_search ~ 2', false );
-      const mainSelectedButton: IMainButtonObject = this.state.mainButtons[ newIndex ];
+      const mainSelectedButton: IMainButtonObject = mainButtons[ newIndex ];
       this.setState({ 
         textSearch: newValue,
         mainSelectedButton: mainSelectedButton.click,

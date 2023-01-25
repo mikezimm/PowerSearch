@@ -7,7 +7,7 @@
  */
 import { IMinWPBannerProps } from '@mikezimm/fps-library-v2/lib/banner/interfaces/MinWP/IMinWPBannerProps';
 
-export const changeGeneral : string[] = [ 'highlightDetect' ];
+export const changeGeneral : string[] = [ 'highlightDetect', 'powerEnable' ];
 
 export const changeSources : string[] = [ 'spoEnable', 'onPremEnable' , 'partsEnable' , 'projectsEnable' , 'standardsEnable', 'alcEnable', 'testsEnable', 'changesEnable', 'source1Enable', 'source2Enable' ];
 
@@ -74,6 +74,7 @@ export interface IPowerSearchWebPartProps extends IMinWPBannerProps {
   // spoEnable onPremEnable partsEnable projectsEnable standardsEnable testsEnable changesEnable source1Enable source2Enable
 
   highlightDetect: boolean;
+  powerEnable: boolean;
 
   spoEnable: boolean;
   spoAdvanced: boolean;

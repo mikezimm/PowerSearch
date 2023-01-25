@@ -21,14 +21,22 @@ export function WPGeneralGroup(  wpProps: IPowerSearchWebPartProps, thisWPClass:
   const groupFields: IPropertyPaneField<any>[] = [];
 
   groupFields.push(
+    PropertyPaneToggle('powerEnable', {
+      label: 'Power Search panel',
+      offText: 'Disabled',
+      onText: 'Enabled',
+  }));
+
+  groupFields.push(
     PropertyPaneToggle('highlightDetect', {
       label: 'Highlight detected Sources',
       offText: 'No',
       onText: 'Yes',
   }));
 
+
   const ExportThisGroup: IPropertyPaneGroup = {
-    groupName: `SharePoint Online`,
+    groupName: `General`,
     isCollapsed: true,
     groupFields: groupFields
   };

@@ -27,6 +27,7 @@ export interface IMainButtonObject extends IButtonBase {
   // NOTE you can get the string version like this https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/source
   regExp?: RegExp[] ;
   detect?: boolean; // If this button allows for regex detection
+  power?: boolean;  // Uses PowerSearchPane
 }
 
 export interface IPowerButtonObject extends IButtonBase {
@@ -40,6 +41,7 @@ export const MainSPOButton: IMainButtonObject = {
   click: `spo`,
   iframeUrl: `https://${tenant}.sharepoint.com/sites/lifenet_it/_layouts/15/search.aspx?q={{textSearch}}`,
   target: `search_iframe`,
+  power: true,
 }
 
 export const MainOnPremButton: IMainButtonObject = {
@@ -49,6 +51,7 @@ export const MainOnPremButton: IMainButtonObject = {
   click: `onPrem`,
   iframeUrl: `https://${code}apps.${code}.${tenant}.int/sites/search/Pages/results.aspx?k={{textSearch}}`,
   target: `_blank`,
+  power: true,
 }
 
 export const MainPartsButton: IMainButtonObject = {
@@ -75,7 +78,6 @@ export const MainProjectsButton: IMainButtonObject = {
   iframeUrl: `https://projects.${code}.${tenant}.int/dashboard?q={{textSearch}}`,
   target: `search_iframe`,
   regExp: [
-    // /^[1-3]\d{5}\s?[[:>:]]/g,
     /^[1-3]\d{5}\s?$/g,
   ],
   detect: true,
@@ -89,9 +91,6 @@ export const MainStandardsButton: IMainButtonObject = {
   iframeUrl: `https://${code}apps.${code}.${tenant}.int/sites/${code}acs/SitePages/Search%20All%20Standards.aspx?u=https%3A%2F%2F${code}apps%2E${code}%2E${tenant}%2Eint%2Fsites%2F${code}acs&k=#k={{textSearch}}`,
   target: `_blank`,
   regExp: [
-    // /^AS\d{3}\s?[[:>:]]/g,
-    // /^[aA][sS]-?\d{3}\\z/g, -- DOES NOT WORK
-    // /^[aA][sS]-?\d{3}\\Z/g, -- DOES NOT WORK
     /^[aA][sS]-?\d{3}\s?/g, // this does find result from testing
     /^[aA][sS]\d{3}\s?/g, // this does find result from testing
     /^[aA][sS]-?\d{3}\s?[[:>:]]/g,
@@ -104,8 +103,17 @@ export const MainTestsButton: IMainButtonObject = {
   primary: false,
   label: `Tests`,
   click: `tests`,
-  iframeUrl: ``,
+  iframeUrl: `https://tests.${code}.${tenant}.int/dashboard?q={{textSearch}}`,
   target: `search_iframe`,
+  regExp: [
+    /^[tT]2\d{7}\s?/g,
+    /^[tT]-2\d{7}\s?/g,
+    /^[tT][oO]2\d{7}\s?/g,
+    /^[tT][oO]-2\d{7}\s?/g,
+    /^[tT][pP]2\d{7}\s?/g,
+    /^[tT][pP]-2\d{7}\s?/g,
+  ],
+  detect: true,
 }
 
 export const MainChangesButton: IMainButtonObject = {
@@ -113,8 +121,13 @@ export const MainChangesButton: IMainButtonObject = {
   primary: false,
   label: `Changes`,
   click: `changes`,
-  iframeUrl: ``,
+  iframeUrl: `https://changes.${code}.${tenant}.int/dashboard?q={{textSearch}}`,
   target: `search_iframe`,
+  regExp: [
+    /^[eE][cC][rR][5-7]\d{5}\s?/g, // this does find result from testing
+    /^[eE][cC][rR]-[5-7]\d{5}\s?/g, // this does find result from testing
+  ],
+  detect: true,
 }
 
 export const MainALCButton: IMainButtonObject = {
@@ -143,3 +156,19 @@ export const MainSource2Button: IMainButtonObject = {
   iframeUrl: ``,
   target: `search_iframe`,
 }
+
+export const AllMainButtons: IMainButtonObject[] = [
+  MainSPOButton,
+  MainOnPremButton,
+  MainPartsButton,
+  MainProjectsButton,
+  MainStandardsButton,
+  MainChangesButton,
+  MainTestsButton,
+  MainALCButton,
+  MainSource1Button,
+  MainSource2Button,
+];
+
+export const MainWithDetect: IMainButtonObject[] = AllMainButtons.filter( button => button.detect === true );
+export const MainWithPower: IMainButtonObject[] = AllMainButtons.filter( button => button.power === true );

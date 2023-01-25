@@ -6,9 +6,11 @@ export function defineMainButtons( props: IPowerSearchProps ): IMainButtonObject
   const buttons: IMainButtonObject[] = [];
 
   if ( mainButtons.spo.enable === true ) {
+    MainSPOButton.power = props.powerEnable;
     buttons.push( MainSPOButton );
   }
   if ( mainButtons.onPrem.enable === true ) {
+    MainOnPremButton.power = props.powerEnable;
     buttons.push( MainOnPremButton );
   }
   if ( mainButtons.parts.enable === true ) {

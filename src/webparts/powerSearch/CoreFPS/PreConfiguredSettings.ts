@@ -54,6 +54,7 @@ export const WPPresetEverywhere : IPreConfigSettings = {
         requireContacts: true,
 
         highlightDetect: true,
+        powerEnable: true,
 
         // Source specific presets
         spoEnable: true,
