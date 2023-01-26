@@ -3,6 +3,7 @@ import { IFPSCoreReactComponentProps } from '@mikezimm/fps-library-v2/lib/banner
 import { IFPSCorePinMeReactComponentState } from '@mikezimm/fps-library-v2/lib/banner/mainReact/ReactComponentState';
 
 import { ILoadPerformance } from '../fpsMinIndex';
+import { ILastPowerPanelChange } from './PowerPanel/ILastPowerPanelChange';
 import { IMainButtonObject } from './MainButtons/Available';
 
 export const tenant: string = window.location.hostname.toLowerCase().replace(`.sharepoint.com`, '' );
@@ -99,6 +100,7 @@ export interface ISourceXWPProps {
   KQLDocs: boolean; // Possibly enable/disable KQL Docs if it is usable
 }
 
+export type ILastPowerSearchChange = ILastPowerPanelChange | & 'Main-Constructor' | 'Main-Mount' | 'Main-DidUpdate' | 'Main-Text' | 'Main-Button' | 'Main-Panel' | 'Main-Enter' ;
 
 export interface IPowerSearchState extends IFPSCorePinMeReactComponentState {
 
@@ -111,4 +113,5 @@ export interface IPowerSearchState extends IFPSCorePinMeReactComponentState {
 
   mainButtons: IMainButtonObject[];
   canAutoDetect: boolean;
+  lastStateChange: ILastPowerSearchChange;  // Added to use in shouldComponentUpdate
 }

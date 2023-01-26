@@ -6,7 +6,7 @@
 
   display: grid;
   grid-gap: 10px;
-  grid-auto-rows: 50px 26px 60px 50px 50px;
+  grid-auto-rows: 50px 26px 60px 50px 50px 50px 50px 70px 37px;
   justify-items: center;
 
   .links {
@@ -90,6 +90,9 @@
     }
   }
 
+  .transAll {
+    transition:all 0.4s ease;
+  }
   .showTips {
     transition:all 0.4s ease;
     pointer-events: visible;
@@ -148,6 +151,10 @@
       position: fixed;
       left: 25%;
       font-size: 20px;
+      width: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
 
   }
