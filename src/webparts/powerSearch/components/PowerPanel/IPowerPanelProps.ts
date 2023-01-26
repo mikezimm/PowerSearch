@@ -1,12 +1,16 @@
 
+import { ILastPowerPanelChange } from "./ILastPowerPanelChange";
+
 
 export interface IPowerPanelProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  _search( arg0: any ): void;
+  _updateParentTextSearch( arg0: any ): void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   _enter(event: any, newValue?: string ): void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   _hideBack( ): void;
+
+  refreshId: string;
 }
 
 
@@ -26,6 +30,7 @@ export type IPowerTimeChoice = 'Today' | 'Yesterday' | 'ThisWeek' | 'LastWeek' |
 export type IPowerSearchKeys = 'keywords' |  'author' |  'editor' |  'filetype' |  'filename' | 'title' | 'time'  | 'cust1' | 'cust2' | 'cust3' | 'cust4' | 'date1' ;
 export interface IPowerSearch {
   textSearch: string;
+  blockInOut: boolean; // if there is a manual update to search, this tempararily blocks the other boxes because you can't mix both.
   keywords: IInAndOut ;
   author: IInAndOut;
   editor: IInAndOut;
@@ -60,8 +65,10 @@ export interface IPowerHints {
 
 export interface IPowerPanelState {
 
-  history: string[];
-  historyBuild: string[];
+  lastStateChange: ILastPowerPanelChange;  // Added to use in shouldComponentUpdate
+
+  textHistory: string[];
+  searchHistory: string[];
   showHistory: boolean;
   // textSearch: string;
   iframeSrc: string;
@@ -69,6 +76,9 @@ export interface IPowerPanelState {
   showBack: 0 | 1 | 2;
 
   search: IPowerSearch;
+  rowsBackup: IPowerSearch;
+  rowsBackupAsStr: string;
+  lastRowsSearchString: string; // Last search.textSearch generated via updating the rows.  Used to compare if user manually updates text box (for blocking)
 
   powerIframeUrl: string;
   powerIndex: number;

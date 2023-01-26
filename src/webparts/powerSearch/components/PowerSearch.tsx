@@ -29,6 +29,7 @@ const consolePrefix: string = 'fpsconsole: PowerSearch';
 
 export default class PowerSearch extends React.Component<IPowerSearchProps, IPowerSearchState> {
 
+  private _powerPanelQueryString: string = '';
   private _performance: ILoadPerformance = null;
 
   private _webPartHelpElement = [
@@ -60,7 +61,7 @@ export default class PowerSearch extends React.Component<IPowerSearchProps, IPow
     this.state = {
       pinState: this.props.bannerProps.fpsPinMenu.defPinState ? this.props.bannerProps.fpsPinMenu.defPinState : 'normal',
       showDevHeader: false,
-      lastStateChange: '',
+      lastStateChange: 'Main-Constructor',
       analyticsWasExecuted: false,
       refreshId: makeid(10),
       debugMode: false,
@@ -94,13 +95,20 @@ export default class PowerSearch extends React.Component<IPowerSearchProps, IPow
     if ( this.state.analyticsWasExecuted !==  analyticsWasExecuted ) {
       this.setState({ 
         analyticsWasExecuted: analyticsWasExecuted,
+        lastStateChange: 'Main-Mount',
         // mainButtons: buttons,
       });
     }
 
   }
 
-
+  public shouldComponentUpdate( nextProps: IPowerSearchProps, nextState: IPowerSearchState ): boolean {
+    if ( nextState.lastStateChange === 'Panel-Enter' ) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 
 //
   /***
@@ -132,6 +140,7 @@ export default class PowerSearch extends React.Component<IPowerSearchProps, IPow
         mainSelectedButton: mainButtons[0].click,
         mainSelectedButtonIndex: 0,
         autoDetectButtonIndex: 0,
+        lastStateChange: 'Main-DidUpdate',
        });
     }
     if ( check4Gulp() === true )  console.log('React componentDidUpdate - this._performance:', JSON.parse(JSON.stringify(this._performance)) );
@@ -182,9 +191,10 @@ export default class PowerSearch extends React.Component<IPowerSearchProps, IPow
     />;
 
     const content = <PowerPanel
-      _search={ this._search.bind(this) }
+      _updateParentTextSearch={ this._updateTextSearch.bind(this) }
       _enter={ this._enter.bind(this) }
       _hideBack={ this._hideBack.bind(this) }
+      refreshId={ this.state.refreshId }
     />;
 
     const BackDrop : JSX.Element = <FadePanel 
@@ -219,11 +229,6 @@ export default class PowerSearch extends React.Component<IPowerSearchProps, IPow
           />
         <div className={ styles.buttonGrid }>
           { MainButtons }
-          {/* <abbr title="Search (New) SharePoint Online"><button onClick={ () => { this._mainButtonClick( `spo` ) }} >Updated Search</button></abbr>
-          <abbr title="Search (Old) SharePoint On-Premise"><button onClick={ () => { this._mainButtonClick( `onPrem` ) }} >Legacy Search </button></abbr>
-          <abbr title="Search for Engineering Parts"><button onClick={ () => { this._mainButtonClick( `parts` ) }} >Search Part Numbers</button></abbr>
-          <abbr title="Search the AS100 Project Dashboard"><button onClick={ () => { this._mainButtonClick( `projects` ) }} >Search Projects</button></abbr>
-          <abbr title="Search Standards"><button onClick={ () => { this._mainButtonClick( `standards` ) }} >Search Standards</button></abbr><br/><br/> */}
         </div>
 
         <iframe src="" width="100%" height="999px" name="search_iframe"/>
@@ -242,11 +247,15 @@ export default class PowerSearch extends React.Component<IPowerSearchProps, IPow
   }
 
   private _showBack() : void {
-    this.setState({ showPanel: true, refreshId: makeid(10) });
+    this.setState({ 
+      showPanel: true, refreshId: makeid(10),
+      lastStateChange: 'Panel-Open',
+     });
   }
 
   private _hideBack() : void {
-    this.setState({ showPanel: false, refreshId: makeid(10) });
+    // this.setState({ showPanel: false, refreshId: makeid(10),  });
+    this.setState({ showPanel: false, textSearch: this._powerPanelQueryString, lastStateChange: 'Panel-Close', });
   }
 
   private _mainButtonClick( index: number ): void {
@@ -261,55 +270,73 @@ export default class PowerSearch extends React.Component<IPowerSearchProps, IPow
       mainSelectedButton: ClickedButton.click,
       mainSelectedButtonIndex: index,
       canAutoDetect: false, // Once you actually click a button, then turn off auto-detect
+      lastStateChange: 'Main-Button',
     });
-
-    // const MainButton: 
-    // switch ( button ) {
-    //   case 'spo':
-    //     window.open(`https://${tenant}.sharepoint.com/sites/lifenet_it/_layouts/15/search.aspx?q=${textSearch}`, "search_iframe");
-    //     break;
-    //   case 'onPrem':
-    //     window.open(`https://${code}apps.${code}.${tenant}.int/sites/search/Pages/results.aspx?k=${textSearch}`, "_blank");
-    //     break;
-    //   case 'parts':
-    //     window.open(`https://parts.${code}.${tenant}.int/eparts?q=${textSearch}`, "search_iframe");
-    //     break;
-    //   case 'projects':
-    //     window.open(`https://projects.${code}.${tenant}.int/dashboard?q=${textSearch}`, "search_iframe");
-    //     break;
-    //   case 'standards':
-    //     window.open(`https://${code}apps.${code}.${tenant}.int/sites/${code}acs/SitePages/Search%20All%20Standards.aspx?u=https%3A%2F%2F${code}apps%2E${code}%2E${tenant}%2Eint%2Fsites%2F${code}acs&k=#k=${textSearch}`, "_blank");
-    //     break;
-    //   default:
-    //     window.open(`https://${tenant}.sharepoint.com/sites/lifenet_it/_layouts/15/search.aspx?q=${textSearch}`, "search_iframe");
-    // }
 
   }
 
 
+  /**
+   * 
+   * @param event 
+   * @param newValue 
+   */
   private _search( event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue: string ): void {
-    const { textSearch, autoDetectButtonIndex, canAutoDetect, mainButtons, mainSelectedButtonIndex } = this.state;
+    const { textSearch, } = this.state;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if ( event === textSearch as any && newValue === undefined ) {
       // This is likely an Enter key press... treat as such.
       // this._detectRegex( this.state.textSearch, '_search ~ 1', true );
-      const buttonIdx: number = canAutoDetect === true ? autoDetectButtonIndex : mainSelectedButtonIndex;
-      const ClickedButton: IMainButtonObject = mainButtons [ buttonIdx ];
-      const openUrl = ClickedButton.iframeUrl.replace(`{{textSearch}}`, textSearch );
-      window.open( openUrl, ClickedButton.target );
-      this.setState({ 
-        mainSelectedButton: ClickedButton.click,
-        mainSelectedButtonIndex: buttonIdx,
-      });
+      this._updateSelectedButton( true );
     } else {
-      const newIndex: number = this._detectRegex( newValue, '_search ~ 2', false );
-      const mainSelectedButton: IMainButtonObject = mainButtons[ newIndex ];
-      this.setState({ 
-        textSearch: newValue,
-        mainSelectedButton: mainSelectedButton.click,
-        autoDetectButtonIndex: newIndex,
-      });
+      this._updateTextSearchWithAutoDetect( newValue );
     }
+  }
+
+  /**
+   * _updateTextSearchWithAutoDetect updates the main search text box text, and autoDetect button info if needed.
+   * @param newValue 
+   */
+  private _updateTextSearchWithAutoDetect( newValue: string ): void {
+    const { mainButtons, } = this.state;
+    const newIndex: number = this._detectRegex( newValue, '_search ~ 2', false );
+    const mainSelectedButton: IMainButtonObject = mainButtons[ newIndex ];
+    this.setState({ 
+      textSearch: newValue,
+      mainSelectedButton: mainSelectedButton.click,
+      autoDetectButtonIndex: newIndex,
+      lastStateChange: 'Main-Text',
+    });
+  }
+
+  /**
+   * _updateTextSearch updates the main search text box text, called from PowerPanel component.
+   * Added for https://github.com/mikezimm/PowerSearch/issues/27
+   * @param newValue 
+   */
+  private _updateTextSearch( newValue: string ): void {
+    console.log(`main: _updateTextSearch`, newValue );
+    this.setState({
+      textSearch: newValue,
+      lastStateChange: 'Panel-Enter',
+    })
+  }
+
+  /**
+   * _updateSelectedButton should be called when the user presses 'enter' in the text box.
+   * @param open - option to also open the window/update the iframe
+   */
+  private _updateSelectedButton( open: boolean) : void {
+    const { textSearch, autoDetectButtonIndex, canAutoDetect, mainButtons, mainSelectedButtonIndex } = this.state;
+    const buttonIdx: number = canAutoDetect === true ? autoDetectButtonIndex : mainSelectedButtonIndex;
+    const ClickedButton: IMainButtonObject = mainButtons [ buttonIdx ];
+    const openUrl = ClickedButton.iframeUrl.replace(`{{textSearch}}`, textSearch );
+    if ( open === true ) window.open( openUrl, ClickedButton.target );
+    this.setState({ 
+      mainSelectedButton: ClickedButton.click,
+      mainSelectedButtonIndex: buttonIdx,
+      lastStateChange: 'Main-Enter',
+    });
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
