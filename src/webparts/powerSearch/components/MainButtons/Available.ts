@@ -121,7 +121,7 @@ export const MainChangesButton: IMainButtonObject = {
   primary: false,
   label: `Changes`,
   click: `changes`,
-  iframeUrl: `https://changes.${code}.${tenant}.int/dashboard?q={{textSearch}}`,
+  iframeUrl: `https://changes.${code}.${tenant}.int/affected?q={{textSearch}}`, // close #31
   target: `search_iframe`,
   regExp: [
     /^[eE][cC][rR][5-7]\d{5}\s?/g, // this does find result from testing
