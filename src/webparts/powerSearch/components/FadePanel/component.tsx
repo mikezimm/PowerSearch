@@ -29,7 +29,8 @@ export interface IFadePanelProps {
   styleProps?: IFadePanelStyleProps;
   fadeSlider?: boolean; // Could be used to be able to raise and lower fade
   fadeSliderLoc?: IFadeSliderPos; // Could be used to indicate where to put fadeSlider
-
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  _hideBack( ): void; // Callback when panel is closed via this component
 }
 
 export type IShowBack = 0 | 1 | 2;  // 2 is visible, 1 is fading away animation, 0 is faded away
@@ -52,6 +53,7 @@ const FadePanel: React.FC<IFadePanelProps> = ( props ) => {
 
     // Delay creds to:  https://stackoverflow.com/a/42090488
     setTimeout(function(){
+      props._hideBack();  // Required to close #30
       setShowBack( 0 );
       console.log('newBack:',  0  );
     }.bind(this), 1000);

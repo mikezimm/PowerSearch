@@ -217,6 +217,7 @@ export default class PowerSearch extends React.Component<IPowerSearchProps, IPow
       content={ content }
       show={ this.state.showPanel }
       refreshId={ this.state.refreshId }
+      _hideBack={ this._hideBack.bind(this) }
     />
 
     const MainButtons: JSX.Element[] = mainButtons.map(( button : IMainButtonObject, index: number ) => {
@@ -271,7 +272,11 @@ export default class PowerSearch extends React.Component<IPowerSearchProps, IPow
 
   private _hideBack() : void {
     // this.setState({ showPanel: false, refreshId: makeid(10),  });
-    this.setState({ showPanel: false, textSearch: this._powerPanelQueryString, lastStateChange: 'Panel-Close', });
+    this.setState({ 
+      showPanel: false, 
+      // textSearch: this._powerPanelQueryString, 
+      lastStateChange: 'Panel-Close',
+    });
   }
 
   private _mainButtonClick( index: number ): void {
@@ -344,9 +349,11 @@ export default class PowerSearch extends React.Component<IPowerSearchProps, IPow
    */
   private _updateTextSearch( newValue: string ): void {
     console.log(`main: _updateTextSearch`, newValue );
+    const newIndex: number = this._detectRegex( newValue, '_search ~ 2', false );
     this.setState({
       textSearch: newValue,
       lastStateChange: 'Panel-Enter',
+      autoDetectButtonIndex: newIndex,  // Added so it does recheck upon returning from PowerSearch
     })
   }
 

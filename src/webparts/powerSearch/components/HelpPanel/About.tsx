@@ -27,7 +27,7 @@ export function aboutTable( bannerProps: IWebpartBannerProps ) : { table: IHelpT
      * WARNING:  DO NOT add any CDNs to Global Warn or Approve unless you want it to apply to JS as well.
      */
 
-    table.rows.push( createAboutRow('2023-03-07',"1.0.0.07","#34, #38", bannerProps.showRepoLinks === true ? bannerProps.gitHubRepo : null ) );
+    table.rows.push( createAboutRow('2023-03-07',"1.0.0.07","#30, #34, #38", bannerProps.showRepoLinks === true ? bannerProps.gitHubRepo : null ) );
 
     table.rows.push( createAboutRow('2023-01-26',"1.0.0.06","#26, #27 - PowerPanel Query fixes", bannerProps.showRepoLinks === true ? bannerProps.gitHubRepo : null ) );
 
