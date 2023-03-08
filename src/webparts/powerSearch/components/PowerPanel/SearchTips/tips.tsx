@@ -39,7 +39,7 @@ export const SearchTips: ISearchTip[] = [
 ];
 
 export const KQLDocLink: string = `https://learn.microsoft.com/en-us/sharepoint/dev/general-development/keyword-query-language-kql-syntax-reference`;
-export const KQLDocLinkInt: string = `/sites/SolutionTesting/ALVSearch/SitePages/KQL-Docs.aspx`;
+export const KQLDocLinkInt: string = `/sites/SolutionTesting/ALVSearch/SitePages/KQL-Docs.aspx?collapseFpsPinMe=true`;
 
 export function getRandomTipElement( key: ISearchTipKey ) : JSX.Element {
   const possible: ISearchTip[] = [];
