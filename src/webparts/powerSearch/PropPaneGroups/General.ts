@@ -43,7 +43,7 @@ export function WPGeneralGroup(  wpProps: IPowerSearchWebPartProps, thisWPClass:
 
   groupFields.push(
     PropertyPaneToggle('autoPressAll', {
-      label: 'uto-press all detected sources on redirect',
+      label: 'Auto-press all detected sources on redirect',
       offText: 'No',
       onText: 'Yes',
   }));

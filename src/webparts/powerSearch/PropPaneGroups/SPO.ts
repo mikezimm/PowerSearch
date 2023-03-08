@@ -19,6 +19,7 @@ export function WPSPOGroup(  wpProps: IPowerSearchWebPartProps, thisWPClass: ITh
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const groupFields: IPropertyPaneField<any>[] = [];
+  const isDisabled: boolean = wpProps.spoEnable !== true ? true : false;
 
   groupFields.push(
     PropertyPaneToggle('spoEnable', {
@@ -32,7 +33,7 @@ export function WPSPOGroup(  wpProps: IPowerSearchWebPartProps, thisWPClass: ITh
       label: 'Advanced Search Wizard',
       offText: 'No',
       onText: 'Yes',
-      disabled: wpProps.spoEnable !== true ? true : false,
+      disabled: isDisabled,
   }));
 
   const ExportThisGroup: IPropertyPaneGroup = {
