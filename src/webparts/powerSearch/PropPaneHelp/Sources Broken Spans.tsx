@@ -29,13 +29,13 @@ export function getWebPartHelpElementSources (  ): JSX.Element {
       <div className={ 'fps-pph-topic' }>Common public sources NOT allowing iframes...</div>
       <ul>
         <li><span style={{width: '125px'}}><b>google</b></span>:  {`https://www.google.com/search?q={{textSearch}}`}</li>
-        <div style={{ height: '15px'}}/>
+        <div style={{ height: '10px'}}/>
 
         <li><span style={{width: '125px'}}><b>bingmaps</b></span>:  {`https://www.bing.com/maps/search?q={{textSearch}}`}</li>
-        <div style={{ height: '15px'}}/>
+        <div style={{ height: '10px'}}/>
 
         <li><span style={{width: '125px'}}><b>youtube</b></span>:  {`https://www.youtube.com/results?search_query={{textSearch}}`}</li>
-        <div style={{ height: '15px'}}/>
+        <div style={{ height: '10px'}}/>
 
         <li><span style={{width: '125px'}}><b>githubrepos</b></span>:  {`https://github.com/search?type=repositories&q={{textSearch}}`}</li>
         <li><span style={{width: '125px'}}><b>githubissues</b></span>:  {`https://github.com/search?type=issues&q={{textSearch}}`}</li>

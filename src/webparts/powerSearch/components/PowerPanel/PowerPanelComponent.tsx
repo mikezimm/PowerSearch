@@ -415,7 +415,8 @@ public constructor(props:IPowerPanelProps){
 
     this.setState({ powerIframeUrl: powerIframeUrl, powerIndex: isSame && clickedCount > 1 ? -1 : powerIndexNew, reclickCount: clickedCount, showHistory: false });
     // window.open(powerIframeUrl, "power_iframe");
-    window.open(powerIframeUrl, "power_iframe");
+
+    window.open(`${powerIframeUrl}`, "power_iframe");
   }
 
   private _getPowerSearch( inOrOut: IInOrOut, what: string, newValue: string ) : IPowerSearch {

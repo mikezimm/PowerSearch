@@ -100,7 +100,7 @@ export interface ISourceXWPProps {
   KQLDocs: boolean; // Possibly enable/disable KQL Docs if it is usable
 }
 
-export type ILastPowerSearchChange = ILastPowerPanelChange | & 'Main-Constructor' | 'Main-Mount' | 'Main-DidUpdate' | 'Main-Text' | 'Main-Button' | 'Main-Panel' | 'Main-Enter' ;
+export type ILastPowerSearchChange = ILastPowerPanelChange | & 'Main-Constructor' | 'Main-Mount' | 'Main-Mount-PreQuery' | 'Main-DidUpdate' | 'Main-Text' | 'Main-Button' | 'Main-Panel' | 'Main-Enter' ;
 
 export interface IPowerSearchState extends IFPSCorePinMeReactComponentState {
 
@@ -108,6 +108,7 @@ export interface IPowerSearchState extends IFPSCorePinMeReactComponentState {
   mainSelectedButton: ISearchPlace;
   mainSelectedButtonIndex: number; // Index of Main Button last clicked
   autoDetectButtonIndex: number;
+  queryParamDetectIndex: number;
   textSearch: string;
   showPanel: boolean;
 
