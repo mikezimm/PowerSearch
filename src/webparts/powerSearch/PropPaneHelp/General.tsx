@@ -11,6 +11,7 @@ import { MainWithDetect, MainWithPower } from '../components/MainButtons/Availab
 
 // eslint-disable-next-line react/jsx-no-target-blank
 export const regexpLink = <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions" target="_blank">Javascript RegExp pattern</a>;
+export const regex101 = <a href="https://regex101.com/" target="_blank">Javascript RegExp pattern</a>;
 
 export function getWebPartHelpElementGeneral (  ): JSX.Element {
 
@@ -26,7 +27,8 @@ export function getWebPartHelpElementGeneral (  ): JSX.Element {
       </ul>
 
       <div className={ 'fps-pph-topic' }>Highlight Detected Sources</div>
-      <div>Highlights source button if your search text matches a { regexpLink } for that button</div>
+      <div style={{ paddingTop: '10px'}}>Highlights source button if your search text matches a { regexpLink } for that button</div>
+      <div style={{ paddingTop: '10px'}}>You can copy the patterns here and test: { regex101 }</div>
       <ul>
         { MainWithDetect.map ( button => {
           return <li key={ button.label }>{ button.label }
