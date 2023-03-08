@@ -22,7 +22,7 @@ export interface IPowerSearchProps extends IFPSCoreReactComponentProps {
 
   highlightDetect: boolean;
   powerEnable: boolean;
-  
+
   mainButtons: {
     spo: ISPOWPProps;
     onPrem: IOnPremWPProps;
@@ -41,14 +41,14 @@ export interface ISPOWPProps {
   // spoEnable: boolean;
   // spoAdvanced: boolean;
   enable: boolean;
-  advanced: boolean;
+  powerEnable: boolean;
 }
 
 export interface IOnPremWPProps {
   // onPremEnable: boolean;
   // onPremAdvanced: boolean;
   enable: boolean;
-  advanced: boolean;
+  powerEnable: boolean;
 }
 
 export interface IPartsWPProps {
@@ -56,6 +56,9 @@ export interface IPartsWPProps {
   // partsDetect: boolean;
   enable: boolean;
   detect: boolean;
+  press: boolean; // Auto press on redirect load
+  target: string; // Open Target on button press - iFrame || '_blank' ?
+  link: boolean; // Show Link to full page in some way
 }
 
 export interface IProjectsWPProps {
@@ -63,6 +66,9 @@ export interface IProjectsWPProps {
   // projectsDetect: boolean;
   enable: boolean;
   detect: boolean;
+  press: boolean; // Auto press on redirect load
+  target: string; // Open Target on button press - iFrame || '_blank' ?
+  link: boolean; // Show Link to full page in some way
 }
 
 export interface IStandardsWPProps {
@@ -70,6 +76,9 @@ export interface IStandardsWPProps {
   // standardsDetect: boolean;
   enable: boolean;
   detect: boolean;
+  press: boolean; // Auto press on redirect load
+  target: string; // Open Target on button press - iFrame || '_blank' ?
+  link: boolean; // Show Link to full page in some way
 }
 
 export interface IAlcWPProps {
@@ -82,6 +91,9 @@ export interface ITestsWPProps {
   // testsDetect: boolean;
   enable: boolean;
   detect: boolean;
+  press: boolean; // Auto press on redirect load
+  target: string; // Open Target on button press - iFrame || '_blank' ?
+  link: boolean; // Show Link to full page in some way
 }
 
 export interface IChangesWPProps {
@@ -89,15 +101,27 @@ export interface IChangesWPProps {
   // changesDetect: boolean;
   enable: boolean;
   detect: boolean;
+  press: boolean; // Auto press on redirect load
+  target: string; // Open Target on button press - iFrame || '_blank' ?
+  link: boolean; // Show Link to full page in some way
 }
 
 export interface ISourceXWPProps {
   enable: boolean;
+  label: string;  // Button label
   url: string;     // Source Url for iframe
-  detect: string;  // Possibly regex string for auto-detect
-  advanced: boolean; // Enable Advanced wizard
+  powerEnable: boolean; // Enable Advanced wizard
   powerRows: string; // Possibly to define what PowerSearch rows would be visible
   KQLDocs: boolean; // Possibly enable/disable KQL Docs if it is usable
+
+  detect: string;  // Possibly regex string for auto-detect
+  regExp:[]; // Array of RegExp for detection... is this the same as detect?
+
+  press: boolean; // Auto press on redirect load
+
+  target: string; // Open Target on button press - iFrame || '_blank' ?
+  link: boolean; // Show Link to full page in some way
+
 }
 
 export type ILastPowerSearchChange = ILastPowerPanelChange | & 'Main-Constructor' | 'Main-Mount' | 'Main-Mount-PreQuery' | 'Main-DidUpdate' | 'Main-Text' | 'Main-Button' | 'Main-Panel' | 'Main-Enter' ;

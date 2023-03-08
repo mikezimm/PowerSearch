@@ -15,23 +15,30 @@ export function defineMainButtons( props: IPowerSearchProps ): IMainButtonObject
   }
   if ( mainButtons.parts.enable === true ) {
     MainPartsButton.detect = mainButtons.parts.detect;
+    MainPartsButton.press = mainButtons.parts.press;
     buttons.push( MainPartsButton );
   }
   if ( mainButtons.projects.enable === true ) {
     MainProjectsButton.detect = mainButtons.projects.detect;
+    MainProjectsButton.press = mainButtons.projects.press;
     buttons.push( MainProjectsButton );
   }
   if ( mainButtons.standards.enable === true ) {
     MainStandardsButton.detect = mainButtons.standards.detect;
+    MainStandardsButton.press = mainButtons.standards.press;
     buttons.push( MainStandardsButton );
   }
   if ( mainButtons.alc.enable === true ) {
     buttons.push( MainALCButton );
   }
   if ( mainButtons.tests.enable === true ) {
+    MainTestsButton.detect = mainButtons.standards.detect;
+    MainTestsButton.press = mainButtons.standards.press;
     buttons.push( MainTestsButton );
   }
   if ( mainButtons.changes.enable === true ) {
+    MainChangesButton.detect = mainButtons.changes.detect;
+    MainChangesButton.press = mainButtons.changes.press;
     buttons.push( MainChangesButton );
   }
   if ( mainButtons.source1.enable === true ) {
@@ -54,7 +61,8 @@ export function makeGitHubUrl( gitHubType: IGitHubType ): string {
 }
 
 export function updateCustomSource( origSource: IMainButtonObject, propsSource: ISourceXWPProps ): IMainButtonObject {
-  const { KQLDocs, advanced, detect, enable, powerRows, url } = propsSource;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { KQLDocs, powerEnable, detect, enable, powerRows, url, press, label, regExp } = propsSource;
 
   if ( propsSource.url && propsSource.url.toLocaleLowerCase() === 'google' ) {
     if ( url ) origSource.iframeUrl = `https://www.google.com/search?q={{textSearch}}`;
@@ -88,6 +96,9 @@ export function updateCustomSource( origSource: IMainButtonObject, propsSource: 
   }
 
   if ( enable ) origSource.disabled = enable !== true ? true : false;
+  if ( label ) origSource.label = label ? label : 'Source';
+  if ( press ) origSource.press = press === true ? true : false;
+  if ( powerEnable ) origSource.power = powerEnable === true ? true : false;
 
   return origSource;
 }

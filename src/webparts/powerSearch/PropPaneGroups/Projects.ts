@@ -19,10 +19,11 @@ export function WProjectsGroup(  wpProps: IPowerSearchWebPartProps, thisWPClass:
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const groupFields: IPropertyPaneField<any>[] = [];
+  const isDisabled: boolean = wpProps.projectsEnable !== true ? true : false;
 
   groupFields.push(
     PropertyPaneToggle('projectsEnable', {
-      label: 'Parts database',
+      label: 'Projects database',
       offText: 'No',
       onText: 'Yes',
   }));
@@ -32,8 +33,24 @@ export function WProjectsGroup(  wpProps: IPowerSearchWebPartProps, thisWPClass:
       label: 'Autodetect Project numbers',
       offText: 'No',
       onText: 'Yes',
-      disabled: wpProps.projectsEnable !== true ? true : false,
+      disabled: isDisabled,
   }));
+
+  groupFields.push(
+    PropertyPaneToggle(`projectsPress`, {
+      label: `Auto press this source on redirect load`,
+      onText: "Yes",
+      offText: "No",
+      disabled: isDisabled === true || wpProps.projectsDetect !== true ? true : false,
+    }));
+
+  groupFields.push(
+    PropertyPaneToggle(`projectsLink`, {
+      label: `Show Link to this source`,
+      onText: "Yes",
+      offText: "No",
+      disabled: isDisabled,
+    }));
 
   const ExportThisGroup: IPropertyPaneGroup = {
     groupName: `Projects list`,

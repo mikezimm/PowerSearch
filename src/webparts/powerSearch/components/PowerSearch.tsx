@@ -115,7 +115,10 @@ export default class PowerSearch extends React.Component<IPowerSearchProps, IPow
   }
 
   public shouldComponentUpdate( nextProps: IPowerSearchProps, nextState: IPowerSearchState ): boolean {
-    if ( nextState.lastStateChange === 'Panel-Enter' || nextState.lastStateChange === 'Main-Mount' || nextState.lastStateChange ===  'Main-Mount-PreQuery' ) {
+    if ( this.props.bannerProps.refreshId !== nextProps.bannerProps.refreshId ) {
+      return true;
+
+    } else if ( nextState.lastStateChange === 'Panel-Enter' || nextState.lastStateChange === 'Main-Mount' || nextState.lastStateChange ===  'Main-Mount-PreQuery' ) {
       console.log(`loadTrace:  shouldComponentUpdate ~ false`, nextState.lastStateChange, this.state );
 
       return false;

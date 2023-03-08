@@ -31,6 +31,21 @@ export function WPSourceXGroup(  wpProps: IPowerSearchWebPartProps, numb: number
       disabled: numb === 1 || ( numb === 2 && wpPropsAny[`source${1}Enable`] === true ) ? false : true ,
     }));
 
+
+    // label: this.properties.source2Label,
+    // // detect: this.properties.source1RegExp ? true : false,
+    // regExp: [],
+    // press: this.properties.source2Press,
+    // powerEnable: this.properties.source2Power,
+
+  groupFields.push(
+    PropertyPaneTextField(`source${numb}Label`, {
+      label: `Button Label`,
+      placeholder: `Add label here`,
+      description: 'Button Text',
+      disabled: wpPropsAny[`source${numb}Enable`] === true ? false : true ,
+    }));
+
   groupFields.push(
     PropertyPaneTextField(`source${numb}Url`, {
       label: `Iframe Url`,
@@ -48,8 +63,24 @@ export function WPSourceXGroup(  wpProps: IPowerSearchWebPartProps, numb: number
     }));
 
   groupFields.push(
-    PropertyPaneToggle(`source${numb}Advanced`, {
-      label: "Advanced Search Wizard",
+    PropertyPaneToggle(`source${numb}Press`, {
+      label: `Auto press this source ${numb} on redirect load`,
+      onText: "Yes",
+      offText: "No",
+      disabled: wpPropsAny[`source${numb}Enable`] === true && wpPropsAny[`source${numb}Detect`] ? false : true ,
+    }));
+
+  groupFields.push(
+    PropertyPaneToggle(`source${numb}Link`, {
+      label: `Show Link to this source ${numb}`,
+      onText: "Yes",
+      offText: "No",
+      disabled: wpPropsAny[`source${numb}Enable`] === true ? false : true ,
+    }));
+
+    groupFields.push(
+    PropertyPaneToggle(`source${numb}Power`, {
+      label: "Enable PowerSearch pane",
       onText: "true",
       offText: "false",
       disabled: wpPropsAny[`source${numb}Enable`] === true ? false : true ,

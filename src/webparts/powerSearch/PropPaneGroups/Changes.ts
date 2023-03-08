@@ -19,6 +19,7 @@ export function WPChangesGroup(  wpProps: IPowerSearchWebPartProps, thisWPClass:
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const groupFields: IPropertyPaneField<any>[] = [];
+  const isDisabled: boolean = wpProps.changesEnable !== true ? true : false;
 
   groupFields.push(
     PropertyPaneToggle('changesEnable', {
@@ -32,8 +33,24 @@ export function WPChangesGroup(  wpProps: IPowerSearchWebPartProps, thisWPClass:
       label: 'Autodetect Change numbers',
       offText: 'No',
       onText: 'Yes',
-      disabled: wpProps.changesEnable !== true ? true : false,
+      disabled: isDisabled,
   }));
+
+  groupFields.push(
+    PropertyPaneToggle(`changesPress`, {
+      label: `Auto press this source on redirect load`,
+      onText: "Yes",
+      offText: "No",
+      disabled: isDisabled === true || wpProps.changesDetect !== true ? true : false,
+    }));
+
+  groupFields.push(
+    PropertyPaneToggle(`changesLink`, {
+      label: `Show Link to this source`,
+      onText: "Yes",
+      offText: "No",
+      disabled: isDisabled,
+    }));
 
   const ExportThisGroup: IPropertyPaneGroup = {
     groupName: `Changes Dashboard`,

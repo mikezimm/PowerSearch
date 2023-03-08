@@ -13,16 +13,16 @@ export const changeSources : string[] = [ 'spoEnable', 'onPremEnable' , 'partsEn
 
 export const changeSPO : string[] = [ 'spoEnable', 'spoAdvanced' ];
 export const changeOnPrem : string[] = [ 'onPremEnable', 'onPremAdvanced' ];
-export const changeParts : string[] = [ 'partsEnable', 'partsDetect' ];
-export const changeProjects : string[] = [ 'projectsEnable', 'projectsDetect' ];
-export const changeStandards : string[] = [ 'standardsEnable', 'standardsDetect' ];
-export const changeTests : string[] = [ 'testsEnable', 'testsDetect' ];
-export const changeChanges : string[] = [ 'changesEnable', 'changesDetect' ];
+export const changeParts : string[] = [ 'partsEnable', 'partsDetect', 'partsPress', 'partsTarget', 'partsLink' ];
+export const changeProjects : string[] = [ 'projectsEnable', 'projectsDetect', 'projectsPress', 'projectsTarget', 'projectsLink' ];
+export const changeStandards : string[] = [ 'standardsEnable', 'standardsDetect', 'standardsPress', 'standardsTarget', 'standardsLink' ];
+export const changeTests : string[] = [ 'testsEnable', 'testsDetect', 'testsPress', 'testsTarget', 'testsLink' ];
+export const changeChanges : string[] = [ 'changesEnable', 'changesDetect', 'changesPress', 'changesTarget', 'changesLink' ];
 
-export const changeSource1 : string[] = [ 'source1Enable', 'source1Url' , 'source1Detect' , 'source1Advanced' , 'source1PowerRows', 'source1KQLDocs', ];
-export const changeSource2 : string[] = [ 'source2Enable', 'source2Url' , 'source2Detect' , 'source2Advanced' , 'source2PowerRows', 'source2KQLDocs', ];
+export const changeSource1 : string[] = [ 'source1Enable', 'source1Label', 'source1RegExp', 'source1Press', 'source1Power', 'source1Target', 'source1Link', 'source1Url' , 'source1Detect' , 'source1Advanced' , 'source1PowerRows', 'source1KQLDocs', ];
+export const changeSource2 : string[] = [ 'source2Enable', 'source2Label', 'source2RegExp', 'source2Press', 'source2Power', 'source2Target', 'source2Link', 'source2Url' , 'source2Detect' , 'source2Advanced' , 'source2PowerRows', 'source2KQLDocs', ];
 
- /**
+ /*
   For props to export to panel but NOT save in analytics
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -84,33 +84,61 @@ export interface IPowerSearchWebPartProps extends IMinWPBannerProps {
 
   partsEnable: boolean;
   partsDetect: boolean;
+  partsPress: boolean;
+  partsTarget: string; // Open Target on button press - iFrame || '_blank' ?
+  partsLink: boolean; // Show Link to full page in some way
 
   projectsEnable: boolean;
   projectsDetect: boolean;
-
+  projectsPress: boolean;
+  projectsTarget: string; // Open Target on button press - iFrame || '_blank' ?
+  projectsLink: boolean; // Show Link to full page in some way
+  
   standardsEnable: boolean;
   standardsDetect: boolean;
+  standardsPress: boolean;
+  standardsTarget: string; // Open Target on button press - iFrame || '_blank' ?
+  standardsLink: boolean; // Show Link to full page in some way
 
   alcEnable: boolean;
 
   testsEnable: boolean;
   testsDetect: boolean;
+  testsPress: boolean;
+  testsTarget: string; // Open Target on button press - iFrame || '_blank' ?
+  testsLink: boolean; // Show Link to full page in some way
 
   changesEnable: boolean;
   changesDetect: boolean;
+  changesPress: boolean;
+  changesTarget: string; // Open Target on button press - iFrame || '_blank' ?
+  changesLink: boolean; // Show Link to full page in some way
 
   source1Enable: boolean;
   source1Url: string;     // Source Url for iframe
   source1Detect: string;  // Possibly regex string for auto-detect
-  source1Advanced: boolean; // Enable Advanced wizard
   source1PowerRows: string; // Possibly to define what PowerSearch rows would be visible
   source1KQLDocs: boolean; // Possibly enable/disable KQL Docs if it is usable
+
+  source1Label: string;
+  source1RegExp: string;
+  source1Press: boolean;
+  source1Power: boolean; // Enable Advanced wizard
+
+  source1Target: string; // Open Target on button press - iFrame || '_blank' ?
+  source1Link: boolean; // Show Link to full page in some way
 
   source2Enable: boolean;
   source2Url: string;     // Source Url for iframe
   source2Detect: string;  // Possibly regex string for auto-detect
-  source2Advanced: boolean; // Enable Advanced wizard
   source2PowerRows: string; // Possibly to define what PowerSearch rows would be visible
   source2KQLDocs: boolean; // Possibly enable/disable KQL Docs if it is usable
 
+  source2Label: string;
+  source2RegExp: string;
+  source2Press: boolean;
+  source2Power: boolean; // Enable Advanced wizard
+  
+  source2Target: string; // Open Target on button press - iFrame || '_blank' ?
+  source2Link: boolean; // Show Link to full page in some way
 }
