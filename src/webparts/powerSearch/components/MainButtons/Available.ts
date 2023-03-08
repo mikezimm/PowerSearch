@@ -65,15 +65,16 @@ export const MainPartsButton: IMainButtonObject = {
 
     // NOTE:  2023-03-07 For all these, replaced \s? and $ with \s?$ so that it can not have any other characters except something like an enter if it is considered a character.
 
+    // https://github.com/mikezimm/PowerSearch/issues/33 - expanded to include starting with a 7
     // /^[5-6]\d{6,8}[[:>:]]/g,
-    /^[5-6]\d{6,8}\s?$/g, // Start with 5 or 6, followed by either 6 or 8 digits - total of 7 or 9 digits - 6123456 || 612345678
-    /^[5-6]\d{8}[a-zA-Z]\s?$/g, // Start with 5 or 6, followed 8 digits AND a letter - total 10 characters - 612345678A
-    /^[5-6]\d{6}-\d\d[a-zA-Z]\s?$/g, // Start with 5 or 6, followed 6 digits, a hyphen, 2 more numbers AND a letter - 61234567-00A
+    /^[5-7]\d{6,8}\s?$/g, // Start with 5 or 6, followed by either 6 or 8 digits - total of 7 or 9 digits - 6123456 || 612345678
+    /^[5-7]\d{8}[a-zA-Z]\s?$/g, // Start with 5 or 6, followed 8 digits AND a letter - total 10 characters - 612345678A
+    /^[5-7]\d{6}-\d\d[a-zA-Z]\s?$/g, // Start with 5 or 6, followed 6 digits, a hyphen, 2 more numbers AND a letter - 61234567-00A
 
     // https://github.com/mikezimm/PowerSearch/issues/40
-    /^[5-6]\d{6}-?[a-zA-Z][a-zA-Z][a-zA-Z]$/g, // Start with 5 or 6, followed 6 digits, an optional hyphen, 2 more numbers AND a letter - 61234567-00A
-    /^[xX][5-6]\d{6}\s?$/g, // Start x or X, then 5 or 6, followed 6 digits, - x5123456
-    /^[xX][5-6]\d{8}[a-zA-Z]\s?$/g, // Start x or X, then 5 or 6, followed 8 digits, AND a letter - x512345678A
+    /^[5-7]\d{6}-?[a-zA-Z][a-zA-Z][a-zA-Z]$/g, // Start with 5 or 6, followed 6 digits, an optional hyphen, 2 more numbers AND a letter - 61234567-00A
+    /^[xX][5-7]\d{6}\s?$/g, // Start x or X, then 5 or 6, followed 6 digits, - x5123456
+    /^[xX][5-7]\d{8}[a-zA-Z]\s?$/g, // Start x or X, then 5 or 6, followed 8 digits, AND a letter - x512345678A
   ],
   detect: true,
 }
