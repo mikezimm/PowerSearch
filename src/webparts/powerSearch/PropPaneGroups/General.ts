@@ -34,6 +34,23 @@ export function WPGeneralGroup(  wpProps: IPowerSearchWebPartProps, thisWPClass:
       onText: 'Yes',
   }));
 
+  groupFields.push(
+    PropertyPaneToggle('showSourceLinks', {
+      label: 'Show all available source links - to open in new tab',
+      offText: 'No',
+      onText: 'Yes',
+  }));
+
+  groupFields.push(
+    PropertyPaneToggle('autoPressAll', {
+      label: 'uto-press all detected sources on redirect',
+      offText: 'No',
+      onText: 'Yes',
+  }));
+
+
+  // showSourceLinks: boolean;  // Show all available source links
+  // autoPressAll: boolean;  // Auto-press all detected sources on redirect
 
   const ExportThisGroup: IPropertyPaneGroup = {
     groupName: `General`,
