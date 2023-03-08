@@ -224,7 +224,7 @@ export default class PowerSearch extends React.Component<IPowerSearchProps, IPow
       let selectClass = styles.bNormal;
       if ( index === mainSelectedButtonIndex ) { selectClass = styles.bSelected }
       else if ( highlightDetect === true && textSearch && ( index === autoDetectButtonIndex || index === queryParamDetectIndex )) { selectClass = styles.bDetected }
-      return <button className={ selectClass } key = {button.label} title={button.title} onClick={ () => { this._mainButtonClick( index ) }} >{button.label}</button>;
+      return <button className={ selectClass } key = {button.label} title={button.title} onClick={ ( event ) => { this._mainButtonClick( event, index, ) }} >{button.label}</button>;
     });
 
     const powerIconClass = powerEnable === true && mainButtons[ mainSelectedButtonIndex ].power === true ? styles.powerShow : styles.powerHide;
@@ -279,13 +279,23 @@ export default class PowerSearch extends React.Component<IPowerSearchProps, IPow
     });
   }
 
-  private _mainButtonClick( index: number ): void {
+  /**
+   * need to case event as any to pass typing... really is:   event: React.MouseEventHandler<HTMLButtonElement>
+   * @param event 
+   * @param index 
+   * @returns 
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private _mainButtonClick( event: any, index: number, ): void { //
+    const ctrlKey: boolean = event.ctrlKey;
+    console.log( `_mainButtonClick`, ctrlKey, index );
 
     const { textSearch } = this.state;
     const ClickedButton: IMainButtonObject = this.state.mainButtons[ index ];
     const openUrl = ClickedButton.iframeUrl.replace(`{{textSearch}}`, textSearch );
+    const clickTarget = ctrlKey === true ? '_blank' : ClickedButton.target;
 
-    window.open( openUrl, ClickedButton.target );
+    window.open( openUrl, clickTarget );
 
     if ( this.state.lastStateChange === 'Main-Button' && this.state.mainSelectedButtonIndex === index ) {
       // The same button was just pressed so do not reload state.... just open in a new window (in case it was closed or whatever)
