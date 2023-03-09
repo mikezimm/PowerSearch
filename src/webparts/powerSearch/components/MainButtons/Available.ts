@@ -71,7 +71,11 @@ export const MainPartsButton: IMainButtonObject = {
     // /^[5-6]\d{6,8}[[:>:]]/g,
     /^[5-7]\d{6,8}\s?$/g, // Start with 5 or 6, followed by either 6 or 8 digits - total of 7 or 9 digits - 6123456 || 612345678
     /^[5-7]\d{8}[a-zA-Z]\s?$/g, // Start with 5 or 6, followed 8 digits AND a letter - total 10 characters - 612345678A
-    /^[5-7]\d{6}-\d\d[a-zA-Z]\s?$/g, // Start with 5 or 6, followed 6 digits, a hyphen, 2 more numbers AND a letter - 61234567-00A
+    /^[5-7]\d{6}-?\d\d[a-zA-Z]\s?$/g, // Start with 5 or 6, followed 6 digits, an optional hyphen, 2 more numbers AND a letter - 61234567-00A
+
+    // https://github.com/mikezimm/PowerSearch/issues/55
+    /^[5-7]\d{6}-?\d[a-zA-Z][a-zA-Z]\s?$/g, // Start with 5 or 6, followed 6 digits, an optional hyphen, 2 more numbers AND a letter - 61234567-0BA
+    /^[5-7]\d{6}-?[a-zA-Z]\d[a-zA-Z]\s?$/g, // Start with 5 or 6, followed 6 digits, an optional hyphen, 2 more numbers AND a letter - 61234567-B0A
 
     // https://github.com/mikezimm/PowerSearch/issues/40
     /^[5-7]\d{6}-?[a-zA-Z][a-zA-Z][a-zA-Z]$/g, // Start with 5 or 6, followed 6 digits, an optional hyphen, 2 more numbers AND a letter - 61234567-00A
