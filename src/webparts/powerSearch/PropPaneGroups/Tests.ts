@@ -19,10 +19,11 @@ export function WPTestsGroup(  wpProps: IPowerSearchWebPartProps, thisWPClass: I
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const groupFields: IPropertyPaneField<any>[] = [];
+  const isDisabled: boolean = wpProps.testsEnable !== true ? true : false;
 
   groupFields.push(
     PropertyPaneToggle('testsEnable', {
-      label: 'Parts database',
+      label: 'Enable Tests database',
       offText: 'No',
       onText: 'Yes',
   }));
@@ -32,8 +33,24 @@ export function WPTestsGroup(  wpProps: IPowerSearchWebPartProps, thisWPClass: I
       label: 'Autodetect Test numbers',
       offText: 'No',
       onText: 'Yes',
-      disabled: wpProps.testsEnable !== true ? true : false,
+      disabled: isDisabled,
   }));
+
+  groupFields.push(
+    PropertyPaneToggle(`testsPress`, {
+      label: `Auto press this source on redirect load`,
+      onText: "Yes",
+      offText: "No",
+      disabled: isDisabled === true || wpProps.testsDetect !== true ? true : false,
+    }));
+    
+  groupFields.push(
+    PropertyPaneToggle(`testsLink`, {
+      label: `Show Link to this source`,
+      onText: "Yes",
+      offText: "No",
+      disabled: isDisabled,
+    }));
 
   const ExportThisGroup: IPropertyPaneGroup = {
     groupName: `Tests Dashboard`,

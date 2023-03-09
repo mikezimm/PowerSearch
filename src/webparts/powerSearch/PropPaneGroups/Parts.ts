@@ -19,10 +19,11 @@ export function WPPartsGroup(  wpProps: IPowerSearchWebPartProps, thisWPClass: I
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const groupFields: IPropertyPaneField<any>[] = [];
+  const isDisabled: boolean = wpProps.partsEnable !== true ? true : false;
 
   groupFields.push(
     PropertyPaneToggle('partsEnable', {
-      label: 'Parts database',
+      label: 'Enable Parts database',
       offText: 'No',
       onText: 'Yes',
   }));
@@ -32,8 +33,24 @@ export function WPPartsGroup(  wpProps: IPowerSearchWebPartProps, thisWPClass: I
       label: 'Autodetect Part Numbers',
       offText: 'No',
       onText: 'Yes',
-      disabled: wpProps.partsEnable !== true ? true : false,
+      disabled: isDisabled,
   }));
+
+  groupFields.push(
+    PropertyPaneToggle(`partsPress`, {
+      label: `Auto press this source on redirect load`,
+      onText: "Yes",
+      offText: "No",
+      disabled: isDisabled === true || wpProps.partsDetect !== true ? true : false,
+    }));
+
+  groupFields.push(
+    PropertyPaneToggle(`partsLink`, {
+      label: `Show Link to this source`,
+      onText: "Yes",
+      offText: "No",
+      disabled: isDisabled,
+    }));
 
   const ExportThisGroup: IPropertyPaneGroup = {
     groupName: `Parts list`,

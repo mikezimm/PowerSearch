@@ -18,6 +18,7 @@ export interface IButtonBase {
   target: IIFrameTarget;
   click?: string;  // string passed in onClick
   disabled?: boolean;
+  showFullLink?: boolean;
 }
 
 export interface IMainButtonObject extends IButtonBase {
@@ -27,6 +28,7 @@ export interface IMainButtonObject extends IButtonBase {
   // NOTE you can get the string version like this https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp/source
   regExp?: RegExp[] ;
   detect?: boolean; // If this button allows for regex detection
+  press?: boolean; // If this button allows for auto-press on load
   power?: boolean;  // Uses PowerSearchPane
 }
 
@@ -115,7 +117,7 @@ export const MainTestsButton: IMainButtonObject = {
   primary: false,
   label: `Tests`,
   click: `tests`,
-  iframeUrl: `https://tests.${code}.${tenant}.int/dashboard?q={{textSearch}}`,
+  iframeUrl: `https://tests.${code}.${tenant}.int/tests-dashboard?q={{textSearch}}`,
   target: `search_iframe`,
   regExp: [
 

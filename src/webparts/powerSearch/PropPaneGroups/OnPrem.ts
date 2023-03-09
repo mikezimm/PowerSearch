@@ -19,10 +19,11 @@ export function WPOnPremGroup(  wpProps: IPowerSearchWebPartProps, thisWPClass: 
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const groupFields: IPropertyPaneField<any>[] = [];
+  const isDisabled: boolean = wpProps.onPremEnable !== true ? true : false;
 
   groupFields.push(
     PropertyPaneToggle('onPremEnable', {
-      label: 'SharePoint Online search',
+      label: 'Enable SharePoint Online search',
       offText: 'No',
       onText: 'Yes',
   }));
@@ -32,7 +33,15 @@ export function WPOnPremGroup(  wpProps: IPowerSearchWebPartProps, thisWPClass: 
       label: 'Advanced Search Wizard',
       offText: 'No',
       onText: 'Yes',
-      disabled: wpProps.onPremEnable !== true ? true : false,
+      disabled: isDisabled,
+  }));
+
+  groupFields.push(
+    PropertyPaneToggle('onPremLink', {
+      label: 'Show Link to this source',
+      offText: 'No',
+      onText: 'Yes',
+      disabled: isDisabled,
   }));
 
   const ExportThisGroup: IPropertyPaneGroup = {

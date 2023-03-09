@@ -22,6 +22,7 @@ export function WPSourceXGroup(  wpProps: IPowerSearchWebPartProps, numb: number
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const wpPropsAny: any = wpProps;
+  const isDisabled: boolean = wpPropsAny[`source${numb}Enable`] !== true ? true : false;
 
   groupFields.push(
     PropertyPaneToggle(`source${numb}Enable`, {
@@ -31,28 +32,66 @@ export function WPSourceXGroup(  wpProps: IPowerSearchWebPartProps, numb: number
       disabled: numb === 1 || ( numb === 2 && wpPropsAny[`source${1}Enable`] === true ) ? false : true ,
     }));
 
+    // label: this.properties.source2Label,
+    // // detect: this.properties.source1RegExp ? true : false,
+    // regExp: [],
+    // press: this.properties.source2Press,
+    // powerEnable: this.properties.source2Power,
+
+  groupFields.push(
+    PropertyPaneTextField(`source${numb}Label`, {
+      label: `Button Label`,
+      placeholder: `Add label here`,
+      description: 'Button Text',
+      disabled: isDisabled ,
+    }));
+
   groupFields.push(
     PropertyPaneTextField(`source${numb}Url`, {
       label: `Iframe Url`,
       placeholder: `Paste Url here`,
       description: 'Link to Url for Iframe',
-      disabled: wpPropsAny[`source${numb}Enable`] === true ? false : true ,
+      disabled: isDisabled ,
     }));
 
   groupFields.push(
-    PropertyPaneTextField(`source${numb}Detect`, {
-      label: `Auto-Detect Regex`,
+    PropertyPaneTextField(`source${numb}RegExp`, {
+      label: `Detect Regex`,
       placeholder: `Paste Regex here`,
       description: 'Only for SharePoint Team :)',
-      disabled: wpPropsAny[`source${numb}Enable`] === true ? false : true ,
+      disabled: isDisabled ,
     }));
 
   groupFields.push(
-    PropertyPaneToggle(`source${numb}Advanced`, {
-      label: "Advanced Search Wizard",
+    PropertyPaneToggle(`source${numb}Detect`, {
+      label: `Auto-Detect Regex`,
+      onText: "Yes",
+      offText: "No",
+      disabled: isDisabled !== true && wpPropsAny[`source${numb}RegExp`] ? false : true ,
+    }));
+
+  groupFields.push(
+    PropertyPaneToggle(`source${numb}Press`, {
+      label: `Auto press this source ${numb} on redirect load`,
+      onText: "Yes",
+      offText: "No",
+      disabled: isDisabled !== true && wpPropsAny[`source${numb}RegExp`] ? false : true ,
+    }));
+
+  groupFields.push(
+    PropertyPaneToggle(`source${numb}Link`, {
+      label: `Show Link to this source ${numb}`,
+      onText: "Yes",
+      offText: "No",
+      disabled: isDisabled ,
+    }));
+
+    groupFields.push(
+    PropertyPaneToggle(`source${numb}Power`, {
+      label: "Enable PowerSearch pane",
       onText: "true",
       offText: "false",
-      disabled: wpPropsAny[`source${numb}Enable`] === true ? false : true ,
+      disabled: isDisabled ,
     }));
 
   groupFields.push(
@@ -60,7 +99,7 @@ export function WPSourceXGroup(  wpProps: IPowerSearchWebPartProps, numb: number
       label: `Power Rows to include`,
       placeholder: `Paste Regex here`,
       description: 'Only for SharePoint Team :)',
-      disabled: wpPropsAny[`source${numb}Enable`] === true && wpPropsAny[`source${numb}Advanced`] === true ? false : true ,
+      disabled:  isDisabled !== true && wpPropsAny[`source${numb}Power`] === true ? false : true ,
     }));
 
   groupFields.push(
@@ -68,7 +107,7 @@ export function WPSourceXGroup(  wpProps: IPowerSearchWebPartProps, numb: number
       label: "Include KQL Docs wizard",
       onText: "true",
       offText: "false",
-      disabled: wpPropsAny[`source${numb}Enable`] === true && wpPropsAny[`source${numb}Advanced`] === true ? false : true ,
+      disabled: isDisabled !== true && wpPropsAny[`source${numb}Power`] === true ? false : true ,
     }));
 
   const ExportThisGroup: IPropertyPaneGroup = {

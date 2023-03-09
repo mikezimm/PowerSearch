@@ -19,10 +19,11 @@ export function WPStandardsGroup(  wpProps: IPowerSearchWebPartProps, thisWPClas
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const groupFields: IPropertyPaneField<any>[] = [];
+  const isDisabled: boolean = wpProps.standardsEnable !== true ? true : false;
 
   groupFields.push(
     PropertyPaneToggle('standardsEnable', {
-      label: 'Parts database',
+      label: 'Enable Standards database',
       offText: 'No',
       onText: 'Yes',
   }));
@@ -32,8 +33,24 @@ export function WPStandardsGroup(  wpProps: IPowerSearchWebPartProps, thisWPClas
       label: 'Autodetect Standards',
       offText: 'No',
       onText: 'Yes',
-      disabled: wpProps.standardsEnable !== true ? true : false,
+      disabled: isDisabled,
   }));
+
+  groupFields.push(
+    PropertyPaneToggle(`standardsPress`, {
+      label: `Auto press this source on redirect load`,
+      onText: "Yes",
+      offText: "No",
+      disabled: isDisabled === true || wpProps.standardsDetect !== true ? true : false,
+    }));
+    
+  groupFields.push(
+    PropertyPaneToggle(`standardsLink`, {
+      label: `Show Link to this source`,
+      onText: "Yes",
+      offText: "No",
+      disabled: isDisabled,
+    }));
 
   const ExportThisGroup: IPropertyPaneGroup = {
     groupName: `Standards list`,

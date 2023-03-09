@@ -8,6 +8,8 @@ import {  PivotItem, } from 'office-ui-fabric-react/lib/Pivot';
 //   return <ReactJson src={ obj } name={ name } collapsed={ false } displayDataTypes={ false } displayObjectSize={ false } enableClipboard={ true } style={{ padding: '20px 0px' }} theme= { 'rjv-default' } indentWidth={ 2}/>;
 // }
 
+const sourceLabelCSS: React.CSSProperties = { width: '115px', display: 'inline-block' }
+
 export function getWebPartHelpElementSources (  ): JSX.Element {
 
   const WebPartHelpElement = <PivotItem headerText={ 'Sources' } > 
@@ -22,24 +24,24 @@ export function getWebPartHelpElementSources (  ): JSX.Element {
 
       <div className={ 'fps-pph-topic' }>Common public sources allowing iframes...</div>
       <ul>
-        <li><span style={{width: '125px'}}><b>bing</b></span>:    {`https://www.bing.com/search?q={{textSearch}}`}</li>
-        <li><span style={{width: '125px'}}><b>bingimages</b></span>:  {`https://www.google.com/images/search?q={{textSearch}}`}</li>
-        <li><span style={{width: '125px'}}><b>bingvideos</b></span>:  {`https://www.google.com/videos/search?q={{textSearch}}`}</li>
+        <li><span style={ sourceLabelCSS }><b>bing</b></span>{`https://www.bing.com/search?q={{textSearch}}`}</li>
+        <li><span style={ sourceLabelCSS }><b>bingimages</b></span>{`https://www.google.com/images/search?q={{textSearch}}`}</li>
+        <li><span style={ sourceLabelCSS }><b>bingvideos</b></span>{`https://www.google.com/videos/search?q={{textSearch}}`}</li>
       </ul>
       <div className={ 'fps-pph-topic' }>Common public sources NOT allowing iframes...</div>
       <ul>
-        <li><span style={{width: '125px'}}><b>google</b></span>:  {`https://www.google.com/search?q={{textSearch}}`}</li>
+        <li><span style={ sourceLabelCSS }><b>google</b></span>{`https://www.google.com/search?q={{textSearch}}`}</li>
         <div style={{ height: '15px'}}/>
 
-        <li><span style={{width: '125px'}}><b>bingmaps</b></span>:  {`https://www.bing.com/maps/search?q={{textSearch}}`}</li>
+        <li><span style={ sourceLabelCSS }><b>bingmaps</b></span>{`https://www.bing.com/maps/search?q={{textSearch}}`}</li>
         <div style={{ height: '15px'}}/>
 
-        <li><span style={{width: '125px'}}><b>youtube</b></span>:  {`https://www.youtube.com/results?search_query={{textSearch}}`}</li>
+        <li><span style={ sourceLabelCSS }><b>youtube</b></span>{`https://www.youtube.com/results?search_query={{textSearch}}`}</li>
         <div style={{ height: '15px'}}/>
 
-        <li><span style={{width: '125px'}}><b>githubrepos</b></span>:  {`https://github.com/search?type=repositories&q={{textSearch}}`}</li>
-        <li><span style={{width: '125px'}}><b>githubissues</b></span>:  {`https://github.com/search?type=issues&q={{textSearch}}`}</li>
-        <li><span style={{width: '125px'}}><b>githubcode</b></span>:  {`https://github.com/search?type=code&q={{textSearch}}`}</li>
+        <li><span style={ sourceLabelCSS }><b>githubrepos</b></span>{`https://github.com/search?type=repositories&q={{textSearch}}`}</li>
+        <li><span style={ sourceLabelCSS }><b>githubissues</b></span>{`https://github.com/search?type=issues&q={{textSearch}}`}</li>
+        <li><span style={ sourceLabelCSS }><b>githubcode</b></span>{`https://github.com/search?type=code&q={{textSearch}}`}</li>
       </ul>
 
     </div>

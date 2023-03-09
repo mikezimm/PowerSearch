@@ -55,6 +55,8 @@ export const WPPresetEverywhere : IPreConfigSettings = {
 
         highlightDetect: true,
         powerEnable: true,
+        showSourceLinks: true,
+        autoPressAll: false,
 
         // Source specific presets
         spoEnable: true,
@@ -66,19 +68,39 @@ export const WPPresetEverywhere : IPreConfigSettings = {
         partsEnable: true,
         partsDetect: true,
 
+        partsPress: false,
+        partsTarget: `iFrame`,
+        partsLink: true,
+
         projectsEnable: true,
         projectsDetect: true,
 
+        projectsPress: false,
+        projectsTarget: `iFrame`,
+        projectsLink: true,
+
         standardsEnable: true,
         standardsDetect: true,
+
+        standardsPress: false,
+        standardsTarget: `iFrame`,
+        standardsLink: true,
 
         alcEnable: false,
 
         testsEnable: false,
         testsDetect: true,
 
+        testsPress: false,
+        testsTarget: `iFrame`,
+        testsLink: true,
+
         changesEnable: false,
         changesDetect: true,
+
+        changesPress: false,
+        changesTarget: `iFrame`,
+        changesLink: true,
 
         source1Enable: false,
         source1Url: '',     // Source Url for iframe
@@ -87,6 +109,14 @@ export const WPPresetEverywhere : IPreConfigSettings = {
         source1PowerRows: '', // Possibly to define what PowerSearch rows would be visible
         source1KQLDocs: false, // Possibly enable/disable KQL Docs if it is usable
 
+        source1Label: ``,
+        source1RegExp: ``,
+        source1Press: false,
+        source1Power: false,
+
+        source1Target: `iFrame`,
+        source1Link: true,
+
         source2Enable: false,
         source2Url: '',    // Source Url for iframe
         source2Detect: '',  // Possibly regex string for auto-detect
@@ -94,6 +124,13 @@ export const WPPresetEverywhere : IPreConfigSettings = {
         source2PowerRows: '', // Possibly to define what PowerSearch rows would be visible
         source2KQLDocs: false, // Possibly enable/disable KQL Docs if it is usable
 
+        source2Label: ``,
+        source2RegExp: ``,
+        source2Press: false,
+        source2Power: false,
+
+        source2Target: `iFrame`,
+        source2Link: true,
     }
 };
 

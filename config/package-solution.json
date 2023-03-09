@@ -3,7 +3,7 @@
   "solution": {
     "name": "power-search-x-client-side-solution",
     "id": "e237a55e-e475-46d4-a0ee-239fe90b6fe6",
-    "version": "1.0.0.7",
+    "version": "1.0.0.8",
     "includeClientSideAssets": true,
     "skipFeatureDeployment": true,
     "isDomainIsolated": false,
@@ -30,7 +30,7 @@
         "title": "power-search-x Feature",
         "description": "The feature that activates elements of the power-search-x solution.",
         "id": "42f2cf83-549f-4c5c-bdb7-767f9c4dad3e",
-        "version": "1.0.0.7"
+        "version": "1.0.0.8"
       }
     ]
   },

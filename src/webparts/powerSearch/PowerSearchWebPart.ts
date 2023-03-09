@@ -151,27 +151,43 @@ export default class PowerSearchWebPart extends FPSBaseClass<IPowerSearchWebPart
 
         highlightDetect: this.properties.highlightDetect,
         powerEnable: this.properties.powerEnable,
+        showSourceLinks: this.properties.showSourceLinks, // Show all available source links
+        autoPressAll: this.properties.autoPressAll,  // Auto-press all detected sources on redirect
 
         mainButtons: {
           spo: {
             enable: this.properties.spoEnable,
-            advanced: this.properties.spoAdvanced,
+            powerEnable: this.properties.spoAdvanced,
+            link: this.properties.spoLink,
           },
           onPrem: {
             enable: this.properties.onPremEnable,
-            advanced: this.properties.onPremAdvanced,
+            powerEnable: this.properties.onPremAdvanced,
+            link: this.properties.onPremLink,
           },
           parts: {
             enable: this.properties.partsEnable,
             detect: this.properties.partsDetect,
+            press: this.properties.partsPress,
+
+            target: this.properties.partsTarget,
+            link: this.properties.partsLink,
           },
           projects: {
             enable: this.properties.projectsEnable,
             detect: this.properties.projectsDetect,
+            press:  this.properties.projectsPress,
+
+            target: this.properties.projectsTarget,
+            link: this.properties.projectsLink,
           },
           standards: {
             enable: this.properties.standardsEnable,
             detect: this.properties.standardsDetect,
+            press:  this.properties.standardsPress,
+
+            target: this.properties.standardsTarget,
+            link: this.properties.standardsLink,
           },
           alc: {
             enable: this.properties.alcEnable,
@@ -179,26 +195,49 @@ export default class PowerSearchWebPart extends FPSBaseClass<IPowerSearchWebPart
           tests: {
             enable: this.properties.testsEnable,
             detect: this.properties.testsDetect,
+            press:  this.properties.testsPress,
+
+            target: this.properties.testsTarget,
+            link: this.properties.testsLink,
           },
           changes: {
             enable: this.properties.changesEnable,
             detect: this.properties.changesDetect,
+            press:  this.properties.changesPress,
+
+            target: this.properties.changesTarget,
+            link: this.properties.changesLink,
           },
           source1: {
+            label: this.properties.source1Label,
+            regExp: this.properties.source1RegExp.split(`|||`),
+            press: this.properties.source1Press,
+            
             enable: this.properties.source1Enable,
             url: this.properties.source1Url,     // Source Url for iframe
-            detect: this.properties.source1Detect,  // Possibly regex string for auto-detect
-            advanced: this.properties.source1Advanced, // Enable Advanced wizard
+            detect: this.properties.source1Detect,
+            powerEnable: this.properties.source1Power, // Enable Advanced wizard
             powerRows: this.properties.source1PowerRows, // Possibly to define what PowerSearch rows would be visible
             KQLDocs: this.properties.source1KQLDocs, // Possibly enable/disable KQL Docs if it is usable
+
+            target: this.properties.source1Target,
+            link: this.properties.source1Link,
+
           },
           source2: {
+            label: this.properties.source2Label,
+            regExp: this.properties.source1RegExp.split(`|||`),
+            press: this.properties.source2Press,
+
             enable: this.properties.source2Enable,
             url: this.properties.source2Url,     // Source Url for iframe
             detect: this.properties.source2Detect,  // Possibly regex string for auto-detect
-            advanced: this.properties.source2Advanced, // Enable Advanced wizard
+            powerEnable: this.properties.source2Power, // Enable Advanced wizard
             powerRows: this.properties.source2PowerRows, // Possibly to define what PowerSearch rows would be visible
             KQLDocs: this.properties.source2KQLDocs, // Possibly ena
+
+            target: this.properties.source2Target,
+            link: this.properties.source2Link,
           },
         }
       }

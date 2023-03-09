@@ -1,46 +1,55 @@
-import { IPowerSearchProps, ISourceXWPProps } from "../IPowerSearchProps";
-import { IMainButtonObject, MainALCButton, MainChangesButton, MainOnPremButton, MainPartsButton, MainProjectsButton, MainSource1Button, MainSource2Button, MainSPOButton, MainStandardsButton, MainTestsButton } from "./Available";
+import { IBaseSPWPProps, IPowerSearchProps, IPrimarySourceWPProps, ISourceXWPProps } from "../IPowerSearchProps";
+import { IIFrameTarget, IMainButtonObject, MainALCButton, MainChangesButton, MainOnPremButton, MainPartsButton, MainProjectsButton, MainSource1Button, MainSource2Button, MainSPOButton, MainStandardsButton, MainTestsButton } from "./Available";
 
 export function defineMainButtons( props: IPowerSearchProps ): IMainButtonObject[] {
   const { mainButtons } = props;
   const buttons: IMainButtonObject[] = [];
 
   if ( mainButtons.spo.enable === true ) {
-    MainSPOButton.power = props.powerEnable;
-    buttons.push( MainSPOButton );
+    const ThisButton = updateSPSource( props, MainSPOButton, mainButtons.spo );
+    buttons.push( ThisButton );
+
   }
   if ( mainButtons.onPrem.enable === true ) {
-    MainOnPremButton.power = props.powerEnable;
-    buttons.push( MainOnPremButton );
+    const ThisButton = updateSPSource( props, MainOnPremButton, mainButtons.onPrem );
+    buttons.push( ThisButton );
+
   }
   if ( mainButtons.parts.enable === true ) {
-    MainPartsButton.detect = mainButtons.parts.detect;
-    buttons.push( MainPartsButton );
+    const ThisButton = updateOtherSource( props, MainPartsButton , mainButtons.parts );
+    buttons.push( ThisButton );
+
   }
   if ( mainButtons.projects.enable === true ) {
-    MainProjectsButton.detect = mainButtons.projects.detect;
-    buttons.push( MainProjectsButton );
+    const ThisButton = updateOtherSource( props, MainProjectsButton , mainButtons.projects );
+    buttons.push( ThisButton );
+
   }
   if ( mainButtons.standards.enable === true ) {
-    MainStandardsButton.detect = mainButtons.standards.detect;
-    buttons.push( MainStandardsButton );
+    const ThisButton = updateOtherSource( props, MainStandardsButton , mainButtons.standards );
+    buttons.push( ThisButton );
+
   }
   if ( mainButtons.alc.enable === true ) {
     buttons.push( MainALCButton );
   }
   if ( mainButtons.tests.enable === true ) {
-    buttons.push( MainTestsButton );
+    const ThisButton = updateOtherSource( props, MainTestsButton , mainButtons.tests );
+    buttons.push( ThisButton );
+
   }
   if ( mainButtons.changes.enable === true ) {
-    buttons.push( MainChangesButton );
+    const ThisButton = updateOtherSource( props, MainChangesButton , mainButtons.changes );
+    buttons.push( ThisButton );
+
   }
   if ( mainButtons.source1.enable === true ) {
-    const source1Button: IMainButtonObject = updateCustomSource( MainSource1Button, mainButtons.source1 );
-    buttons.push( source1Button );
+    const ThisButton: IMainButtonObject = updateCustomSource( props, MainSource1Button, mainButtons.source1 );
+    buttons.push( ThisButton );
   }
   if ( mainButtons.source2.enable === true ) {
-    const source2Button: IMainButtonObject = updateCustomSource( MainSource2Button, mainButtons.source2 );
-    buttons.push( source2Button );
+    const ThisButton: IMainButtonObject = updateCustomSource( props, MainSource2Button, mainButtons.source2 );
+    buttons.push( ThisButton );
   }
 
   return buttons;
@@ -53,8 +62,31 @@ export function makeGitHubUrl( gitHubType: IGitHubType ): string {
   return `https://github.com/search?type=${gitHubType}&q={{textSearch}}`;
 }
 
-export function updateCustomSource( origSource: IMainButtonObject, propsSource: ISourceXWPProps ): IMainButtonObject {
-  const { KQLDocs, advanced, detect, enable, powerRows, url } = propsSource;
+export function updateSPSource( props: IPowerSearchProps, origSource: IMainButtonObject, propsSource: IBaseSPWPProps ): IMainButtonObject {
+  const { link, powerEnable, enable } = propsSource;
+
+  if ( enable === true || enable === false ) origSource.disabled = enable !== true ? true : false;
+  origSource.power = powerEnable === true && props.powerEnable === true ? true : false ;
+  if ( link === true || link === false ) origSource.showFullLink = props.showSourceLinks === true ? link : false;
+
+  return origSource;
+}
+
+export function updateOtherSource( props: IPowerSearchProps, origSource: IMainButtonObject, propsSource: IPrimarySourceWPProps ): IMainButtonObject {
+  const { enable, press, link, target, detect } = propsSource;
+
+  if ( enable === true || enable === false ) origSource.disabled = enable;
+  if ( press === true || press === false ) origSource.press = press;
+  if ( detect === true || detect === false ) origSource.detect = detect;
+  if ( target ) origSource.target = target ? target as IIFrameTarget: 'search_iframe';
+  if ( link === true || link === false ) origSource.showFullLink = props.showSourceLinks === true ? link : false;
+
+  return origSource;
+}
+
+export function updateCustomSource( props: IPowerSearchProps, origSource: IMainButtonObject, propsSource: ISourceXWPProps ): IMainButtonObject {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { KQLDocs, powerEnable, enable, powerRows, url, press, label, regExp, link, target } = propsSource;
 
   if ( propsSource.url && propsSource.url.toLocaleLowerCase() === 'google' ) {
     if ( url ) origSource.iframeUrl = `https://www.google.com/search?q={{textSearch}}`;
@@ -86,8 +118,17 @@ export function updateCustomSource( origSource: IMainButtonObject, propsSource: 
   } else {
     if ( url ) origSource.iframeUrl = url;
   }
+  
+  if ( label ) { origSource.label = label; } else { origSource.label = propsSource.url;  }
 
-  if ( enable ) origSource.disabled = enable !== true ? true : false;
+  if ( enable === true || enable === false ) origSource.disabled = enable !== true ? true : false;
+
+
+  if ( press === true || press === false ) origSource.press = press === true ? true : false;
+  if ( powerEnable === true || powerEnable === false ) origSource.power = powerEnable === true ? true : false;
+
+  if ( target ) origSource.target = target ? target as IIFrameTarget: 'search_iframe';
+  if ( link === true || link === false ) origSource.showFullLink = props.showSourceLinks === true ? link : false;
 
   return origSource;
 }
