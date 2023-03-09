@@ -151,15 +151,19 @@ export default class PowerSearchWebPart extends FPSBaseClass<IPowerSearchWebPart
 
         highlightDetect: this.properties.highlightDetect,
         powerEnable: this.properties.powerEnable,
+        showSourceLinks: this.properties.showSourceLinks, // Show all available source links
+        autoPressAll: this.properties.autoPressAll,  // Auto-press all detected sources on redirect
 
         mainButtons: {
           spo: {
             enable: this.properties.spoEnable,
             powerEnable: this.properties.spoAdvanced,
+            link: this.properties.spoLink,
           },
           onPrem: {
             enable: this.properties.onPremEnable,
             powerEnable: this.properties.onPremAdvanced,
+            link: this.properties.onPremLink,
           },
           parts: {
             enable: this.properties.partsEnable,
@@ -206,13 +210,12 @@ export default class PowerSearchWebPart extends FPSBaseClass<IPowerSearchWebPart
           },
           source1: {
             label: this.properties.source1Label,
-            // detect: this.properties.source1RegExp ? true : false,
-            regExp: [],
+            regExp: this.properties.source1RegExp.split(`|||`),
             press: this.properties.source1Press,
-
+            
             enable: this.properties.source1Enable,
             url: this.properties.source1Url,     // Source Url for iframe
-            detect: this.properties.source1Detect,  // Possibly regex string for auto-detect
+            detect: this.properties.source1Detect,
             powerEnable: this.properties.source1Power, // Enable Advanced wizard
             powerRows: this.properties.source1PowerRows, // Possibly to define what PowerSearch rows would be visible
             KQLDocs: this.properties.source1KQLDocs, // Possibly enable/disable KQL Docs if it is usable
@@ -223,8 +226,7 @@ export default class PowerSearchWebPart extends FPSBaseClass<IPowerSearchWebPart
           },
           source2: {
             label: this.properties.source2Label,
-            // detect: this.properties.source1RegExp ? true : false,
-            regExp: [],
+            regExp: this.properties.source1RegExp.split(`|||`),
             press: this.properties.source2Press,
 
             enable: this.properties.source2Enable,

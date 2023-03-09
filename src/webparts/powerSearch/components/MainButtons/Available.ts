@@ -18,6 +18,7 @@ export interface IButtonBase {
   target: IIFrameTarget;
   click?: string;  // string passed in onClick
   disabled?: boolean;
+  showFullLink?: boolean;
 }
 
 export interface IMainButtonObject extends IButtonBase {

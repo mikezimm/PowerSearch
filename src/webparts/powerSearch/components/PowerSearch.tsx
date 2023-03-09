@@ -227,7 +227,12 @@ export default class PowerSearch extends React.Component<IPowerSearchProps, IPow
       let selectClass = styles.bNormal;
       if ( index === mainSelectedButtonIndex ) { selectClass = styles.bSelected }
       else if ( highlightDetect === true && textSearch && ( index === autoDetectButtonIndex || index === queryParamDetectIndex )) { selectClass = styles.bDetected }
-      return <button className={ selectClass } key = {button.label} title={button.title} onClick={ ( event ) => { this._mainButtonClick( event, index, ) }} >{button.label}</button>;
+      return (
+        <div key = {button.label}>
+          <button className={ selectClass } title={button.title} onClick={ ( event ) => { this._mainButtonClick( event, index, ) }} >{button.label}</button>
+          { this.props.showSourceLinks !== true || button.showFullLink !== true ? undefined : <div className={ styles.links } style={{ textAlign: 'center' }} onClick={ () => { window.open( button.iframeUrl.replace(`{{textSearch}}`, textSearch ), '_blank' )}}>Full Page</div>}
+        </div>
+      );
     });
 
     const powerIconClass = powerEnable === true && mainButtons[ mainSelectedButtonIndex ].power === true ? styles.powerShow : styles.powerHide;

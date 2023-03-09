@@ -69,22 +69,22 @@ export const WPPresetEverywhere : IPreConfigSettings = {
         partsDetect: true,
 
         partsPress: false,
-        partsTarget: ``,
-        partsLink: false,
+        partsTarget: `iFrame`,
+        partsLink: true,
 
         projectsEnable: true,
         projectsDetect: true,
 
         projectsPress: false,
-        projectsTarget: ``,
-        projectsLink: false,
+        projectsTarget: `iFrame`,
+        projectsLink: true,
 
         standardsEnable: true,
         standardsDetect: true,
 
         standardsPress: false,
-        standardsTarget: ``,
-        standardsLink: false,
+        standardsTarget: `iFrame`,
+        standardsLink: true,
 
         alcEnable: false,
 
@@ -92,15 +92,15 @@ export const WPPresetEverywhere : IPreConfigSettings = {
         testsDetect: true,
 
         testsPress: false,
-        testsTarget: ``,
-        testsLink: false,
+        testsTarget: `iFrame`,
+        testsLink: true,
 
         changesEnable: false,
         changesDetect: true,
 
         changesPress: false,
-        changesTarget: ``,
-        changesLink: false,
+        changesTarget: `iFrame`,
+        changesLink: true,
 
         source1Enable: false,
         source1Url: '',     // Source Url for iframe
@@ -114,8 +114,8 @@ export const WPPresetEverywhere : IPreConfigSettings = {
         source1Press: false,
         source1Power: false,
 
-        source1Target: ``,
-        source1Link: false,
+        source1Target: `iFrame`,
+        source1Link: true,
 
         source2Enable: false,
         source2Url: '',    // Source Url for iframe
@@ -129,8 +129,8 @@ export const WPPresetEverywhere : IPreConfigSettings = {
         source2Press: false,
         source2Power: false,
 
-        source2Target: ``,
-        source2Link: false,
+        source2Target: `iFrame`,
+        source2Link: true,
     }
 };
 

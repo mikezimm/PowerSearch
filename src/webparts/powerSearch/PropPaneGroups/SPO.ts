@@ -23,7 +23,7 @@ export function WPSPOGroup(  wpProps: IPowerSearchWebPartProps, thisWPClass: ITh
 
   groupFields.push(
     PropertyPaneToggle('spoEnable', {
-      label: 'SharePoint Online search',
+      label: 'Enable SharePoint Online search',
       offText: 'No',
       onText: 'Yes',
   }));
@@ -31,6 +31,14 @@ export function WPSPOGroup(  wpProps: IPowerSearchWebPartProps, thisWPClass: ITh
   groupFields.push(
     PropertyPaneToggle('spoAdvanced', {
       label: 'Advanced Search Wizard',
+      offText: 'No',
+      onText: 'Yes',
+      disabled: isDisabled,
+  }));
+
+  groupFields.push(
+    PropertyPaneToggle('spoLink', {
+      label: 'Show Link to this source',
       offText: 'No',
       onText: 'Yes',
       disabled: isDisabled,

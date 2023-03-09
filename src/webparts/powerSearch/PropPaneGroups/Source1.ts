@@ -55,11 +55,19 @@ export function WPSourceXGroup(  wpProps: IPowerSearchWebPartProps, numb: number
     }));
 
   groupFields.push(
-    PropertyPaneTextField(`source${numb}Detect`, {
-      label: `Auto-Detect Regex`,
+    PropertyPaneTextField(`source${numb}RegExp`, {
+      label: `Detect Regex`,
       placeholder: `Paste Regex here`,
       description: 'Only for SharePoint Team :)',
       disabled: isDisabled ,
+    }));
+
+  groupFields.push(
+    PropertyPaneToggle(`source${numb}Detect`, {
+      label: `Auto-Detect Regex`,
+      onText: "Yes",
+      offText: "No",
+      disabled: isDisabled !== true && wpPropsAny[`source${numb}RegExp`] ? false : true ,
     }));
 
   groupFields.push(
@@ -67,7 +75,7 @@ export function WPSourceXGroup(  wpProps: IPowerSearchWebPartProps, numb: number
       label: `Auto press this source ${numb} on redirect load`,
       onText: "Yes",
       offText: "No",
-      disabled: isDisabled !== true && wpPropsAny[`source${numb}Detect`] ? false : true ,
+      disabled: isDisabled !== true && wpPropsAny[`source${numb}RegExp`] ? false : true ,
     }));
 
   groupFields.push(

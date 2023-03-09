@@ -23,7 +23,7 @@ export function WPOnPremGroup(  wpProps: IPowerSearchWebPartProps, thisWPClass: 
 
   groupFields.push(
     PropertyPaneToggle('onPremEnable', {
-      label: 'SharePoint Online search',
+      label: 'Enable SharePoint Online search',
       offText: 'No',
       onText: 'Yes',
   }));
@@ -31,6 +31,14 @@ export function WPOnPremGroup(  wpProps: IPowerSearchWebPartProps, thisWPClass: 
   groupFields.push(
     PropertyPaneToggle('onPremAdvanced', {
       label: 'Advanced Search Wizard',
+      offText: 'No',
+      onText: 'Yes',
+      disabled: isDisabled,
+  }));
+
+  groupFields.push(
+    PropertyPaneToggle('onPremLink', {
+      label: 'Show Link to this source',
       offText: 'No',
       onText: 'Yes',
       disabled: isDisabled,

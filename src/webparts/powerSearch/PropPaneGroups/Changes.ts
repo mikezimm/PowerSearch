@@ -23,7 +23,7 @@ export function WPChangesGroup(  wpProps: IPowerSearchWebPartProps, thisWPClass:
 
   groupFields.push(
     PropertyPaneToggle('changesEnable', {
-      label: 'Changes Dashboard',
+      label: 'Enable Engineering Changes Dashboard',
       offText: 'No',
       onText: 'Yes',
   }));

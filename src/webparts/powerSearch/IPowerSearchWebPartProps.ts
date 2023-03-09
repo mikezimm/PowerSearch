@@ -19,8 +19,8 @@ export const changeStandards : string[] = [ 'standardsEnable', 'standardsDetect'
 export const changeTests : string[] = [ 'testsEnable', 'testsDetect', 'testsPress', 'testsTarget', 'testsLink' ];
 export const changeChanges : string[] = [ 'changesEnable', 'changesDetect', 'changesPress', 'changesTarget', 'changesLink' ];
 
-export const changeSource1 : string[] = [ 'source1Enable', 'source1Label', 'source1RegExp', 'source1Press', 'source1Power', 'source1Target', 'source1Link', 'source1Url' , 'source1Detect' , 'source1Advanced' , 'source1PowerRows', 'source1KQLDocs', ];
-export const changeSource2 : string[] = [ 'source2Enable', 'source2Label', 'source2RegExp', 'source2Press', 'source2Power', 'source2Target', 'source2Link', 'source2Url' , 'source2Detect' , 'source2Advanced' , 'source2PowerRows', 'source2KQLDocs', ];
+export const changeSource1 : string[] = [ 'source1Enable', 'source1Label', 'source1RegExp', 'source1Press', 'source1Power', 'source1Target', 'source1Link', 'source1Url'  , 'source1Advanced' , 'source1PowerRows', 'source1KQLDocs', ];
+export const changeSource2 : string[] = [ 'source2Enable', 'source2Label', 'source2RegExp', 'source2Press', 'source2Power', 'source2Target', 'source2Link', 'source2Url'  , 'source2Advanced' , 'source2PowerRows', 'source2KQLDocs', ];
 
  /*
   For props to export to panel but NOT save in analytics
@@ -80,9 +80,11 @@ export interface IPowerSearchWebPartProps extends IMinWPBannerProps {
 
   spoEnable: boolean;
   spoAdvanced: boolean;
+  spoLink: boolean; // Show Link to full page in some way
 
   onPremEnable: boolean;
   onPremAdvanced: boolean;
+  onPremLink: boolean; // Show Link to full page in some way
 
   partsEnable: boolean;
   partsDetect: boolean;

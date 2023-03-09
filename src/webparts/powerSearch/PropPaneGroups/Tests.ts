@@ -23,7 +23,7 @@ export function WPTestsGroup(  wpProps: IPowerSearchWebPartProps, thisWPClass: I
 
   groupFields.push(
     PropertyPaneToggle('testsEnable', {
-      label: 'Tests database',
+      label: 'Enable Tests database',
       offText: 'No',
       onText: 'Yes',
   }));

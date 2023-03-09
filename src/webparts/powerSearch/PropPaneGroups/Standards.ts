@@ -23,7 +23,7 @@ export function WPStandardsGroup(  wpProps: IPowerSearchWebPartProps, thisWPClas
 
   groupFields.push(
     PropertyPaneToggle('standardsEnable', {
-      label: 'Standards database',
+      label: 'Enable Standards database',
       offText: 'No',
       onText: 'Yes',
   }));

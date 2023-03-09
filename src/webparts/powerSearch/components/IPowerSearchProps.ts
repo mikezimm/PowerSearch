@@ -22,6 +22,8 @@ export interface IPowerSearchProps extends IFPSCoreReactComponentProps {
 
   highlightDetect: boolean;
   powerEnable: boolean;
+  showSourceLinks: boolean;  // Show all available source links
+  autoPressAll: boolean;  // Auto-press all detected sources on redirect
 
   mainButtons: {
     spo: ISPOWPProps;
@@ -37,48 +39,16 @@ export interface IPowerSearchProps extends IFPSCoreReactComponentProps {
   }
 }
 
-export interface ISPOWPProps {
-  // spoEnable: boolean;
-  // spoAdvanced: boolean;
+export interface IBaseSPWPProps {
   enable: boolean;
   powerEnable: boolean;
-}
-
-export interface IOnPremWPProps {
-  // onPremEnable: boolean;
-  // onPremAdvanced: boolean;
-  enable: boolean;
-  powerEnable: boolean;
-}
-
-export interface IPartsWPProps {
-  // partsEnable: boolean;
-  // partsDetect: boolean;
-  enable: boolean;
-  detect: boolean;
-  press: boolean; // Auto press on redirect load
-  target: string; // Open Target on button press - iFrame || '_blank' ?
   link: boolean; // Show Link to full page in some way
 }
 
-export interface IProjectsWPProps {
-  // projectsEnable: boolean;
-  // projectsDetect: boolean;
-  enable: boolean;
-  detect: boolean;
-  press: boolean; // Auto press on redirect load
-  target: string; // Open Target on button press - iFrame || '_blank' ?
-  link: boolean; // Show Link to full page in some way
+export interface ISPOWPProps extends IBaseSPWPProps {
 }
 
-export interface IStandardsWPProps {
-  // standardsEnable: boolean;
-  // standardsDetect: boolean;
-  enable: boolean;
-  detect: boolean;
-  press: boolean; // Auto press on redirect load
-  target: string; // Open Target on button press - iFrame || '_blank' ?
-  link: boolean; // Show Link to full page in some way
+export interface IOnPremWPProps extends IBaseSPWPProps {
 }
 
 export interface IAlcWPProps {
@@ -86,24 +56,28 @@ export interface IAlcWPProps {
   enable: boolean;
 }
 
-export interface ITestsWPProps {
-  // testsEnable: boolean;
-  // testsDetect: boolean;
+export interface IPrimarySourceWPProps {
   enable: boolean;
   detect: boolean;
   press: boolean; // Auto press on redirect load
-  target: string; // Open Target on button press - iFrame || '_blank' ?
   link: boolean; // Show Link to full page in some way
+  target: string; // Open Target on button press - iFrame || '_blank' ?
 }
 
-export interface IChangesWPProps {
-  // changesEnable: boolean;
-  // changesDetect: boolean;
-  enable: boolean;
-  detect: boolean;
-  press: boolean; // Auto press on redirect load
-  target: string; // Open Target on button press - iFrame || '_blank' ?
-  link: boolean; // Show Link to full page in some way
+export interface IPartsWPProps extends IPrimarySourceWPProps {
+}
+
+export interface IProjectsWPProps extends IPrimarySourceWPProps {
+}
+
+export interface IStandardsWPProps extends IPrimarySourceWPProps {
+}
+
+
+export interface ITestsWPProps extends IPrimarySourceWPProps {
+}
+
+export interface IChangesWPProps extends IPrimarySourceWPProps {
 }
 
 export interface ISourceXWPProps {
@@ -115,7 +89,7 @@ export interface ISourceXWPProps {
   KQLDocs: boolean; // Possibly enable/disable KQL Docs if it is usable
 
   detect: string;  // Possibly regex string for auto-detect
-  regExp:[]; // Array of RegExp for detection... is this the same as detect?
+  regExp: string[]; // Array of RegExp for detection... is this the same as detect?
 
   press: boolean; // Auto press on redirect load
 
@@ -129,14 +103,17 @@ export type ILastPowerSearchChange = ILastPowerPanelChange | & 'Main-Constructor
 export interface IPowerSearchState extends IFPSCorePinMeReactComponentState {
 
   analyticsWasExecuted: boolean;
+
   mainSelectedButton: ISearchPlace;
   mainSelectedButtonIndex: number; // Index of Main Button last clicked
   autoDetectButtonIndex: number;
   queryParamDetectIndex: number;
+
   textSearch: string;
   showPanel: boolean;
 
   mainButtons: IMainButtonObject[];
   canAutoDetect: boolean;
+
   lastStateChange: ILastPowerSearchChange;  // Added to use in shouldComponentUpdate
 }

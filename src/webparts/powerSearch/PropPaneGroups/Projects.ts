@@ -23,7 +23,7 @@ export function WProjectsGroup(  wpProps: IPowerSearchWebPartProps, thisWPClass:
 
   groupFields.push(
     PropertyPaneToggle('projectsEnable', {
-      label: 'Projects database',
+      label: 'Enable Projects database',
       offText: 'No',
       onText: 'Yes',
   }));

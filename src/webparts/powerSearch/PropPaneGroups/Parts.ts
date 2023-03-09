@@ -23,7 +23,7 @@ export function WPPartsGroup(  wpProps: IPowerSearchWebPartProps, thisWPClass: I
 
   groupFields.push(
     PropertyPaneToggle('partsEnable', {
-      label: 'Parts database',
+      label: 'Enable Parts database',
       offText: 'No',
       onText: 'Yes',
   }));
