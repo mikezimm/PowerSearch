@@ -127,7 +127,7 @@ public constructor(props:IPowerPanelProps){
       </div>
 
       <div className={ styles.currentQuery }>
-        <Icon iconName={ this.state.textHistory.length > 0 ? "History" : '' } onClick={ () => this.setState({ 
+        <Icon className={ styles.historyIcon } iconName={ this.state.textHistory.length > 0 ? "History" : '' } onClick={ () => this.setState({ 
             showHistory: !this.state.showHistory, hints: { ...this.state.hints, ...{ docs: false }},
             powerIndex: -1,
             powerIframeUrl: '',
@@ -146,9 +146,11 @@ public constructor(props:IPowerPanelProps){
 
       <div style={{ fontSize: '18px', marginTop: '30px', marginBottom: '20px', fontWeight: 500 }} onClick={ () => this.props._hideBack() }>Click here to return to page.</div>
       <div className={ this.state.showHistory === true ? styles.showTips : styles.hideTips }>
-        <div style={{ fontSize: 'larger' }}>Query history - Click one to</div>
+        <div style={{ fontSize: 'larger' }}>Query history - Click arrow to reload, Double Click to also execute search</div>
         { this.state.textHistory.map( ( textHistory, index ) => {
-          return <div className={ styles.queryHistoryRow } key={ textHistory } ><Icon iconName={ "Upload" } onClick={ () => this._loadHistory( index ) } />{ textHistory }</div>;
+          return <div className={ styles.queryHistoryRow } key={ textHistory } ><Icon iconName={ "Upload" } 
+            onClick={ () => this._loadHistory( index ) } 
+            onDoubleClick={ () => this._executeHistory( index ) } />{ textHistory }</div>;
         })}
 
       </div>
@@ -180,6 +182,20 @@ public constructor(props:IPowerPanelProps){
       search: search,
       lastStateChange: 'Panel-LoadHistory',
      });
+  }
+  /**
+   * This runs when the History item up arrow is DOUBLE-CLICKED, it will reload a history stnapshot and execute search
+   * @param index 
+   */
+  private _executeHistory( index: number ): void {
+
+    const search: IPowerSearch = JSON.parse( this.state.searchHistory[index] );
+    window.open(`https://${tenant}.sharepoint.com/sites/lifenet_it/_layouts/15/search.aspx?q=${search.textSearch}`, "search_iframe");
+    this.props._updateParentTextSearch( `${search.textSearch}` );
+    this.setState({ 
+      search: search,
+      lastStateChange: 'Panel-LoadHistory',
+    });
   }
 
   /**

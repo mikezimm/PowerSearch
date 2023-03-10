@@ -69,14 +69,20 @@ export const MainPartsButton: IMainButtonObject = {
 
     // https://github.com/mikezimm/PowerSearch/issues/33 - expanded to include starting with a 7
     // /^[5-6]\d{6,8}[[:>:]]/g,
-    /^[5-7]\d{6,8}\s?$/g, // Start with 5 or 6, followed by either 6 or 8 digits - total of 7 or 9 digits - 6123456 || 612345678
-    /^[5-7]\d{8}[a-zA-Z]\s?$/g, // Start with 5 or 6, followed 8 digits AND a letter - total 10 characters - 612345678A
-    /^[5-7]\d{6}-\d\d[a-zA-Z]\s?$/g, // Start with 5 or 6, followed 6 digits, a hyphen, 2 more numbers AND a letter - 61234567-00A
+    /^[5-7]\d{6,8}\s?$/gi, // Start with 5 or 6, followed by either 6 or 8 digits - total of 7 or 9 digits - 6123456 || 612345678
+    /^[5-7]\d{8}[a-z]\s?$/gi, // Start with 5 or 6, followed 8 digits AND a letter - total 10 characters - 612345678A
+
+    // This one replaces all the ones directly below
+    /^[5-7]\d{6}-?[a-z\d][a-z\d][a-z]\s?$/gi,
+    // /^[5-7]\d{6}-?\d\d[a-z]\s?$/gi, // Start with 5 or 6, followed 6 digits, an optional hyphen, 2 more numbers AND a letter - 61234567-00A
+    // https://github.com/mikezimm/PowerSearch/issues/55
+    // /^[5-7]\d{6}-?\d[a-z][a-z]\s?$/gi, // Start with 5 or 6, followed 6 digits, an optional hyphen, 2 more numbers AND a letter - 61234567-0BA
+    // /^[5-7]\d{6}-?[a-z]\d[a-z]\s?$/gi, // Start with 5 or 6, followed 6 digits, an optional hyphen, 2 more numbers AND a letter - 61234567-B0A
 
     // https://github.com/mikezimm/PowerSearch/issues/40
-    /^[5-7]\d{6}-?[a-zA-Z][a-zA-Z][a-zA-Z]$/g, // Start with 5 or 6, followed 6 digits, an optional hyphen, 2 more numbers AND a letter - 61234567-00A
-    /^[xX][5-7]\d{6}\s?$/g, // Start x or X, then 5 or 6, followed 6 digits, - x5123456
-    /^[xX][5-7]\d{8}[a-zA-Z]\s?$/g, // Start x or X, then 5 or 6, followed 8 digits, AND a letter - x512345678A
+    /^[5-7]\d{6}-?[a-z][a-z][a-z]$/gi, // Start with 5 or 6, followed 6 digits, an optional hyphen, 2 more numbers AND a letter - 61234567-00A
+    /^[x][5-7]\d{6}\s?$/gi, // Start x or X, then 5 or 6, followed 6 digits, - x5123456
+    /^[x][5-7]\d{8}[a-z]\s?$/gi, // Start x or X, then 5 or 6, followed 8 digits, AND a letter - x512345678A
   ],
   detect: true,
 }
@@ -105,9 +111,9 @@ export const MainStandardsButton: IMainButtonObject = {
 
     // NOTE:  2023-03-07 For all these, replaced \s? and $ with \s?$ so that it can not have any other characters except something like an enter if it is considered a character.
 
-    /^[aA][sS]-?\d{3}\s?$/g, // this does find result from testing
-    /^[aA][sS]\d{3}\s?$/g, // this does find result from testing
-    /^[aA][sS]-?\d{3}\s?[[:>:]]/g,
+    /^[a][s]-?\d{3}\s?$/gi, // this does find result from testing
+    /^[a][s]\d{3}\s?$/gi, // this does find result from testing
+    /^[a][s]-?\d{3}\s?[[:>:]]/gi,
   ],
   detect: true,
 }
@@ -123,17 +129,17 @@ export const MainTestsButton: IMainButtonObject = {
 
     // NOTE:  2023-03-07 For all these, replaced \s? and $ with \s?$ so that it can not have any other characters except something like an enter if it is considered a character.
 
-    // /^[tT]2\d{7}\s?/g,
-    /^[tT]-?2\d{7}\s?$/g,      // like T21234567 || T-21234567
-    // /^[tT][oO]2\d{7}\s?/g,
-    /^[tT][oO]-?2\d{7}\s?$/g,  // like TO21234567 || TO-21234567
-    // /^[tT][pP]2\d{7}\s?/g,
-    /^[tT][pP]-?2\d{7}\s?$/g,  // like TP21234567 || TP-21234567
+    // /^[t]2\d{7}\s?/gi,
+    /^[t]-?2\d{7}\s?$/gi,      // like T21234567 || T-21234567
+    // /^[t][o]2\d{7}\s?/gi,
+    /^[t][o]-?2\d{7}\s?$/gi,  // like TO21234567 || TO-21234567
+    // /^[t][p]2\d{7}\s?/gi,
+    /^[t][p]-?2\d{7}\s?$/gi,  // like TP21234567 || TP-21234567
 
     // https://github.com/mikezimm/PowerSearch/issues/41
-    /^[tT]-?\d{8}\s?$/g,       // Same as above but allow any digit as first number (instead of just #2)
-    /^[tT][oO]-?\d{8}\s?$/g,   // Same as above but allow any digit as first number (instead of just #2)
-    /^[tT][pP]-?\d{8}\s?$/g,   // Same as above but allow any digit as first number (instead of just #2)
+    /^[t]-?\d{8}\s?$/gi,       // Same as above but allow any digit as first number (instead of just #2)
+    /^[t][o]-?\d{8}\s?$/gi,   // Same as above but allow any digit as first number (instead of just #2)
+    /^[t][p]-?\d{8}\s?$/gi,   // Same as above but allow any digit as first number (instead of just #2)
 
   ],
   detect: true,
@@ -151,8 +157,8 @@ export const MainChangesButton: IMainButtonObject = {
     // NOTE:  2023-03-07 For all these, replaced \s? and $ with \s?$ so that it can not have any other characters except something like an enter if it is considered a character.
 
     // https://github.com/mikezimm/PowerSearch/issues/42 - added O instead of R
-    /^[eE][cC][rRoO][5-7]\d{5}\s?$/g, // this does find result from testing
-    /^[eE][cC][rRoO]-[5-7]\d{5}\s?$/g, // this does find result from testing
+    /^[e][c][ro][5-7]\d{5}\s?$/gi, // this does find result from testing
+    /^[e][c][ro]-[5-7]\d{5}\s?$/gi, // this does find result from testing
 
     /^[5-7]\d{5}\s?$/g, // Start with 5, 6 or 7, followed 5 digits AND a letter - total 10 characters - 618723
   ],
