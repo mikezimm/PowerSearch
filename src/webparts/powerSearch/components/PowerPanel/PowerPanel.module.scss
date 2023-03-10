@@ -120,10 +120,12 @@
   .queryHistoryRow {
     min-width: 300px;
     text-align: left;
+    margin: 5px 0px;
 
     i {
       padding: 10px 20px;
       margin-right: 30px;
+      font-size: 20px;
       cursor: pointer;
     }
   }
@@ -135,10 +137,16 @@
     grid-gap: 20px;
     align-items: center;
     justify-content: space-around;
-    grid-template-columns: 30px 1fr;
+    grid-template-columns: 60px 1fr;
     transform: translate(-50px);
     i {
+      font-size: 16px;
       cursor: pointer;
+    }
+    .historyIcon {
+      font-size: 24px;
+      cursor: pointer;
+      padding: 5px;
     }
   }
 
